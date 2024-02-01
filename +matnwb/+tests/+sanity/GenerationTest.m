@@ -1,6 +1,6 @@
 classdef GenerationTest < matlab.unittest.TestCase
     properties (MethodSetupParameter)
-        schemaVersion = setdiff({dir('nwb-schema').name}, {'.', '..'});
+        schemaVersion = setdiff({dir(fullfile(matnwb.misc.getMatnwbDir(), 'nwb-schema')).name}, {'.', '..'});
     end
     
     methods (TestClassSetup)
