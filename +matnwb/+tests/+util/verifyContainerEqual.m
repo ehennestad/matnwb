@@ -19,7 +19,7 @@ function verifyContainerEqual(testCase, actual, expected, ignoreList)
             actualValue = actualValue.load();
         end
 
-        if startsWith(class(expectedValue), 'types.') && ~startsWith(class(expectedValue), 'types.untyped')
+        if startsWith(class(expectedValue), 'matnwb.types.') && ~startsWith(class(expectedValue), 'types.untyped')
             matnwb.tests.util.verifyContainerEqual(testCase, actualValue, expectedValue);
         elseif isa(expectedValue, 'matnwb.types.untyped.Set')
             matnwb.tests.util.verifySetEqual(testCase, actualValue, expectedValue, failureMessage);

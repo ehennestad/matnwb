@@ -8,7 +8,7 @@ function validationStr = fillValidators(propnames, props, namespacereg)
         if isa(prop, 'matnwb.file.Attribute') && prop.readonly && ~isempty(prop.value)
             continue;
         end
-        if startsWith(class(prop), 'file.')
+        if startsWith(class(prop), 'matnwb.file.')
             validationBody = fillUnitValidation(nm, prop, namespacereg);
         else % primitive type
             validationBody = fillDtypeValidation(nm, prop);
@@ -111,7 +111,7 @@ function unitValidationStr = fillGroupValidation(name, prop, namespaceReg)
         for iLink = 1:length(prop.links)
             Link = prop.links(iLink);
             namespace = namespaceReg.getNamespace(Link.type);
-            namedprops.(Link.name) = ['types.', namespace, '.', Link.type];
+            namedprops.(Link.name) = ['matnwb.types.', namespace, '.', Link.type];
         end
     else
         constraints{end+1} = namespaceReg.getFullClassName(prop.type);

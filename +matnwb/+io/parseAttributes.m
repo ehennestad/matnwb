@@ -31,7 +31,7 @@ end
 if hasTypeDef && hasNamespace
     validNamespace = matnwb.misc.str2validName(type.namespace);
     validName = matnwb.misc.str2validName(type.name);
-    type.typename = ['types.' validNamespace '.' validName];
+    type.typename = ['matnwb.types.' validNamespace '.' validName];
 end
 
 blacklistMask = ismember(names, Blacklist.attributes);

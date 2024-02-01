@@ -182,7 +182,7 @@ classdef Set < handle & matlab.mixin.CustomDisplay
                 v = val{i};
                 nm = k{i};
                 propFullPath = [fullpath '/' nm];
-                if startsWith(class(v), 'types.')
+                if startsWith(class(v), 'matnwb.types.')
                     refs = v.export(fid, propFullPath, refs);
                 else
                     refs = matnwb.io.writeDataset(fid, propFullPath, v, refs);
