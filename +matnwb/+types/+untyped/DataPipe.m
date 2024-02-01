@@ -66,7 +66,7 @@ classdef (Sealed) DataPipe < handle
             import matnwb.types.untyped.datapipe.BoundPipe;
             import matnwb.types.untyped.datapipe.BlueprintPipe;
             import matnwb.types.untyped.datapipe.Configuration;
-            import types.untyped.datapipe.properties.*;
+            import matnwb.types.untyped.datapipe.properties.*;
             import matnwb.types.untyped.datapipe.guessChunkSize;
             
             p = inputParser;

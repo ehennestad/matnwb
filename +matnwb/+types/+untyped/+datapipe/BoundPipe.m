@@ -20,7 +20,7 @@ classdef BoundPipe < matnwb.types.untyped.datapipe.Pipe
     methods % lifecycle
         function obj = BoundPipe(filename, path, varargin)
             import matnwb.types.untyped.datapipe.Configuration;
-            import types.untyped.datapipe.properties.*;
+            import matnwb.types.untyped.datapipe.properties.*;
             
             obj.stub = matnwb.types.untyped.DataStub(filename, path);
             

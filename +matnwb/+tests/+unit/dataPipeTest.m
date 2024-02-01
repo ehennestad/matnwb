@@ -14,7 +14,7 @@ function setup(testCase)
 end
 
 function testInit(testCase)
-    import types.untyped.datapipe.*;
+    import matnwb.types.untyped.datapipe.*;
     
     warnDebugId = 'NWB:DataPipeTest:Debug';
     warning('off', warnDebugId);
@@ -180,7 +180,7 @@ function testExternalFilters(testCase)
 end
 
 function testBoundPipe(testCase)
-    import types.untyped.*;
+    import matnwb.types.untyped.*;
     filename = 'bound.h5';
     dsName = '/test_data';
     debugId = 'NWB:DataPipe:Debug';
