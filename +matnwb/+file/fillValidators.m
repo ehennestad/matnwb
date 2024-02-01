@@ -246,7 +246,7 @@ function fdvstr = fillDtypeValidation(name, type)
                     case 'object'
                         rt = 'ObjectView';
                 end
-                typeval = ['types.untyped.' rt];
+                typeval = ['matnwb.types.untyped.' rt];
             else
                 typeval = type.(nm);
             end
@@ -265,7 +265,7 @@ function fdvstr = fillDtypeValidation(name, type)
                 case 'object'
                     rt = 'ObjectView';
             end
-            ts = ['types.untyped.' rt];
+            ts = ['matnwb.types.untyped.' rt];
             %there is no objective way to guarantee a reference refers to the
             %correct target type
             tt = type('target_type');
