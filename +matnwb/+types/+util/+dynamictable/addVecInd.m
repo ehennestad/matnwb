@@ -28,7 +28,7 @@ vecView = matnwb.types.untyped.ObjectView(VecData);
 if 8 == exist('matnwb.types.hdmf_common.VectorIndex', 'class')
     VecIndex = matnwb.types.hdmf_common.VectorIndex('target', vecView, 'data', (1:oldDataHeight) .');
 else
-    VecIndex = types.core.VectorIndex('target', vecView, 'data', (1:oldDataHeight) .');
+    VecIndex = matnwb.types.core.VectorIndex('target', vecView, 'data', (1:oldDataHeight) .');
 end
 
 if isprop(VecIndex, 'description')

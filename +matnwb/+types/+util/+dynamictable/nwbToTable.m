@@ -1,7 +1,7 @@
 function matlabTable = nwbToTable(DynamicTable, index)
 %NWBTOTABLE converts from a NWB DynamicTable to a MATLAB table 
 %
-%   MATLABTABLE = NWBTOTABLE(T) converts object T of class types.core.DynamicTable
+%   MATLABTABLE = NWBTOTABLE(T) converts object T of class matnwb.types.core.DynamicTable
 %   into a MATLAB Tale
 %   
 %   MATLABTABLE = NWBTOTABLE(T, INDEX) If INDEX is FALSE, includes rows referenced by a
@@ -25,7 +25,7 @@ function matlabTable = nwbToTable(DynamicTable, index)
 
 %make sure input is dynamic table
 validateattributes(DynamicTable,...
-    {'types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'},...
+    {'matnwb.types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'},...
     {'scalar'});
 
 if nargin < 2
@@ -63,7 +63,7 @@ while i < length(columns)
     end
     if ~index && ...
             (isa(cv,'matnwb.types.hdmf_common.DynamicTableRegion') ||...
-            isa(cv,'types.core.DynamicTableRegion'))
+            isa(cv,'matnwb.types.core.DynamicTableRegion'))
         row_idxs = cv.data;
         ref_table = cv.table.target;
         cv = cell(length(row_idxs),1);

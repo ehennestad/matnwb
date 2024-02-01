@@ -33,7 +33,7 @@ for i = 1:length(newColNames)
             DynamicTable.colnames{end+1} = new_cn;
         end
     else %legacy case
-        if ~isa(new_cv, 'types.core.VectorIndex')
+        if ~isa(new_cv, 'matnwb.types.core.VectorIndex')
             DynamicTable.colnames{end+1} = new_cn;
         end
     end

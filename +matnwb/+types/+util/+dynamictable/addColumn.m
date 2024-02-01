@@ -16,7 +16,7 @@ function addColumn(DynamicTable, varargin)
 % existing columns
 
 validateattributes(DynamicTable,...
-    {'types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'},...
+    {'matnwb.types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'},...
     {'scalar'});
 
 assert(nargin > 1, 'NWB:DynamicTable:AddColumn:NoData', 'Not enough arguments');
@@ -25,7 +25,7 @@ if isempty(DynamicTable.id)
     if 8 == exist('matnwb.types.hdmf_common.ElementIdentifiers', 'class')
         DynamicTable.id = matnwb.types.hdmf_common.ElementIdentifiers();
     else % legacy Element Identifiers
-        DynamicTable.id = types.core.ElementIdentifiers();
+        DynamicTable.id = matnwb.types.core.ElementIdentifiers();
     end
 end
 

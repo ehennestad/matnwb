@@ -54,8 +54,8 @@ function checkConfig(DynamicTable, varargin)
 
     if isempty(DynamicTable.id)
         idData = int64(1:tableHeight) .';
-        if 8 == exist('types.core.ElementIdentifiers', 'class')
-            DynamicTable.id = types.core.ElementIdentifiers('data', idData);
+        if 8 == exist('matnwb.types.core.ElementIdentifiers', 'class')
+            DynamicTable.id = matnwb.types.core.ElementIdentifiers('data', idData);
         else
             DynamicTable.id = matnwb.types.hdmf_common.ElementIdentifiers('data', idData);
         end
@@ -79,7 +79,7 @@ function names = getDetectedColumnNames(DynamicTable)
         propName = tableProps{iProp};
         propValue = DynamicTable.(propName);
         if ~isempty(propValue) ...
-                && (isa(propValue, 'types.core.VectorData') || isa(propValue, 'matnwb.types.hdmf_common.VectorData'))
+                && (isa(propValue, 'matnwb.types.core.VectorData') || isa(propValue, 'matnwb.types.hdmf_common.VectorData'))
             names{end+1} = propName;
         end
     end
@@ -88,7 +88,7 @@ function names = getDetectedColumnNames(DynamicTable)
     for iVector = 1:length(vectorNames)
         vectorName = vectorNames{iVector};
         Vector = DynamicTable.vectordata.get(vectorName);
-        if isa(Vector, 'matnwb.types.hdmf_common.VectorData') || isa(Vector, 'types.core.VectorData')
+        if isa(Vector, 'matnwb.types.hdmf_common.VectorData') || isa(Vector, 'matnwb.types.core.VectorData')
             if isa(Vector.data, 'matnwb.types.untyped.DataStub')
                 isDataEmpty = any(Vector.data.dims == 0);
             elseif isa(Vector.data, 'matnwb.types.untyped.DataPipe')

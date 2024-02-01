@@ -9,7 +9,7 @@ function subTable = getRow(DynamicTable, ind, varargin)
 % `colnames` or "columns" keyword argument if one exists.
 
 validateattributes(DynamicTable,...
-    {'types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'}, {'scalar'});
+    {'matnwb.types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'}, {'scalar'});
 validateattributes(ind, {'numeric'}, {'positive', 'vector'});
 
 p = inputParser;
@@ -142,7 +142,7 @@ if isscalar(colIndStack)
             circshift(1:ndims(selected), -(Vector.data.axis-1)));
     end
 else
-    assert(isa(Vector, 'matnwb.types.hdmf_common.VectorIndex') || isa(Vector, 'types.core.VectorIndex'),...
+    assert(isa(Vector, 'matnwb.types.hdmf_common.VectorIndex') || isa(Vector, 'matnwb.types.core.VectorIndex'),...
         'NWB:DynamicTable:GetRow:InternalError',...
         'Internal VectorIndex Stack is not using VectorIndex objects!');
     if isa(Vector.data, 'matnwb.types.untyped.DataStub') || isa(Vector.data, 'matnwb.types.untyped.DataPipe')
