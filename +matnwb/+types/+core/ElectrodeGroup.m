@@ -1,4 +1,4 @@
-classdef ElectrodeGroup < types.core.NWBContainer & types.untyped.GroupClass
+classdef ElectrodeGroup < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % ELECTRODEGROUP A physical grouping of electrodes, e.g. a shank of an array.
 
 
@@ -13,7 +13,7 @@ end
 methods
     function obj = ElectrodeGroup(varargin)
         % ELECTRODEGROUP Constructor for ElectrodeGroup
-        obj = obj@types.core.NWBContainer(varargin{:});
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
         
         
         p = inputParser;
@@ -24,14 +24,14 @@ methods
         addParameter(p, 'device',[]);
         addParameter(p, 'location',[]);
         addParameter(p, 'position',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.device = p.Results.device;
         obj.location = p.Results.location;
         obj.position = p.Results.position;
-        if strcmp(class(obj), 'types.core.ElectrodeGroup')
+        if strcmp(class(obj), 'matnwb.types.core.ElectrodeGroup')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -50,8 +50,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -65,14 +65,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_device(obj, val)
-        val = types.util.checkDtype('device', 'types.core.Device', val);
+        val = matnwb.types.util.checkDtype('device', 'matnwb.types.core.Device', val);
     end
     function val = validate_location(obj, val)
-        val = types.util.checkDtype('location', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('location', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -86,10 +86,10 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_position(obj, val)
-        if isempty(val) || isa(val, 'types.untyped.DataStub')
+        if isempty(val) || isa(val, 'matnwb.types.untyped.DataStub')
             return;
         end
         if ~istable(val) && ~isstruct(val) && ~isa(val, 'containers.Map')
@@ -99,8 +99,8 @@ methods
         vprops.x = 'single';
         vprops.y = 'single';
         vprops.z = 'single';
-        val = types.util.checkDtype('position', vprops, val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('position', vprops, val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -114,22 +114,22 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        io.writeAttribute(fid, [fullpath '/description'], obj.description);
+        matnwb.io.writeAttribute(fid, [fullpath '/description'], obj.description);
         refs = obj.device.export(fid, [fullpath '/device'], refs);
-        io.writeAttribute(fid, [fullpath '/location'], obj.location);
+        matnwb.io.writeAttribute(fid, [fullpath '/location'], obj.location);
         if ~isempty(obj.position)
             if startsWith(class(obj.position), 'types.untyped.')
                 refs = obj.position.export(fid, [fullpath '/position'], refs);
             elseif ~isempty(obj.position)
-                io.writeCompound(fid, [fullpath '/position'], obj.position);
+                matnwb.io.writeCompound(fid, [fullpath '/position'], obj.position);
             end
         end
     end

@@ -10,7 +10,7 @@ if any(saveDirMask)
     saveDirParametersMask = saveDirMask | circshift(saveDirMask, 1);
     namespaceList = varargin(~saveDirParametersMask);
 else
-    saveDir = misc.getMatnwbDir();
+    saveDir = matnwb.misc.getMatnwbDir();
     namespaceList = varargin;
 end
 

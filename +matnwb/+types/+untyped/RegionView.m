@@ -20,10 +20,10 @@ classdef RegionView < handle
             % obj = REGIONVIEW(target, __)
             % target = a generated NWB object.
             
-            if isa(target, 'types.untyped.MetaClass')
-                validateattributes(target, {'types.untyped.DatasetClass'}, {'scalar'});
+            if isa(target, 'matnwb.types.untyped.MetaClass')
+                validateattributes(target, {'matnwb.types.untyped.DatasetClass'}, {'scalar'});
             end
-            obj.view = types.untyped.ObjectView(target);
+            obj.view = matnwb.types.untyped.ObjectView(target);
             
             for i = 1:length(varargin)
                 validateattributes(varargin{i}, {'numeric'}, {'positive', 'vector'});
@@ -53,13 +53,13 @@ classdef RegionView < handle
                 
                 data = RegionView.view.refresh(Nwb);
                 
-                if isa(data, 'types.untyped.DataPipe')
-                    if isa(data.internal, 'types.untyped.datapipe.BoundPipe')
+                if isa(data, 'matnwb.types.untyped.DataPipe')
+                    if isa(data.internal, 'matnwb.types.untyped.datapipe.BoundPipe')
                         data = data.internal.stub;
                     else
                         data = data.internal.data;
                     end
-                elseif isa(data, 'types.untyped.DatasetClass')
+                elseif isa(data, 'matnwb.types.untyped.DatasetClass')
                     data = data.data;
                 end
                 
@@ -68,7 +68,7 @@ classdef RegionView < handle
         end
         
         function refs = export(obj, fid, fullpath, refs)
-            io.writeDataset(fid, fullpath, obj);
+            matnwb.io.writeDataset(fid, fullpath, obj);
         end
         
         function path = get.path(obj)

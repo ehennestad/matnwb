@@ -10,7 +10,7 @@ end
 function setup(testCase)
 testCase.applyFixture(matlab.unittest.fixtures.WorkingFolderFixture);
 generateCore('savedir', '.');
-schemaPath = fullfile(misc.getMatnwbDir(),...
+schemaPath = fullfile(matnwb.misc.getMatnwbDir(),...
     '+tests', '+unit', 'anonSchema', 'anon.namespace.yaml');
 generateExtension(schemaPath, 'savedir', '.');
 rehash();
@@ -25,5 +25,5 @@ nwbExpected = NwbFile(...
 nwbExpected.acquisition.set('ag', ag);
 nwbExport(nwbExpected, 'testanon.nwb');
 
-tests.util.verifyContainerEqual(testCase, nwbRead('testanon.nwb', 'ignorecache'), nwbExpected);
+matnwb.tests.util.verifyContainerEqual(testCase, nwbRead('testanon.nwb', 'ignorecache'), nwbExpected);
 end

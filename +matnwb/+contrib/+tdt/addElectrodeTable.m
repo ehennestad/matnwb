@@ -21,15 +21,15 @@ for wav_name = wav_names
 end
     
 
-dev = types.core.Device();
+dev = matnwb.types.core.Device();
 file.general_devices.set('dev1', dev);
 
-eg = types.core.ElectrodeGroup(...
+eg = matnwb.types.core.ElectrodeGroup(...
     'description', 'a test ElectrodeGroup', ...
     'location', 'unknown', ...
-    'device', types.untyped.SoftLink('/general/devices/dev1'));
+    'device', matnwb.types.untyped.SoftLink('/general/devices/dev1'));
 file.general_extracellular_ephys.set('electrode_group', eg);
-ov = types.untyped.ObjectView('/general/extracellular_ephys/electrode_group');
+ov = matnwb.types.untyped.ObjectView('/general/extracellular_ephys/electrode_group');
 
 variables = {'id', 'x', 'y', 'z', 'imp', 'location', 'filtering', ...
     'description', 'group', 'group_name'};

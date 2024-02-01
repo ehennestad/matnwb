@@ -1,9 +1,9 @@
-classdef Chunking < types.untyped.datapipe.Property
+classdef Chunking < matnwb.types.untyped.datapipe.Property
     %CHUNKING Dataset chunking
     
     methods (Static)
         function obj = fromDcpl(dcpl)
-            import types.untyped.datapipe.properties.Chunking;
+            import matnwb.types.untyped.datapipe.properties.Chunking;
             [~, h5_chunk_dims] = H5P.get_chunk(dcpl);
             obj = Chunking(fliplr(h5_chunk_dims));
         end

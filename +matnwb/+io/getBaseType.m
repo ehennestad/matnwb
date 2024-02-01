@@ -1,9 +1,9 @@
 function id = getBaseType(type)
 % we limit ourselves to the predefined native types and standard datatypes when applicable
 % https://portal.hdfgroup.org/display/HDF5/Predefined+Datatypes
-if strcmp(type, 'types.untyped.ObjectView')
+if strcmp(type, 'matnwb.types.untyped.ObjectView')
     id = 'H5T_STD_REF_OBJ';
-elseif strcmp(type, 'types.untyped.RegionView')
+elseif strcmp(type, 'matnwb.types.untyped.RegionView')
     id = 'H5T_STD_REF_DSETREG';
 elseif any(strcmp(type, {'char' 'cell' 'datetime'}))
     %modify id to set the proper size

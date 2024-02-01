@@ -1,4 +1,4 @@
-classdef BehavioralEvents < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef BehavioralEvents < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % BEHAVIORALEVENTS TimeSeries for storing behavioral events. See description of <a href="#BehavioralEpochs">BehavioralEpochs</a> for more details.
 
 
@@ -10,18 +10,18 @@ end
 methods
     function obj = BehavioralEvents(varargin)
         % BEHAVIORALEVENTS Constructor for BehavioralEvents
-        obj = obj@types.core.NWBDataInterface(varargin{:});
-        [obj.timeseries, ivarargin] = types.util.parseConstrained(obj,'timeseries', 'types.core.TimeSeries', varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        [obj.timeseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'timeseries', 'matnwb.types.core.TimeSeries', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
         p.KeepUnmatched = true;
         p.PartialMatching = false;
         p.StructExpand = false;
-        misc.parseSkipInvalidName(p, varargin);
-        if strcmp(class(obj), 'types.core.BehavioralEvents')
+        matnwb.misc.parseSkipInvalidName(p, varargin);
+        if strcmp(class(obj), 'matnwb.types.core.BehavioralEvents')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -32,12 +32,12 @@ methods
     
     function val = validate_timeseries(obj, val)
         namedprops = struct();
-        constrained = {'types.core.TimeSeries'};
-        types.util.checkSet('timeseries', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.TimeSeries'};
+        matnwb.types.util.checkSet('timeseries', namedprops, constrained, val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

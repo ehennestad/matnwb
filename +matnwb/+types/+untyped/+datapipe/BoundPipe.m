@@ -1,10 +1,10 @@
-classdef BoundPipe < types.untyped.datapipe.Pipe
+classdef BoundPipe < matnwb.types.untyped.datapipe.Pipe
     %BOUND Represents a Bound DataPipe which must point to a valid file.
     
     properties (SetAccess = private)
-        config = types.untyped.datapipe.Configuration.empty;
+        config = matnwb.types.untyped.datapipe.Configuration.empty;
         pipeProperties = {};
-        stub = types.untyped.DataStub.empty;
+        stub = matnwb.types.untyped.DataStub.empty;
     end
     
     properties (SetAccess = private, Dependent)
@@ -19,10 +19,10 @@ classdef BoundPipe < types.untyped.datapipe.Pipe
     
     methods % lifecycle
         function obj = BoundPipe(filename, path, varargin)
-            import types.untyped.datapipe.Configuration;
+            import matnwb.types.untyped.datapipe.Configuration;
             import types.untyped.datapipe.properties.*;
             
-            obj.stub = types.untyped.DataStub(filename, path);
+            obj.stub = matnwb.types.untyped.DataStub(filename, path);
             
             sid = obj.stub.get_space();
             [~, h5_dims, h5_maxdims] = H5S.get_simple_extent_dims(sid);
@@ -59,7 +59,7 @@ classdef BoundPipe < types.untyped.datapipe.Pipe
                 obj.config.axis = axis;
                 obj.config.offset = current_size(obj.config.axis);
                 tid = H5D.get_type(did);
-                obj.config.dataType = io.getMatType(tid);
+                obj.config.dataType = matnwb.io.getMatType(tid);
                 H5T.close(tid);
             else
                 obj.config = varargin{1};
@@ -209,7 +209,7 @@ classdef BoundPipe < types.untyped.datapipe.Pipe
             sid = obj.makeSelection(data_size);
             
             fid = obj.getFile('H5F_ACC_RDWR');
-            [mem_tid, mem_sid, data] = io.mapData2H5(fid, data, 'forceArray');
+            [mem_tid, mem_sid, data] = matnwb.io.mapData2H5(fid, data, 'forceArray');
             h5_count = fliplr(data_size);
             H5S.set_extent_simple(mem_sid, rank, h5_count, h5_count);
             

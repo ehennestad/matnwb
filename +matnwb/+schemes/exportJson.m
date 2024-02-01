@@ -4,7 +4,7 @@ function JsonData = exportJson()
 
 % Get the actual location of the matnwb directory.
 
-namespaceLocation = fileparts(fileparts(fileparts(which('types.core.NWBFile'))));
+namespaceLocation = fileparts(fileparts(fileparts(which('matnwb.types.core.NWBFile'))));
 namespaceList = dir(fullfile(namespaceLocation, 'namespaces'));
 isFileMask = ~[namespaceList.isdir];
 namespaceFiles = namespaceList(isFileMask);
@@ -13,7 +13,7 @@ for iFile = 1:length(namespaceNames)
     [~, namespaceNames{iFile}, ~] = fileparts(namespaceNames{iFile});
 end
 
-Caches = spec.loadCache(namespaceNames{:}, 'savedir', namespaceLocation);
+Caches = matnwb.spec.loadCache(namespaceNames{:}, 'savedir', namespaceLocation);
 JsonData = struct(...
     'name', namespaceNames,...
     'version', repmat({''}, size(Caches)),...

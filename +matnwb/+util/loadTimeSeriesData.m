@@ -33,7 +33,7 @@ if length(electrodes) > 1
         error('must specify time interval');
     end
     for i = 1:length(electrodes)
-        data(:,i) = util.loadTimeSeriesData(timeseries, interval, ...
+        data(:,i) = matnwb.util.loadTimeSeriesData(timeseries, interval, ...
             downsample_factor, electrodes(i));
     end
 else

@@ -1,4 +1,4 @@
-classdef Images < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef Images < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % IMAGES A collection of images with an optional way to specify the order of the images using the "order_of_images" dataset. An order must be specified if the images are referenced by index, e.g., from an IndexSeries.
 
 
@@ -15,8 +15,8 @@ end
 methods
     function obj = Images(varargin)
         % IMAGES Constructor for Images
-        obj = obj@types.core.NWBDataInterface(varargin{:});
-        [obj.image, ivarargin] = types.util.parseConstrained(obj,'image', 'types.core.Image', varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        [obj.image, ivarargin] = matnwb.types.util.parseConstrained(obj,'image', 'matnwb.types.core.Image', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
@@ -25,12 +25,12 @@ methods
         p.StructExpand = false;
         addParameter(p, 'description',[]);
         addParameter(p, 'order_of_images',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.order_of_images = p.Results.order_of_images;
-        if strcmp(class(obj), 'types.core.Images')
+        if strcmp(class(obj), 'matnwb.matnwb.types.core.Images')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -46,8 +46,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -61,22 +61,22 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_image(obj, val)
-        constrained = { 'types.core.Image' };
-        types.util.checkSet('image', struct(), constrained, val);
+        constrained = { 'matnwb.types.core.Image' };
+        matnwb.types.util.checkSet('image', struct(), constrained, val);
     end
     function val = validate_order_of_images(obj, val)
-        val = types.util.checkDtype('order_of_images', 'types.core.ImageReferences', val);
+        val = matnwb.types.util.checkDtype('order_of_images', 'matnwb.matnwb.types.core.ImageReferences', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        io.writeAttribute(fid, [fullpath '/description'], obj.description);
+        matnwb.io.writeAttribute(fid, [fullpath '/description'], obj.description);
         refs = obj.image.export(fid, fullpath, refs);
         if ~isempty(obj.order_of_images)
             refs = obj.order_of_images.export(fid, [fullpath '/order_of_images'], refs);

@@ -3,9 +3,9 @@ function Namespaces = generate(namespaceText, schemaSource)
 % optionally, include schema mapping as second argument OR path of specs
 % schemaSource is either a path to a directory where the source is
 % OR a containers.Map of filenames
-Schema = spec.loadSchemaObject();
-namespace = spec.schema2matlab(Schema.read(namespaceText));
-Namespaces = spec.getNamespaceInfo(namespace);
+Schema = matnwb.spec.loadSchemaObject();
+namespace = matnwb.spec.schema2matlab(Schema.read(namespaceText));
+Namespaces = matnwb.spec.getNamespaceInfo(namespace);
 
 for iInfo = 1:length(Namespaces)
     Namespaces(iInfo).namespace = namespace;
@@ -19,9 +19,9 @@ for iInfo = 1:length(Namespaces)
             schema(filenameStub) = fread(fid, '*char') .';
             fclose(fid);
         end
-        schema = spec.getSourceInfo(schema);
+        schema = matnwb.spec.getSourceInfo(schema);
     else % map of schemas with their locations
-        schema = spec.getSourceInfo(schemaSource);
+        schema = matnwb.spec.getSourceInfo(schemaSource);
     end
     Namespaces(iInfo).schema = schema;
 end

@@ -42,7 +42,7 @@ chunkMin = 8 * 1024;
 chunkMax = 1024 * 1024;
 
 maxSize(isinf(maxSize)) = 1024;
-typeSize = io.getMatTypeSize(dataType);
+typeSize = matnwb.matnwb.io.getMatTypeSize(dataType);
 
 chunks = maxSize;
 totalByteSize = prod(chunks) * typeSize;

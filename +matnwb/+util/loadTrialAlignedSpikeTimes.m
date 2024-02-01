@@ -18,7 +18,7 @@ function ST = loadTrialAlignedSpikeTimes(nwb,unit_id,varargin)
 %   non-funcion is entered, an equality test is used. Default is an empty
 %   container.Map object.
 % Define anonymous functions to check input
-validNWB = @(x) isa(x,'types.core.NWBFile');
+validNWB = @(x) isa(x,'matnwb.types.core.NWBFile');
 validUnit = @(x) isscalar(x);
 validTime = @(x) isnumeric(x) && (x>=0);
 validAlign = @(x) ischar(x);
@@ -66,7 +66,7 @@ for i = 1:length(keys)
 end
 ref_event_times = ref_event_times(trials_to_take);
 % Call event-aligned spike times utility function
-ST = util.loadEventAlignedSpikeTimes(nwb, unit_id, ref_event_times, ...
+ST = matnwb.util.loadEventAlignedSpikeTimes(nwb, unit_id, ref_event_times, ...
     'before_time', p.Results.before_time, ...
     'after_time', p.Results.after_time ...
 );

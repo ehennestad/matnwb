@@ -1,4 +1,4 @@
-classdef CurrentClampStimulusSeries < types.core.PatchClampSeries & types.untyped.GroupClass
+classdef CurrentClampStimulusSeries < matnwb.types.core.PatchClampSeries & matnwb.types.untyped.GroupClass
 % CURRENTCLAMPSTIMULUSSERIES Stimulus current applied during current clamp recording.
 
 
@@ -7,7 +7,7 @@ methods
     function obj = CurrentClampStimulusSeries(varargin)
         % CURRENTCLAMPSTIMULUSSERIES Constructor for CurrentClampStimulusSeries
         varargin = [{'data_unit' 'amperes'} varargin];
-        obj = obj@types.core.PatchClampSeries(varargin{:});
+        obj = obj@matnwb.types.core.PatchClampSeries(varargin{:});
         
         
         p = inputParser;
@@ -16,12 +16,12 @@ methods
         p.StructExpand = false;
         addParameter(p, 'data',[]);
         addParameter(p, 'data_unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.data_unit = p.Results.data_unit;
-        if strcmp(class(obj), 'types.core.CurrentClampStimulusSeries')
+        if strcmp(class(obj), 'matnwb.types.core.CurrentClampStimulusSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -33,7 +33,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.PatchClampSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.PatchClampSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

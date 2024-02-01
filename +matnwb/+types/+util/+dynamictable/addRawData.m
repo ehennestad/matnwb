@@ -21,20 +21,20 @@ function addRawData(DynamicTable, column, data)
     % grab all available indices for column.
     indexChain = {column};
     while true
-        index = types.util.dynamictable.getIndex(DynamicTable, indexChain{end});
+        index = matnwb.types.util.dynamictable.getIndex(DynamicTable, indexChain{end});
         if isempty(index)
             break;
         end
         indexChain{end+1} = index;
     end
 
-    if ~isa(Vector.data, 'types.untyped.DataPipe')
+    if ~isa(Vector.data, 'matnwb.types.untyped.DataPipe')
         % validate shape for appending in memory.
         checkNestedShape(data);
     end
 
     % find true nesting depth of column data.
-    if isa(Vector.data, 'types.untyped.DataPipe')
+    if isa(Vector.data, 'matnwb.types.untyped.DataPipe')
         depth = getNestedDataDepth(data, 'dataPipeDimension', Vector.data.axis);
     else
         depth = getNestedDataDepth(data);
@@ -42,7 +42,7 @@ function addRawData(DynamicTable, column, data)
 
     % add indices until it matches depth.
     for iVec = (length(indexChain)+1):depth
-        indexChain{iVec} = types.util.dynamictable.addVecInd(DynamicTable, indexChain{end});
+        indexChain{iVec} = matnwb.types.util.dynamictable.addVecInd(DynamicTable, indexChain{end});
     end
 
     % wrap until available vector indices match depth.
@@ -73,8 +73,8 @@ end
 
 function initVecData(DynamicTable, column, dataType)
     % Don't set the data until after indices are updated.
-    if 8 == exist('types.hdmf_common.VectorData', 'class')
-        VecData = types.hdmf_common.VectorData();
+    if 8 == exist('matnwb.types.hdmf_common.VectorData', 'class')
+        VecData = matnwb.types.hdmf_common.VectorData();
     else
         VecData = types.core.VectorData();
     end
@@ -139,7 +139,7 @@ function numRows = nestedAdd(DynamicTable, indChain, data)
         Vector = DynamicTable.vectordata.get(name);
     end
 
-    if isa(Vector, 'types.hdmf_common.VectorIndex') || isa(Vector, 'types.core.VectorIndex')
+    if isa(Vector, 'matnwb.types.hdmf_common.VectorIndex') || isa(Vector, 'types.core.VectorIndex')
         if iscell(data) && ~iscellstr(data)
             numRows = length(data);
             for iEntry = 1:numRows
@@ -155,7 +155,7 @@ function numRows = nestedAdd(DynamicTable, indChain, data)
             data = mat2cell(data, ones(size(data, 1), 1));
         end % char matrices converted to cell arrays containing character vectors.
 
-        if isa(Vector.data, 'types.untyped.DataPipe')
+        if isa(Vector.data, 'matnwb.types.untyped.DataPipe')
             Vector.data.append(data);
             numRows = size(Vector.data, Vector.data.axis);
         else
@@ -192,11 +192,11 @@ end
 
 function add2Index(VectorIndex, numElem)
     raggedOffset = 0;
-    if isa(VectorIndex.data, 'types.untyped.DataPipe')
-        if isa(VectorIndex.data.internal, 'types.untyped.datapipe.BlueprintPipe')...
+    if isa(VectorIndex.data, 'matnwb.types.untyped.DataPipe')
+        if isa(VectorIndex.data.internal, 'matnwb.types.untyped.datapipe.BlueprintPipe')...
                 && ~isempty(VectorIndex.data.internal.data)
             raggedOffset = VectorIndex.data.internal.data(end);
-        elseif isa(VectorIndex.data.internal, 'types.untyped.datapipe.BoundPipe')...
+        elseif isa(VectorIndex.data.internal, 'matnwb.types.untyped.datapipe.BoundPipe')...
                 && ~any(VectorIndex.data.internal.stub.dims == 0)
             raggedOffset = VectorIndex.data.internal.stub(end);
         end
@@ -205,7 +205,7 @@ function add2Index(VectorIndex, numElem)
     end
 
     data = double(raggedOffset) + numElem;
-    if isa(VectorIndex.data, 'types.untyped.DataPipe')
+    if isa(VectorIndex.data, 'matnwb.types.untyped.DataPipe')
         VectorIndex.data.append(data);
     else
         VectorIndex.data = [double(VectorIndex.data); data];

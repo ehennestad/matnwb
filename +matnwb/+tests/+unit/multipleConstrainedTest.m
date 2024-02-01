@@ -10,7 +10,7 @@ end
 function setup(testCase)
     testCase.applyFixture(matlab.unittest.fixtures.WorkingFolderFixture);
     generateCore('savedir', '.');
-    schemaPath = fullfile(misc.getMatnwbDir(),...
+    schemaPath = fullfile(matnwb.misc.getMatnwbDir(),...
         '+tests', '+unit', 'multipleConstrainedSchema', 'mcs.namespace.yaml');
     generateExtension(schemaPath, 'savedir', '.');
     rehash();
@@ -28,5 +28,5 @@ function testRoundabout(testCase)
     nwbExpected.acquisition.set('multiset', MultiSet);
     nwbExport(nwbExpected, 'testmcs.nwb');
 
-    tests.util.verifyContainerEqual(testCase, nwbRead('testmcs.nwb', 'ignorecache'), nwbExpected);
+    matnwb.tests.util.verifyContainerEqual(testCase, nwbRead('testmcs.nwb', 'ignorecache'), nwbExpected);
 end

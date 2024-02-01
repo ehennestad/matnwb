@@ -10,7 +10,7 @@ end
 sz = shape;
 for i = 1:length(sz)
     if iscell(sz{i})
-        sz{i} = file.formatShape(sz{i});
+        sz{i} = matnwb.file.formatShape(sz{i});
     elseif isnan(sz{i}) || isempty(sz{i})
         sz{i} = Inf;
     end

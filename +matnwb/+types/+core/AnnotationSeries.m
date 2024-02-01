@@ -1,4 +1,4 @@
-classdef AnnotationSeries < types.core.TimeSeries & types.untyped.GroupClass
+classdef AnnotationSeries < matnwb.types.core.TimeSeries & matnwb.types.untyped.GroupClass
 % ANNOTATIONSERIES Stores user annotations made during an experiment. The data[] field stores a text array, and timestamps are stored for each annotation (ie, interval=1). This is largely an alias to a standard TimeSeries storing a text array but that is identifiable as storing annotations in a machine-readable way.
 
 
@@ -6,8 +6,8 @@ classdef AnnotationSeries < types.core.TimeSeries & types.untyped.GroupClass
 methods
     function obj = AnnotationSeries(varargin)
         % ANNOTATIONSERIES Constructor for AnnotationSeries
-        varargin = [{'data_resolution' types.util.correctType(-1, 'single') 'data_unit' 'n/a'} varargin];
-        obj = obj@types.core.TimeSeries(varargin{:});
+        varargin = [{'data_resolution' matnwb.types.util.correctType(-1, 'single') 'data_unit' 'n/a'} varargin];
+        obj = obj@matnwb.types.core.TimeSeries(varargin{:});
         
         
         p = inputParser;
@@ -17,13 +17,13 @@ methods
         addParameter(p, 'data',[]);
         addParameter(p, 'data_resolution',[]);
         addParameter(p, 'data_unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.data_resolution = p.Results.data_resolution;
         obj.data_unit = p.Results.data_unit;
-        if strcmp(class(obj), 'types.core.AnnotationSeries')
+        if strcmp(class(obj), 'matnwb.types.core.AnnotationSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -31,8 +31,8 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -46,11 +46,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.TimeSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.TimeSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

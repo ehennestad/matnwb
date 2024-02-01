@@ -1,4 +1,4 @@
-classdef Fluorescence < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef Fluorescence < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % FLUORESCENCE Fluorescence information about a region of interest (ROI). Storage hierarchy of fluorescence should be the same as for segmentation (ie, same names for ROIs and for image planes).
 
 
@@ -10,18 +10,18 @@ end
 methods
     function obj = Fluorescence(varargin)
         % FLUORESCENCE Constructor for Fluorescence
-        obj = obj@types.core.NWBDataInterface(varargin{:});
-        [obj.roiresponseseries, ivarargin] = types.util.parseConstrained(obj,'roiresponseseries', 'types.core.RoiResponseSeries', varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        [obj.roiresponseseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'roiresponseseries', 'matnwb.types.core.RoiResponseSeries', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
         p.KeepUnmatched = true;
         p.PartialMatching = false;
         p.StructExpand = false;
-        misc.parseSkipInvalidName(p, varargin);
-        if strcmp(class(obj), 'types.core.Fluorescence')
+        matnwb.misc.parseSkipInvalidName(p, varargin);
+        if strcmp(class(obj), 'matnwb.types.core.Fluorescence')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -32,12 +32,12 @@ methods
     
     function val = validate_roiresponseseries(obj, val)
         namedprops = struct();
-        constrained = {'types.core.RoiResponseSeries'};
-        types.util.checkSet('roiresponseseries', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.RoiResponseSeries'};
+        matnwb.types.util.checkSet('roiresponseseries', namedprops, constrained, val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

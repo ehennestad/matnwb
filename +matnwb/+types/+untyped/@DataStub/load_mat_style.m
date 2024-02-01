@@ -55,8 +55,8 @@ function data = load_mat_style(obj, varargin)
             selectionDimensions, selectionDimensions);
     else
         % multidimensional index selection
-        shapes = io.space.segmentSelection(userSelection, dataDimensions);
-        [readSpaceId, memorySpaceId] = io.space.getReadSpace(shapes, spaceId);
+        shapes = matnwb.io.space.segmentSelection(userSelection, dataDimensions);
+        [readSpaceId, memorySpaceId] = matnwb.io.space.getReadSpace(shapes, spaceId);
     end
     H5S.close(spaceId);
 
@@ -95,14 +95,14 @@ end
 
 function data = hdf2mat(datasetId, data)
     typeId = H5D.get_type(datasetId);
-    matlabType = io.getMatType(typeId);
+    matlabType = matnwb.io.getMatType(typeId);
     switch matlabType
         case 'logical'
             data = logical(data);
-        case {'types.untyped.ObjectView', 'types.untyped.RegionView'}
-            data = io.parseReference(datasetId, typeId, data);
+        case {'matnwb.types.untyped.ObjectView', 'matnwb.types.untyped.RegionView'}
+            data = matnwb.io.parseReference(datasetId, typeId, data);
         case 'table'
-            data = io.parseCompound(datasetId, data);
+            data = matnwb.io.parseCompound(datasetId, data);
         otherwise
             % no-op
     end

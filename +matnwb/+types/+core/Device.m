@@ -1,4 +1,4 @@
-classdef Device < types.core.NWBContainer & types.untyped.GroupClass
+classdef Device < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % DEVICE Metadata about a data acquisition device, e.g., recording system, electrode, microscope.
 
 
@@ -11,7 +11,7 @@ end
 methods
     function obj = Device(varargin)
         % DEVICE Constructor for Device
-        obj = obj@types.core.NWBContainer(varargin{:});
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
         
         
         p = inputParser;
@@ -20,12 +20,12 @@ methods
         p.StructExpand = false;
         addParameter(p, 'description',[]);
         addParameter(p, 'manufacturer',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.manufacturer = p.Results.manufacturer;
-        if strcmp(class(obj), 'types.core.Device')
+        if strcmp(class(obj), 'matnwb.types.core.Device')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -38,8 +38,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -53,11 +53,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_manufacturer(obj, val)
-        val = types.util.checkDtype('manufacturer', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('manufacturer', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -71,19 +71,19 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if ~isempty(obj.description)
-            io.writeAttribute(fid, [fullpath '/description'], obj.description);
+            matnwb.io.writeAttribute(fid, [fullpath '/description'], obj.description);
         end
         if ~isempty(obj.manufacturer)
-            io.writeAttribute(fid, [fullpath '/manufacturer'], obj.manufacturer);
+            matnwb.io.writeAttribute(fid, [fullpath '/manufacturer'], obj.manufacturer);
         end
     end
 end

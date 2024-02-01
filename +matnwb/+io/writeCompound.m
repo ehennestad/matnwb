@@ -8,7 +8,7 @@ function writeCompound(fid, fullpath, data, varargin)
 
         s = struct();
         for i=1:length(names)
-            s.(misc.str2validName(names{i})) = vals{i};
+            s.(matnwb.misc.str2validName(names{i})) = vals{i};
         end
         data = s;
     end
@@ -44,7 +44,7 @@ function writeCompound(fid, fullpath, data, varargin)
         end
 
         classes{i} = class(val);
-        tids{i} = io.getBaseType(classes{i});
+        tids{i} = matnwb.io.getBaseType(classes{i});
         sizes(i) = H5T.get_size(tids{i});
     end
 
@@ -61,8 +61,8 @@ function writeCompound(fid, fullpath, data, varargin)
     %optimizes for type size
     H5T.pack(tid);
 
-    isReferenceClass = strcmp(classes, 'types.untyped.ObjectView') |...
-        strcmp(classes, 'types.untyped.RegionView');
+    isReferenceClass = strcmp(classes, 'matnwb.types.untyped.ObjectView') |...
+        strcmp(classes, 'matnwb.types.untyped.RegionView');
 
     % convert logical values
     boolNames = names(strcmp(classes, 'logical'));
@@ -83,7 +83,7 @@ function writeCompound(fid, fullpath, data, varargin)
     %attempt to convert raw reference information
     referenceNames = names(isReferenceClass);
     for i=1:length(referenceNames)
-        data.(referenceNames{i}) = io.getRefData(fid, data.(referenceNames{i}));
+        data.(referenceNames{i}) = matnwb.io.getRefData(fid, data.(referenceNames{i}));
     end
 
     try

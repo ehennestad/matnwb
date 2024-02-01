@@ -5,7 +5,7 @@ ek = expected.keys();
 verifyTrue(testCase, isempty(setxor(ak, ek)), failmsg);
 for i=1:numel(ak)
     key = ak{i};
-    tests.util.verifyContainerEqual(testCase, actual.get(key), ...
+    matnwb.tests.util.verifyContainerEqual(testCase, actual.get(key), ...
         expected.get(key));
 end
 end

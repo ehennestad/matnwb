@@ -1,4 +1,4 @@
-classdef VectorIndex < types.hdmf_common.VectorData & types.untyped.DatasetClass
+classdef VectorIndex < matnwb.types.hdmf_common.VectorData & matnwb.types.untyped.DatasetClass
 % VECTORINDEX Used with VectorData to encode a ragged array. An array of indices into the first dimension of the target VectorData, and forming a map between the rows of a DynamicTable and the indices of the VectorData. The name of the VectorIndex is expected to be the name of the target VectorData object followed by "_index".
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = VectorIndex(varargin)
         % VECTORINDEX Constructor for VectorIndex
-        obj = obj@types.hdmf_common.VectorData(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.VectorData(varargin{:});
         
         
         p = inputParser;
@@ -19,12 +19,12 @@ methods
         p.StructExpand = false;
         addParameter(p, 'data',[]);
         addParameter(p, 'target',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.target = p.Results.target;
-        if strcmp(class(obj), 'types.hdmf_common.VectorIndex')
+        if strcmp(class(obj), 'matnwb.types.hdmf_common.VectorIndex')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -34,12 +34,12 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'uint8', val);
+        val = matnwb.types.util.checkDtype('data', 'uint8', val);
     end
     function val = validate_target(obj, val)
         % Reference to type `VectorData`
-        val = types.util.checkDtype('target', 'types.untyped.ObjectView', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('target', 'matnwb.types.untyped.ObjectView', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -53,15 +53,15 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.VectorData(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.VectorData(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        io.writeAttribute(fid, [fullpath '/target'], obj.target);
+        matnwb.io.writeAttribute(fid, [fullpath '/target'], obj.target);
     end
 end
 

@@ -1,4 +1,4 @@
-classdef IndexSeries < types.core.TimeSeries & types.untyped.GroupClass
+classdef IndexSeries < matnwb.types.core.TimeSeries & matnwb.types.untyped.GroupClass
 % INDEXSERIES Stores indices to image frames stored in an ImageSeries. The purpose of the IndexSeries is to allow a static image stack to be stored in an Images object, and the images in the stack to be referenced out-of-order. This can be for the display of individual images, or of movie segments (as a movie is simply a series of images). The data field stores the index of the frame in the referenced Images object, and the timestamps array indicates when that image was displayed.
 
 
@@ -12,7 +12,7 @@ methods
     function obj = IndexSeries(varargin)
         % INDEXSERIES Constructor for IndexSeries
         varargin = [{'data_unit' 'N/A'} varargin];
-        obj = obj@types.core.TimeSeries(varargin{:});
+        obj = obj@matnwb.types.core.TimeSeries(varargin{:});
         
         
         p = inputParser;
@@ -26,7 +26,7 @@ methods
         addParameter(p, 'data_unit',[]);
         addParameter(p, 'indexed_images',[]);
         addParameter(p, 'indexed_timeseries',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.data_conversion = p.Results.data_conversion;
         obj.data_offset = p.Results.data_offset;
@@ -34,9 +34,9 @@ methods
         obj.data_unit = p.Results.data_unit;
         obj.indexed_images = p.Results.indexed_images;
         obj.indexed_timeseries = p.Results.indexed_timeseries;
-        if strcmp(class(obj), 'types.core.IndexSeries')
+        if strcmp(class(obj), 'matnwb.types.core.IndexSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -49,8 +49,8 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'uint32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data', 'uint32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -64,11 +64,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_conversion(obj, val)
-        val = types.util.checkDtype('data_conversion', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_conversion', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -82,11 +82,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_offset(obj, val)
-        val = types.util.checkDtype('data_offset', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_offset', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -100,11 +100,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_resolution(obj, val)
-        val = types.util.checkDtype('data_resolution', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_resolution', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -118,17 +118,17 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_indexed_images(obj, val)
-        val = types.util.checkDtype('indexed_images', 'types.core.Images', val);
+        val = matnwb.types.util.checkDtype('indexed_images', 'matnwb.matnwb.types.core.Images', val);
     end
     function val = validate_indexed_timeseries(obj, val)
-        val = types.util.checkDtype('indexed_timeseries', 'types.core.ImageSeries', val);
+        val = matnwb.types.util.checkDtype('indexed_timeseries', 'matnwb.matnwb.types.core.ImageSeries', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.TimeSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.TimeSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

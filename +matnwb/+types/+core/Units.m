@@ -1,4 +1,4 @@
-classdef Units < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef Units < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % UNITS Data about spiking units. Event times of observed units (e.g. cell, synapse, etc.) should be concatenated and stored in spike_times.
 
 
@@ -21,7 +21,7 @@ end
 methods
     function obj = Units(varargin)
         % UNITS Constructor for Units
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -40,7 +40,7 @@ methods
         addParameter(p, 'waveforms',[]);
         addParameter(p, 'waveforms_index',[]);
         addParameter(p, 'waveforms_index_index',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.electrode_group = p.Results.electrode_group;
         obj.electrodes = p.Results.electrodes;
         obj.electrodes_index = p.Results.electrodes_index;
@@ -53,12 +53,12 @@ methods
         obj.waveforms = p.Results.waveforms;
         obj.waveforms_index = p.Results.waveforms_index;
         obj.waveforms_index_index = p.Results.waveforms_index_index;
-        if strcmp(class(obj), 'types.core.Units')
+        if strcmp(class(obj), 'matnwb.types.core.Units')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.Units')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.Units')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -101,44 +101,44 @@ methods
     %% VALIDATORS
     
     function val = validate_electrode_group(obj, val)
-        val = types.util.checkDtype('electrode_group', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('electrode_group', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_electrodes(obj, val)
-        val = types.util.checkDtype('electrodes', 'types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_electrodes_index(obj, val)
-        val = types.util.checkDtype('electrodes_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('electrodes_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_obs_intervals(obj, val)
-        val = types.util.checkDtype('obs_intervals', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('obs_intervals', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_obs_intervals_index(obj, val)
-        val = types.util.checkDtype('obs_intervals_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('obs_intervals_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_spike_times(obj, val)
-        val = types.util.checkDtype('spike_times', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('spike_times', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_spike_times_index(obj, val)
-        val = types.util.checkDtype('spike_times_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('spike_times_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_waveform_mean(obj, val)
-        val = types.util.checkDtype('waveform_mean', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('waveform_mean', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_waveform_sd(obj, val)
-        val = types.util.checkDtype('waveform_sd', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('waveform_sd', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_waveforms(obj, val)
-        val = types.util.checkDtype('waveforms', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('waveforms', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_waveforms_index(obj, val)
-        val = types.util.checkDtype('waveforms_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('waveforms_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_waveforms_index_index(obj, val)
-        val = types.util.checkDtype('waveforms_index_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('waveforms_index_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

@@ -57,7 +57,7 @@ function checkConfig(DynamicTable, varargin)
         if 8 == exist('types.core.ElementIdentifiers', 'class')
             DynamicTable.id = types.core.ElementIdentifiers('data', idData);
         else
-            DynamicTable.id = types.hdmf_common.ElementIdentifiers('data', idData);
+            DynamicTable.id = matnwb.types.hdmf_common.ElementIdentifiers('data', idData);
         end
         return;
     end
@@ -79,7 +79,7 @@ function names = getDetectedColumnNames(DynamicTable)
         propName = tableProps{iProp};
         propValue = DynamicTable.(propName);
         if ~isempty(propValue) ...
-                && (isa(propValue, 'types.core.VectorData') || isa(propValue, 'types.hdmf_common.VectorData'))
+                && (isa(propValue, 'types.core.VectorData') || isa(propValue, 'matnwb.types.hdmf_common.VectorData'))
             names{end+1} = propName;
         end
     end
@@ -88,10 +88,10 @@ function names = getDetectedColumnNames(DynamicTable)
     for iVector = 1:length(vectorNames)
         vectorName = vectorNames{iVector};
         Vector = DynamicTable.vectordata.get(vectorName);
-        if isa(Vector, 'types.hdmf_common.VectorData') || isa(Vector, 'types.core.VectorData')
-            if isa(Vector.data, 'types.untyped.DataStub')
+        if isa(Vector, 'matnwb.types.hdmf_common.VectorData') || isa(Vector, 'types.core.VectorData')
+            if isa(Vector.data, 'matnwb.types.untyped.DataStub')
                 isDataEmpty = any(Vector.data.dims == 0);
-            elseif isa(Vector.data, 'types.untyped.DataPipe')
+            elseif isa(Vector.data, 'matnwb.types.untyped.DataPipe')
                 isDataEmpty = any(size(Vector.data) == 0);
             else
                 isDataEmpty = isempty(Vector.data);
@@ -116,7 +116,7 @@ end
 function vecHeight = getDataHeight(data)
     if isempty(data)
         vecHeight = 0;
-    elseif isa(data, 'types.untyped.DataPipe')
+    elseif isa(data, 'matnwb.types.untyped.DataPipe')
         if data.isBound
             vecHeight = data.offset;
         elseif ~isscalar(data.internal.data) && isvector(data.internal.data)
@@ -124,7 +124,7 @@ function vecHeight = getDataHeight(data)
         else
             vecHeight = size(data.internal.data, data.axis);
         end
-    elseif isa(data, 'types.untyped.DataStub')
+    elseif isa(data, 'matnwb.types.untyped.DataStub')
         vecHeight = data.dims(end);
     elseif isscalar(data) && isstruct(data) % compound type (struct)
         dataFieldNames = fieldnames(data);
@@ -162,7 +162,7 @@ function highestName = retrieveHighestIndex(DynamicTable, column)
     columnHistory = {};
     highestName = column;
     while true
-        indexName = types.util.dynamictable.getIndex(DynamicTable, highestName);
+        indexName = matnwb.types.util.dynamictable.getIndex(DynamicTable, highestName);
         if isempty(indexName)
             return;
         end

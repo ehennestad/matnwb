@@ -7,9 +7,9 @@ function checkUnset(obj, argin)
     anonNames = {};
     for i = 1:length(allProperties)
         p = obj.(allProperties{i});
-        if isa(p, 'types.untyped.Anon')
+        if isa(p, 'matnwb.types.untyped.Anon')
             anonNames = [anonNames;{p.name}];
-        elseif isa(p, 'types.untyped.Set')
+        elseif isa(p, 'matnwb.types.untyped.Set')
             anonNames = [anonNames;keys(p) .'];
         end
     end
@@ -19,8 +19,8 @@ function checkUnset(obj, argin)
         , ['Unexpected properties {%s}.  '...
         '\n\nYour schema version may be incompatible with the file.  '...
         'Consider checking the schema version of the file with '...
-        '`util.getSchemaVersion(filename)` '...
+        '`matnwb.util.getSchemaVersion(filename)` '...
         'and comparing with the YAML namespace version present in '...
-        'nwb-schema/core/nwb.namespace.yaml'], misc.cellPrettyPrint(dropped));
+        'nwb-schema/core/nwb.namespace.yaml'], matnwb.misc.cellPrettyPrint(dropped));
     end
 end

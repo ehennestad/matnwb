@@ -16,9 +16,9 @@ function [Processed, classprops, inherited] = processClass(name, namespace, preg
         if ~isKey(pregen, nodename)
             switch node('class_type')
                 case 'groups'
-                    class = file.Group(node);
+                    class = matnwb.file.Group(node);
                 case 'datasets'
-                    class = file.Dataset(node);
+                    class = matnwb.file.Dataset(node);
                 otherwise
                     error('NWB:FileGen:InvalidClassType',...
                         'Class type %s is invalid', node('class_type'));
@@ -56,7 +56,7 @@ function class = patchVectorData(class)
     source('dtype') = 'text';
     source('value') = 'volts';
     source('required') = false;
-    class.attributes(end+1) = file.Attribute(source);
+    class.attributes(end+1) = matnwb.file.Attribute(source);
 
     %% Sampling Rate Attribute
     % derived from schema 2.6.0
@@ -69,7 +69,7 @@ function class = patchVectorData(class)
     source('dtype') = 'float32';
     source('required') = false;
 
-    class.attributes(end+1) = file.Attribute(source);
+    class.attributes(end+1) = matnwb.file.Attribute(source);
     %% Resolution Attribute
     % derived from schema 2.6.0
 
@@ -86,5 +86,5 @@ function class = patchVectorData(class)
     source('dtype') = 'float64';
     source('required') = false;
 
-    class.attributes(end+1) = file.Attribute(source);
+    class.attributes(end+1) = matnwb.file.Attribute(source);
 end

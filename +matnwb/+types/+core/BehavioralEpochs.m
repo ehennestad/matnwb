@@ -1,4 +1,4 @@
-classdef BehavioralEpochs < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef BehavioralEpochs < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % BEHAVIORALEPOCHS TimeSeries for storing behavioral epochs.  The objective of this and the other two Behavioral interfaces (e.g. BehavioralEvents and BehavioralTimeSeries) is to provide generic hooks for software tools/scripts. This allows a tool/script to take the output one specific interface (e.g., UnitTimes) and plot that data relative to another data modality (e.g., behavioral events) without having to define all possible modalities in advance. Declaring one of these interfaces means that one or more TimeSeries of the specified type is published. These TimeSeries should reside in a group having the same name as the interface. For example, if a BehavioralTimeSeries interface is declared, the module will have one or more TimeSeries defined in the module sub-group 'BehavioralTimeSeries'. BehavioralEpochs should use IntervalSeries. BehavioralEvents is used for irregular events. BehavioralTimeSeries is for continuous data.
 
 
@@ -10,18 +10,18 @@ end
 methods
     function obj = BehavioralEpochs(varargin)
         % BEHAVIORALEPOCHS Constructor for BehavioralEpochs
-        obj = obj@types.core.NWBDataInterface(varargin{:});
-        [obj.intervalseries, ivarargin] = types.util.parseConstrained(obj,'intervalseries', 'types.core.IntervalSeries', varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        [obj.intervalseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'intervalseries', 'matnwb.types.core.IntervalSeries', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
         p.KeepUnmatched = true;
         p.PartialMatching = false;
         p.StructExpand = false;
-        misc.parseSkipInvalidName(p, varargin);
-        if strcmp(class(obj), 'types.core.BehavioralEpochs')
+        matnwb.misc.parseSkipInvalidName(p, varargin);
+        if strcmp(class(obj), 'matnwb.types.core.BehavioralEpochs')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -32,12 +32,12 @@ methods
     
     function val = validate_intervalseries(obj, val)
         namedprops = struct();
-        constrained = {'types.core.IntervalSeries'};
-        types.util.checkSet('intervalseries', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.IntervalSeries'};
+        matnwb.types.util.checkSet('intervalseries', namedprops, constrained, val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

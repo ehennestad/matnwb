@@ -9,20 +9,20 @@ end
 
 function out = traverse_node(node, tree_node)
 
-if any(strcmp(superclasses(node), 'types.untyped.GroupClass')) || isa(node, 'types.untyped.DataStub')
+if any(strcmp(superclasses(node), 'matnwb.types.untyped.GroupClass')) || isa(node, 'matnwb.types.untyped.DataStub')
     pp = properties(node);
     for p = pp'
         if ~isempty(node.(p{1}))
             new_node = node.(p{1});
-            if any(strcmp(superclasses(new_node), 'types.untyped.GroupClass'))
+            if any(strcmp(superclasses(new_node), 'matnwb.types.untyped.GroupClass'))
                 new_tree_node = uitreenode(tree_node, 'Text', p{1});
                 traverse_node(new_node, new_tree_node);
-            elseif isa(new_node, 'types.untyped.Set')
+            elseif isa(new_node, 'matnwb.types.untyped.Set')
                 if new_node.Count
                     new_tree_node = uitreenode(tree_node, 'Text', p{1});
                     traverse_node(new_node, new_tree_node);
                 end
-            elseif isa(new_node, 'types.untyped.DataStub')
+            elseif isa(new_node, 'matnwb.types.untyped.DataStub')
                 new_tree_node = uitreenode(tree_node, 'Text', p{1});
                 traverse_node(new_node, new_tree_node);
             elseif isa(new_node, 'char')
@@ -40,7 +40,7 @@ if any(strcmp(superclasses(node), 'types.untyped.GroupClass')) || isa(node, 'typ
             end
         end
     end
-elseif isa(node, 'types.untyped.Set')
+elseif isa(node, 'matnwb.types.untyped.Set')
     for key = node.keys()
         new_tree_node = uitreenode(tree_node, 'Text', key{1});
         traverse_node(node.get(key{1}), new_tree_node);

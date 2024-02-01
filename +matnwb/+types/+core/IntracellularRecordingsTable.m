@@ -1,4 +1,4 @@
-classdef IntracellularRecordingsTable < types.hdmf_common.AlignedDynamicTable & types.untyped.GroupClass
+classdef IntracellularRecordingsTable < matnwb.types.hdmf_common.AlignedDynamicTable & matnwb.types.untyped.GroupClass
 % INTRACELLULARRECORDINGSTABLE A table to group together a stimulus and response from a single electrode and a single simultaneous recording. Each row in the table represents a single recording consisting typically of a stimulus and a corresponding response. In some cases, however, only a stimulus or a response is recorded as part of an experiment. In this case, both the stimulus and response will point to the same TimeSeries while the idx_start and count of the invalid column will be set to -1, thus, indicating that no values have been recorded for the stimulus or response, respectively. Note, a recording MUST contain at least a stimulus or a response. Typically the stimulus and response are PatchClampSeries. However, the use of AD/DA channels that are not associated to an electrode is also common in intracellular electrophysiology, in which case other TimeSeries may be used.
 
 
@@ -13,7 +13,7 @@ methods
     function obj = IntracellularRecordingsTable(varargin)
         % INTRACELLULARRECORDINGSTABLE Constructor for IntracellularRecordingsTable
         varargin = [{'description' 'A table to group together a stimulus and response from a single electrode and a single simultaneous recording and for storing metadata about the intracellular recording.'} varargin];
-        obj = obj@types.hdmf_common.AlignedDynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.AlignedDynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -24,17 +24,17 @@ methods
         addParameter(p, 'electrodes',[]);
         addParameter(p, 'responses',[]);
         addParameter(p, 'stimuli',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.electrodes = p.Results.electrodes;
         obj.responses = p.Results.responses;
         obj.stimuli = p.Results.stimuli;
-        if strcmp(class(obj), 'types.core.IntracellularRecordingsTable')
+        if strcmp(class(obj), 'matnwb.types.core.IntracellularRecordingsTable')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.IntracellularRecordingsTable')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.IntracellularRecordingsTable')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -50,17 +50,17 @@ methods
     %% VALIDATORS
     
     function val = validate_electrodes(obj, val)
-        val = types.util.checkDtype('electrodes', 'types.core.IntracellularElectrodesTable', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.core.IntracellularElectrodesTable', val);
     end
     function val = validate_responses(obj, val)
-        val = types.util.checkDtype('responses', 'types.core.IntracellularResponsesTable', val);
+        val = matnwb.types.util.checkDtype('responses', 'matnwb.types.core.IntracellularResponsesTable', val);
     end
     function val = validate_stimuli(obj, val)
-        val = types.util.checkDtype('stimuli', 'types.core.IntracellularStimuliTable', val);
+        val = matnwb.types.util.checkDtype('stimuli', 'matnwb.types.core.IntracellularStimuliTable', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.AlignedDynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.AlignedDynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

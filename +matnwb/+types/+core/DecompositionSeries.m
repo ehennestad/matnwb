@@ -1,4 +1,4 @@
-classdef DecompositionSeries < types.core.TimeSeries & types.untyped.GroupClass
+classdef DecompositionSeries < matnwb.types.core.TimeSeries & matnwb.types.untyped.GroupClass
 % DECOMPOSITIONSERIES Spectral analysis of a time series, e.g. of an LFP or a speech signal.
 
 
@@ -17,7 +17,7 @@ methods
     function obj = DecompositionSeries(varargin)
         % DECOMPOSITIONSERIES Constructor for DecompositionSeries
         varargin = [{'data_unit' 'no unit'} varargin];
-        obj = obj@types.core.TimeSeries(varargin{:});
+        obj = obj@matnwb.types.core.TimeSeries(varargin{:});
         
         
         p = inputParser;
@@ -30,16 +30,16 @@ methods
         addParameter(p, 'metric',[]);
         addParameter(p, 'source_channels',[]);
         addParameter(p, 'source_timeseries',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.bands = p.Results.bands;
         obj.data = p.Results.data;
         obj.data_unit = p.Results.data_unit;
         obj.metric = p.Results.metric;
         obj.source_channels = p.Results.source_channels;
         obj.source_timeseries = p.Results.source_timeseries;
-        if strcmp(class(obj), 'types.core.DecompositionSeries')
+        if strcmp(class(obj), 'matnwb.types.core.DecompositionSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -58,11 +58,11 @@ methods
     %% VALIDATORS
     
     function val = validate_bands(obj, val)
-        val = types.util.checkDtype('bands', 'types.hdmf_common.DynamicTable', val);
+        val = matnwb.types.util.checkDtype('bands', 'matnwb.types.hdmf_common.DynamicTable', val);
     end
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'numeric', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data', 'numeric', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -76,11 +76,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_unit(obj, val)
-        val = types.util.checkDtype('data_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -94,11 +94,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_metric(obj, val)
-        val = types.util.checkDtype('metric', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('metric', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -112,17 +112,17 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_source_channels(obj, val)
-        val = types.util.checkDtype('source_channels', 'types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('source_channels', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_source_timeseries(obj, val)
-        val = types.util.checkDtype('source_timeseries', 'types.core.TimeSeries', val);
+        val = matnwb.types.util.checkDtype('source_timeseries', 'matnwb.types.core.TimeSeries', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.TimeSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.TimeSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -130,7 +130,7 @@ methods
         if startsWith(class(obj.metric), 'types.untyped.')
             refs = obj.metric.export(fid, [fullpath '/metric'], refs);
         elseif ~isempty(obj.metric)
-            io.writeDataset(fid, [fullpath '/metric'], obj.metric);
+            matnwb.io.writeDataset(fid, [fullpath '/metric'], obj.metric);
         end
         if ~isempty(obj.source_channels)
             refs = obj.source_channels.export(fid, [fullpath '/source_channels'], refs);

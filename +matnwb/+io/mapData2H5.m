@@ -14,7 +14,7 @@ if iscell(data)
         , 'NWB:MapData:NonCellStr', ['Cell arrays must be cell arrays of character vectors. ' ...
         'Cell arrays of other types are not supported.']);
 end
-tid = io.getBaseType(class(data));
+tid = matnwb.io.getBaseType(class(data));
 
 % max size is always unlimited
 unlimited_size = H5ML.get_constant_value('H5S_UNLIMITED');
@@ -55,9 +55,9 @@ end
 
 %% Do Data Conversions
 switch class(data)
-    case {'types.untyped.RegionView' 'types.untyped.ObjectView'}
+    case {'matnwb.types.untyped.RegionView' 'matnwb.types.untyped.ObjectView'}
         %will throw errors if refdata DNE.  Caught at NWBData level.
-        data = io.getRefData(fid, data);
+        data = matnwb.io.getRefData(fid, data);
     case 'logical'
         % encode as int8 values.
         data = int8(data);

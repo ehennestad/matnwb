@@ -1,4 +1,4 @@
-classdef FeatureExtraction < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef FeatureExtraction < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % FEATUREEXTRACTION Features, such as PC1 and PC2, that are extracted from signals stored in a SpikeEventSeries or other source.
 
 
@@ -13,7 +13,7 @@ end
 methods
     function obj = FeatureExtraction(varargin)
         % FEATUREEXTRACTION Constructor for FeatureExtraction
-        obj = obj@types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -24,14 +24,14 @@ methods
         addParameter(p, 'electrodes',[]);
         addParameter(p, 'features',[]);
         addParameter(p, 'times',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.electrodes = p.Results.electrodes;
         obj.features = p.Results.features;
         obj.times = p.Results.times;
-        if strcmp(class(obj), 'types.core.FeatureExtraction')
+        if strcmp(class(obj), 'matnwb.types.core.FeatureExtraction')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -50,8 +50,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -65,14 +65,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_electrodes(obj, val)
-        val = types.util.checkDtype('electrodes', 'types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_features(obj, val)
-        val = types.util.checkDtype('features', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('features', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -86,11 +86,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_times(obj, val)
-        val = types.util.checkDtype('times', 'double', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('times', 'double', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -104,29 +104,29 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if startsWith(class(obj.description), 'types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
-            io.writeDataset(fid, [fullpath '/description'], obj.description, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description, 'forceArray');
         end
         refs = obj.electrodes.export(fid, [fullpath '/electrodes'], refs);
         if startsWith(class(obj.features), 'types.untyped.')
             refs = obj.features.export(fid, [fullpath '/features'], refs);
         elseif ~isempty(obj.features)
-            io.writeDataset(fid, [fullpath '/features'], obj.features, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/features'], obj.features, 'forceArray');
         end
         if startsWith(class(obj.times), 'types.untyped.')
             refs = obj.times.export(fid, [fullpath '/times'], refs);
         elseif ~isempty(obj.times)
-            io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');
         end
     end
 end

@@ -17,9 +17,9 @@ classdef (Sealed) DataStub < handle
     methods
         function obj = DataStub(filename, path)
             validateattributes(filename, {'char', 'string'}, {'scalartext'} ...
-                , 'types.untyped.DataStub', 'filename', 1);
+                , 'matnwb.types.untyped.DataStub', 'filename', 1);
             validateattributes(path, {'char', 'string'}, {'scalartext'} ...
-                , 'types.untyped.DataStub', 'path', 2);
+                , 'matnwb.types.untyped.DataStub', 'path', 2);
             obj.filename = char(filename);
             obj.path = char(path);
         end
@@ -47,7 +47,7 @@ classdef (Sealed) DataStub < handle
             fid = H5F.open(obj.filename);
             did = H5D.open(fid, obj.path);
             tid = H5D.get_type(did);
-            matType = io.getMatType(tid);
+            matType = matnwb.io.getMatType(tid);
             H5D.close(did);
             H5F.close(fid);
         end
@@ -77,7 +77,7 @@ classdef (Sealed) DataStub < handle
                 fsid = H5D.get_space(did);
                 data = H5D.read(did, 'H5ML_DEFAULT', fsid, fsid,...
                     'H5P_DEFAULT');
-                data = io.parseCompound(did, data);
+                data = matnwb.io.parseCompound(did, data);
                 H5S.close(fsid);
                 H5D.close(did);
                 H5F.close(fid);

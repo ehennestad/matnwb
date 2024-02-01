@@ -15,30 +15,30 @@ function verifyContainerEqual(testCase, actual, expected, ignoreList)
         expectedValue = expected.(prop);
         failureMessage = ['Values for property ''' prop ''' are not equal'];
 
-        if isa(actualValue, 'types.untyped.DataStub')
+        if isa(actualValue, 'matnwb.types.untyped.DataStub')
             actualValue = actualValue.load();
         end
 
         if startsWith(class(expectedValue), 'types.') && ~startsWith(class(expectedValue), 'types.untyped')
-            tests.util.verifyContainerEqual(testCase, actualValue, expectedValue);
-        elseif isa(expectedValue, 'types.untyped.Set')
-            tests.util.verifySetEqual(testCase, actualValue, expectedValue, failureMessage);
+            matnwb.tests.util.verifyContainerEqual(testCase, actualValue, expectedValue);
+        elseif isa(expectedValue, 'matnwb.types.untyped.Set')
+            matnwb.tests.util.verifySetEqual(testCase, actualValue, expectedValue, failureMessage);
         elseif ischar(expectedValue)
             testCase.verifyEqual(char(actualValue), expectedValue, failureMessage);
-        elseif isa(expectedValue, 'types.untyped.ObjectView') || isa(expectedValue, 'types.untyped.SoftLink')
+        elseif isa(expectedValue, 'matnwb.types.untyped.ObjectView') || isa(expectedValue, 'matnwb.types.untyped.SoftLink')
             testCase.verifyEqual(actualValue.path, expectedValue.path, failureMessage);
-        elseif isa(expectedValue, 'types.untyped.RegionView')
+        elseif isa(expectedValue, 'matnwb.types.untyped.RegionView')
             testCase.verifyEqual(actualValue.path, expectedValue.path, failureMessage);
             testCase.verifyEqual(actualValue.region, expectedValue.region, failureMessage);
-        elseif isa(expectedValue, 'types.untyped.Anon')
+        elseif isa(expectedValue, 'matnwb.types.untyped.Anon')
             testCase.verifyEqual(actualValue.name, expectedValue.name, failureMessage);
-            tests.util.verifyContainerEqual(testCase, actualValue.value, expectedValue.value);
+            matnwb.tests.util.verifyContainerEqual(testCase, actualValue.value, expectedValue.value);
         elseif isdatetime(expectedValue)...
                 || (iscell(expectedValue) && all(cellfun('isclass', expectedValue, 'datetime')))
             % linux MATLAB doesn't appear to propery compare datetimes whereas
             % Windows MATLAB does. This is a workaround to get tests to work
             % while getting close enough to exact date representation.
-            actualValue = types.util.checkDtype(prop, 'datetime', actualValue);
+            actualValue = matnwb.types.util.checkDtype(prop, 'datetime', actualValue);
             if ~iscell(expectedValue)
                 expectedValue = num2cell(expectedValue);
             end

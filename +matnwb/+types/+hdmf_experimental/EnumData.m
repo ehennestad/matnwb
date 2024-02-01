@@ -1,4 +1,4 @@
-classdef EnumData < types.hdmf_common.VectorData & types.untyped.DatasetClass
+classdef EnumData < matnwb.types.hdmf_common.VectorData & matnwb.types.untyped.DatasetClass
 % ENUMDATA Data that come from a fixed set of values. A data value of i corresponds to the i-th value in the VectorData referenced by the 'elements' attribute.
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = EnumData(varargin)
         % ENUMDATA Constructor for EnumData
-        obj = obj@types.hdmf_common.VectorData(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.VectorData(varargin{:});
         
         
         p = inputParser;
@@ -19,12 +19,12 @@ methods
         p.StructExpand = false;
         addParameter(p, 'data',[]);
         addParameter(p, 'elements',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.elements = p.Results.elements;
-        if strcmp(class(obj), 'types.hdmf_experimental.EnumData')
+        if strcmp(class(obj), 'matnwb.types.hdmf_experimental.EnumData')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -34,12 +34,12 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'uint8', val);
+        val = matnwb.types.util.checkDtype('data', 'uint8', val);
     end
     function val = validate_elements(obj, val)
         % Reference to type `VectorData`
-        val = types.util.checkDtype('elements', 'types.untyped.ObjectView', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('elements', 'matnwb.types.untyped.ObjectView', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -53,15 +53,15 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.VectorData(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.VectorData(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        io.writeAttribute(fid, [fullpath '/elements'], obj.elements);
+        matnwb.io.writeAttribute(fid, [fullpath '/elements'], obj.elements);
     end
 end
 

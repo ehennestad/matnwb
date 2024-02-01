@@ -10,7 +10,7 @@ function functionString = fillConstructor(name, parentname, defaults, props, nam
     functionBody = strjoin({functionBody, ...
         sprintf('if strcmp(class(obj), ''%s'')', namespace.getFullClassName(name)), ...
         '    cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));', ...
-        '    types.util.checkUnset(obj, unique(cellStringArguments));', ...
+        '    matnwb.types.util.checkUnset(obj, unique(cellStringArguments));', ...
         'end'}, newline());
 
     % insert check for DynamicTable class and child classes
@@ -21,7 +21,7 @@ function functionString = fillConstructor(name, parentname, defaults, props, nam
 
     functionString = strjoin({...
         ['function obj = ' name '(varargin)']...
-        file.addSpaces(functionBody, 4)...
+        matnwb.file.addSpaces(functionBody, 4)...
         'end'}, newline());
 
 end
@@ -37,15 +37,15 @@ function bodystr = fillBody(parentName, defaults, props, namespace)
                 overridemap(nm) = ['''' props(nm).value ''''];
             else
                 overridemap(nm) =...
-                    sprintf('types.util.correctType(%d, ''%s'')',...
+                    sprintf('matnwb.types.util.correctType(%d, ''%s'')',...
                     props(nm).value,...
                     props(nm).dtype);
             end
         end
-        kwargs = io.map2kwargs(overridemap);
-        %add surrounding quotes to kwargs so misc.cellPrettyPrint can print them correctly
+        kwargs = matnwb.io.map2kwargs(overridemap);
+        %add surrounding quotes to kwargs so matnwb.misc.cellPrettyPrint can print them correctly
         kwargs(1:2:end) = strcat('''', kwargs(1:2:end), '''');
-        bodystr = ['varargin = [{' misc.cellPrettyPrint(kwargs) '} varargin];' newline];
+        bodystr = ['varargin = [{' matnwb.misc.cellPrettyPrint(kwargs) '} varargin];' newline];
     end
     bodystr = [bodystr 'obj = obj@' parentName '(varargin{:});'];
 
@@ -63,12 +63,12 @@ function bodystr = fillBody(parentName, defaults, props, namespace)
         nm = names{i};
         prop = props(nm);
 
-        if isa(prop, 'file.Attribute')
+        if isa(prop, 'matnwb.file.Attribute')
             isAttribute(i) = true;
             continue;
         end
 
-        if isa(prop, 'file.interface.HasProps')
+        if isa(prop, 'matnwb.file.interface.HasProps')
             isDynamicConstrained = false(size(prop));
             isAnon = false(size(prop));
             hasType = false(size(prop));
@@ -95,7 +95,7 @@ function bodystr = fillBody(parentName, defaults, props, namespace)
                         rethrow(ME);
                     end
                 end
-                typenames{i} = misc.cellPrettyPrint(typeNameCell);
+                typenames{i} = matnwb.misc.cellPrettyPrint(typeNameCell);
             end
         end
     end
@@ -120,7 +120,7 @@ function bodystr = fillBody(parentName, defaults, props, namespace)
     constrainedTypes = typenames(dynamicConstrained & ~invalid);
     constrainedVars = varnames(dynamicConstrained & ~invalid);
     methodCalls = strcat('[obj.', constrainedVars, ', ivarargin] = ',...
-        ' types.util.parseConstrained(obj,''', constrainedVars, ''', ''',...
+        ' matnwb.types.util.parseConstrained(obj,''', constrainedVars, ''', ''',...
         constrainedTypes, ''', varargin{:});');
     fullBody = cell(length(methodCalls) * 2,1);
     fullBody(1:2:end) = methodCalls;
@@ -134,7 +134,7 @@ function bodystr = fillBody(parentName, defaults, props, namespace)
     anonTypes = typenames(isAnonymousType & ~invalid);
     anonVars = varnames(isAnonymousType & ~invalid);
     methodCalls = strcat('[obj.', anonVars, ',ivarargin] = ',...
-        ' types.util.parseAnon(''', anonTypes, ''', varargin{:});');
+        ' matnwb.types.util.parseAnon(''', anonTypes, ''', varargin{:});');
     fullBody = cell(length(methodCalls) * 2,1);
     fullBody(1:2:end) = methodCalls;
     fullBody(2:2:end) = {deleteFromVars};
@@ -151,15 +151,15 @@ function bodystr = fillBody(parentName, defaults, props, namespace)
     defaults = cell(size(names));
     for i=1:length(names)
         prop = props(names{i});
-        isPluralSet = isa(prop, 'file.interface.HasProps') && ~isscalar(prop);
+        isPluralSet = isa(prop, 'matnwb.file.interface.HasProps') && ~isscalar(prop);
         isGroupSet = ~isPluralSet ...
-        && isa(prop, 'file.Group') ...
+        && isa(prop, 'matnwb.file.Group') ...
         && (prop.hasAnonData || prop.hasAnonGroups || prop.isConstrainedSet);
         isDataSet = ~isPluralSet ...
-            && isa(prop, 'file.Dataset')...
+            && isa(prop, 'matnwb.file.Dataset')...
             && prop.isConstrainedSet;
         if isPluralSet || isGroupSet || isDataSet
-            defaults{i} = 'types.untyped.Set()';
+            defaults{i} = 'matnwb.types.untyped.Set()';
         else
             defaults{i} = '[]';
         end
@@ -167,7 +167,7 @@ function bodystr = fillBody(parentName, defaults, props, namespace)
     % add parameters
     parser = [parser, strcat('addParameter(p, ''', names, ''', ', defaults,');')];
     % parse
-    parser = [parser, {'misc.parseSkipInvalidName(p, varargin);'}];
+    parser = [parser, {'matnwb.misc.parseSkipInvalidName(p, varargin);'}];
     % get results
     parser = [parser, strcat('obj.', names, ' = p.Results.', names, ';')];
     parser = strjoin(parser, newline);
@@ -194,7 +194,7 @@ function checkTxt = fillCheck(name, namespace)
 
     checkTxt = strjoin({ ...
         sprintf('if strcmp(class(obj), ''%s'')', namespace.getFullClassName(name)), ...
-        '    types.util.dynamictable.checkConfig(obj);', ...
+        '    matnwb.types.util.dynamictable.checkConfig(obj);', ...
         'end',...
         }, newline);
 end

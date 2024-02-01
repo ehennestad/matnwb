@@ -1,4 +1,4 @@
-classdef PyNWBIOTest < tests.system.RoundTripTest
+classdef PyNWBIOTest < matnwb.tests.system.RoundTripTest
     % Assumes PyNWB and unittest2 has been installed on the system.
     %
     % To install PyNWB, execute:
@@ -28,7 +28,7 @@ classdef PyNWBIOTest < tests.system.RoundTripTest
             nwbExport(testCase.file, 'temp.nwb'); % hack to fill out ObjectView container paths.
             % ignore file_create_date because nwbExport will actually
             % mutate the property every export.
-            tests.util.verifyContainerEqual(testCase, pycontainer, matcontainer, {'file_create_date'});
+            matnwb.tests.util.verifyContainerEqual(testCase, pycontainer, matcontainer, {'file_create_date'});
         end
     end
     

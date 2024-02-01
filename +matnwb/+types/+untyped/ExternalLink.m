@@ -7,9 +7,9 @@ classdef ExternalLink < handle
     methods
         function obj = ExternalLink(filename, path)
             validateattributes(filename, {'char', 'string'}, {'scalartext'} ...
-                , 'types.untyped.ExternalLink', 'filename', 1);
+                , 'matnwb.types.untyped.ExternalLink', 'filename', 1);
             validateattributes(path, {'char', 'string'}, {'scalartext'} ...
-                , 'types.untyped.ExternalLink', 'path', 2);
+                , 'matnwb.types.untyped.ExternalLink', 'path', 2);
             obj.filename = char(filename);
             obj.path = char(path);
         end
@@ -68,18 +68,18 @@ classdef ExternalLink < handle
                 
                 if is_dataset
                     % typed objects and references are handled by
-                    % io.parseDataset
+                    % matnwb.io.parseDataset
                     if is_typed || strcmp(LinkedInfo.Datatype.Class, 'H5T_REFERENCE')
-                        data = io.parseDataset(Link.filename, LinkedInfo, Link.path);
+                        data = matnwb.io.parseDataset(Link.filename, LinkedInfo, Link.path);
                     else
-                        data = types.untyped.DataStub(Link.filename, Link.path);
+                        data = matnwb.types.untyped.DataStub(Link.filename, Link.path);
                     end
                 elseif is_group
                     assert(is_typed,...
                         'NWB:ExternalLink:UntypedGroup',...
                         ['MatNWB cannot return a non-typed group. Please return the parent '...
                         'typed object that contains `%s`'], loc);
-                    data = io.parseGroup(Link.filename, LinkedInfo);
+                    data = matnwb.io.parseGroup(Link.filename, LinkedInfo);
                 else % link
                     data = deref_link(fid, Link);
                 end
@@ -97,9 +97,9 @@ classdef ExternalLink < handle
                 
                 link_val = H5L.get_val(fid, Link.path, 'H5P_DEFAULT');
                 if is_external
-                    data = types.untyped.ExternalLink(link_val{:});
+                    data = matnwb.types.untyped.ExternalLink(link_val{:});
                 else
-                    data = types.untyped.SoftLink(link_val{:});
+                    data = matnwb.types.untyped.SoftLink(link_val{:});
                 end
             end
         end

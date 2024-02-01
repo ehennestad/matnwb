@@ -1,4 +1,4 @@
-classdef ExternalResources < types.hdmf_common.Container & types.untyped.GroupClass
+classdef ExternalResources < matnwb.types.hdmf_common.Container & matnwb.types.untyped.GroupClass
 % EXTERNALRESOURCES A set of four tables for tracking external resource references in a file. NOTE: this data type is in beta testing and is subject to change in a later version.
 
 
@@ -14,7 +14,7 @@ end
 methods
     function obj = ExternalResources(varargin)
         % EXTERNALRESOURCES Constructor for ExternalResources
-        obj = obj@types.hdmf_common.Container(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.Container(varargin{:});
         
         
         p = inputParser;
@@ -26,15 +26,15 @@ methods
         addParameter(p, 'object_keys',[]);
         addParameter(p, 'objects',[]);
         addParameter(p, 'resources',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.entities = p.Results.entities;
         obj.keys = p.Results.keys;
         obj.object_keys = p.Results.object_keys;
         obj.objects = p.Results.objects;
         obj.resources = p.Results.resources;
-        if strcmp(class(obj), 'types.hdmf_experimental.ExternalResources')
+        if strcmp(class(obj), 'matnwb.types.hdmf_experimental.ExternalResources')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -56,23 +56,23 @@ methods
     %% VALIDATORS
     
     function val = validate_entities(obj, val)
-        val = types.util.checkDtype('entities', 'types.hdmf_common.Data', val);
+        val = matnwb.types.util.checkDtype('entities', 'matnwb.types.hdmf_common.Data', val);
     end
     function val = validate_keys(obj, val)
-        val = types.util.checkDtype('keys', 'types.hdmf_common.Data', val);
+        val = matnwb.types.util.checkDtype('keys', 'matnwb.types.hdmf_common.Data', val);
     end
     function val = validate_object_keys(obj, val)
-        val = types.util.checkDtype('object_keys', 'types.hdmf_common.Data', val);
+        val = matnwb.types.util.checkDtype('object_keys', 'matnwb.types.hdmf_common.Data', val);
     end
     function val = validate_objects(obj, val)
-        val = types.util.checkDtype('objects', 'types.hdmf_common.Data', val);
+        val = matnwb.types.util.checkDtype('objects', 'matnwb.types.hdmf_common.Data', val);
     end
     function val = validate_resources(obj, val)
-        val = types.util.checkDtype('resources', 'types.hdmf_common.Data', val);
+        val = matnwb.types.util.checkDtype('resources', 'matnwb.types.hdmf_common.Data', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.Container(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.Container(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

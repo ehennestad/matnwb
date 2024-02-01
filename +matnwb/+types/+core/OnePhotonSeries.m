@@ -1,4 +1,4 @@
-classdef OnePhotonSeries < types.core.ImageSeries & types.untyped.GroupClass
+classdef OnePhotonSeries < matnwb.matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
 % ONEPHOTONSERIES Image stack recorded over time from 1-photon microscope.
 
 
@@ -16,7 +16,7 @@ end
 methods
     function obj = OnePhotonSeries(varargin)
         % ONEPHOTONSERIES Constructor for OnePhotonSeries
-        obj = obj@types.core.ImageSeries(varargin{:});
+        obj = obj@matnwb.matnwb.types.core.ImageSeries(varargin{:});
         
         
         p = inputParser;
@@ -30,7 +30,7 @@ methods
         addParameter(p, 'pmt_gain',[]);
         addParameter(p, 'power',[]);
         addParameter(p, 'scan_line_rate',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.binning = p.Results.binning;
         obj.exposure_time = p.Results.exposure_time;
         obj.imaging_plane = p.Results.imaging_plane;
@@ -38,9 +38,9 @@ methods
         obj.pmt_gain = p.Results.pmt_gain;
         obj.power = p.Results.power;
         obj.scan_line_rate = p.Results.scan_line_rate;
-        if strcmp(class(obj), 'types.core.OnePhotonSeries')
+        if strcmp(class(obj), 'matnwb.types.core.OnePhotonSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -68,8 +68,8 @@ methods
     %% VALIDATORS
     
     function val = validate_binning(obj, val)
-        val = types.util.checkDtype('binning', 'uint8', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('binning', 'uint8', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -83,11 +83,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_exposure_time(obj, val)
-        val = types.util.checkDtype('exposure_time', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('exposure_time', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -101,14 +101,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_imaging_plane(obj, val)
-        val = types.util.checkDtype('imaging_plane', 'types.core.ImagingPlane', val);
+        val = matnwb.types.util.checkDtype('imaging_plane', 'matnwb.types.core.ImagingPlane', val);
     end
     function val = validate_intensity(obj, val)
-        val = types.util.checkDtype('intensity', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('intensity', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -122,11 +122,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_pmt_gain(obj, val)
-        val = types.util.checkDtype('pmt_gain', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('pmt_gain', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -140,11 +140,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_power(obj, val)
-        val = types.util.checkDtype('power', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('power', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -158,11 +158,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_scan_line_rate(obj, val)
-        val = types.util.checkDtype('scan_line_rate', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('scan_line_rate', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -176,32 +176,32 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.ImageSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if ~isempty(obj.binning)
-            io.writeAttribute(fid, [fullpath '/binning'], obj.binning);
+            matnwb.io.writeAttribute(fid, [fullpath '/binning'], obj.binning);
         end
         if ~isempty(obj.exposure_time)
-            io.writeAttribute(fid, [fullpath '/exposure_time'], obj.exposure_time);
+            matnwb.io.writeAttribute(fid, [fullpath '/exposure_time'], obj.exposure_time);
         end
         refs = obj.imaging_plane.export(fid, [fullpath '/imaging_plane'], refs);
         if ~isempty(obj.intensity)
-            io.writeAttribute(fid, [fullpath '/intensity'], obj.intensity);
+            matnwb.io.writeAttribute(fid, [fullpath '/intensity'], obj.intensity);
         end
         if ~isempty(obj.pmt_gain)
-            io.writeAttribute(fid, [fullpath '/pmt_gain'], obj.pmt_gain);
+            matnwb.io.writeAttribute(fid, [fullpath '/pmt_gain'], obj.pmt_gain);
         end
         if ~isempty(obj.power)
-            io.writeAttribute(fid, [fullpath '/power'], obj.power);
+            matnwb.io.writeAttribute(fid, [fullpath '/power'], obj.power);
         end
         if ~isempty(obj.scan_line_rate)
-            io.writeAttribute(fid, [fullpath '/scan_line_rate'], obj.scan_line_rate);
+            matnwb.io.writeAttribute(fid, [fullpath '/scan_line_rate'], obj.scan_line_rate);
         end
     end
 end

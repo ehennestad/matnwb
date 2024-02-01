@@ -1,4 +1,4 @@
-classdef PlaneSegmentation < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef PlaneSegmentation < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % PLANESEGMENTATION Results from image segmentation of a specific imaging plane.
 
 
@@ -16,7 +16,7 @@ end
 methods
     function obj = PlaneSegmentation(varargin)
         % PLANESEGMENTATION Constructor for PlaneSegmentation
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -27,10 +27,10 @@ methods
         addParameter(p, 'imaging_plane',[]);
         addParameter(p, 'pixel_mask',[]);
         addParameter(p, 'pixel_mask_index',[]);
-        addParameter(p, 'reference_images',types.untyped.Set());
+        addParameter(p, 'reference_images',matnwb.types.untyped.Set());
         addParameter(p, 'voxel_mask',[]);
         addParameter(p, 'voxel_mask_index',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.image_mask = p.Results.image_mask;
         obj.imaging_plane = p.Results.imaging_plane;
         obj.pixel_mask = p.Results.pixel_mask;
@@ -38,12 +38,12 @@ methods
         obj.reference_images = p.Results.reference_images;
         obj.voxel_mask = p.Results.voxel_mask;
         obj.voxel_mask_index = p.Results.voxel_mask_index;
-        if strcmp(class(obj), 'types.core.PlaneSegmentation')
+        if strcmp(class(obj), 'matnwb.types.core.PlaneSegmentation')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.PlaneSegmentation')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.PlaneSegmentation')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -71,31 +71,31 @@ methods
     %% VALIDATORS
     
     function val = validate_image_mask(obj, val)
-        val = types.util.checkDtype('image_mask', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('image_mask', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_imaging_plane(obj, val)
-        val = types.util.checkDtype('imaging_plane', 'types.core.ImagingPlane', val);
+        val = matnwb.types.util.checkDtype('imaging_plane', 'matnwb.types.core.ImagingPlane', val);
     end
     function val = validate_pixel_mask(obj, val)
-        val = types.util.checkDtype('pixel_mask', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('pixel_mask', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_pixel_mask_index(obj, val)
-        val = types.util.checkDtype('pixel_mask_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('pixel_mask_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_reference_images(obj, val)
         namedprops = struct();
-        constrained = {'types.core.ImageSeries'};
-        types.util.checkSet('reference_images', namedprops, constrained, val);
+        constrained = {'matnwb.matnwb.types.core.ImageSeries'};
+        matnwb.types.util.checkSet('reference_images', namedprops, constrained, val);
     end
     function val = validate_voxel_mask(obj, val)
-        val = types.util.checkDtype('voxel_mask', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('voxel_mask', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_voxel_mask_index(obj, val)
-        val = types.util.checkDtype('voxel_mask_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('voxel_mask_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

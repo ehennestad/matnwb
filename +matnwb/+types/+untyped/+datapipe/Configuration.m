@@ -3,7 +3,7 @@ classdef Configuration < handle
     
     methods (Static)
         function obj = fromData(data, axis)
-            import types.untyped.datapipe.Configuration;
+            import matnwb.types.untyped.datapipe.Configuration;
             
             errorId =...
                 'NWB:Untyped:DataPipe:Configuration:CannotConfigureFromData';
@@ -71,7 +71,7 @@ classdef Configuration < handle
         end
         
         function set.dataType(obj, val)
-            import types.untyped.datapipe.Configuration;
+            import matnwb.types.untyped.datapipe.Configuration;
             
             assert(any(strcmp(val, Configuration.SUPPORTED_DATATYPES)),...
                 'Datatypes must be one of the following:\n%s',...

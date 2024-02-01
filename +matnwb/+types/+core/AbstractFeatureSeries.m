@@ -1,4 +1,4 @@
-classdef AbstractFeatureSeries < types.core.TimeSeries & types.untyped.GroupClass
+classdef AbstractFeatureSeries < matnwb.types.core.TimeSeries & matnwb.types.untyped.GroupClass
 % ABSTRACTFEATURESERIES Abstract features, such as quantitative descriptions of sensory stimuli. The TimeSeries::data field is a 2D array, storing those features (e.g., for visual grating stimulus this might be orientation, spatial frequency and contrast). Null stimuli (eg, uniform gray) can be marked as being an independent feature (eg, 1.0 for gray, 0.0 for actual stimulus) or by storing NaNs for feature values, or through use of the TimeSeries::control fields. A set of features is considered to persist until the next set of features is defined. The final set of features stored should be the null set. This is useful when storing the raw stimulus is impractical.
 
 
@@ -15,7 +15,7 @@ methods
     function obj = AbstractFeatureSeries(varargin)
         % ABSTRACTFEATURESERIES Constructor for AbstractFeatureSeries
         varargin = [{'data_unit' 'see `feature_units`'} varargin];
-        obj = obj@types.core.TimeSeries(varargin{:});
+        obj = obj@matnwb.types.core.TimeSeries(varargin{:});
         
         
         p = inputParser;
@@ -26,14 +26,14 @@ methods
         addParameter(p, 'data_unit',[]);
         addParameter(p, 'feature_units',[]);
         addParameter(p, 'features',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.data_unit = p.Results.data_unit;
         obj.feature_units = p.Results.feature_units;
         obj.features = p.Results.features;
-        if strcmp(class(obj), 'types.core.AbstractFeatureSeries')
+        if strcmp(class(obj), 'matnwb.types.core.AbstractFeatureSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -46,8 +46,8 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'numeric', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data', 'numeric', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -61,11 +61,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf], [Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_unit(obj, val)
-        val = types.util.checkDtype('data_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -79,11 +79,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_feature_units(obj, val)
-        val = types.util.checkDtype('feature_units', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('feature_units', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -97,11 +97,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_features(obj, val)
-        val = types.util.checkDtype('features', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('features', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -115,11 +115,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.TimeSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.TimeSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -127,13 +127,13 @@ methods
             if startsWith(class(obj.feature_units), 'types.untyped.')
                 refs = obj.feature_units.export(fid, [fullpath '/feature_units'], refs);
             elseif ~isempty(obj.feature_units)
-                io.writeDataset(fid, [fullpath '/feature_units'], obj.feature_units, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/feature_units'], obj.feature_units, 'forceArray');
             end
         end
         if startsWith(class(obj.features), 'types.untyped.')
             refs = obj.features.export(fid, [fullpath '/features'], refs);
         elseif ~isempty(obj.features)
-            io.writeDataset(fid, [fullpath '/features'], obj.features, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/features'], obj.features, 'forceArray');
         end
     end
 end

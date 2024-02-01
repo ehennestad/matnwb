@@ -12,7 +12,7 @@ function ST = loadEventAlignedSpikeTimes(nwb,unit_id,event_times,varargin)
 %   the inclusion of spike times. Defaults to 1.
 
 % Define anonymous functions to check input
-validNWB = @(x) isa(x,'types.core.NWBFile');
+validNWB = @(x) isa(x,'matnwb.types.core.NWBFile');
 validUnit = @(x) isscalar(x);
 validTime = @(x) isnumeric(x) && all(x>=0);
 % Define parser with arguments

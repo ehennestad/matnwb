@@ -29,8 +29,8 @@ if hasNamespace
 end
 
 if hasTypeDef && hasNamespace
-    validNamespace = misc.str2validName(type.namespace);
-    validName = misc.str2validName(type.name);
+    validNamespace = matnwb.misc.str2validName(type.namespace);
+    validName = matnwb.misc.str2validName(type.name);
     type.typename = ['types.' validNamespace '.' validName];
 end
 
@@ -44,12 +44,12 @@ for i=1:length(attributes)
             fid = H5F.open(filename, 'H5F_ACC_RDONLY', 'H5P_DEFAULT');
             aid = H5A.open_by_name(fid, context, attr.Name);
             tid = H5A.get_type(aid);
-            attributeValue = io.parseReference(aid, tid, attr.Value);
+            attributeValue = matnwb.io.parseReference(aid, tid, attr.Value);
             H5T.close(tid);
             H5A.close(aid);
             H5F.close(fid);
         case 'H5T_ENUM'
-            if io.isBool(attr.Datatype.Type)
+            if matnwb.io.isBool(attr.Datatype.Type)
                 % attr.Value should be cell array of strings here since
                 % MATLAB can't have arbitrary enum values.
                 attributeValue = strcmp('TRUE', attr.Value);

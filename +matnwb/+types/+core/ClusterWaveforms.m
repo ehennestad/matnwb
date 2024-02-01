@@ -1,4 +1,4 @@
-classdef ClusterWaveforms < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef ClusterWaveforms < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % CLUSTERWAVEFORMS DEPRECATED The mean waveform shape, including standard deviation, of the different clusters. Ideally, the waveform analysis should be performed on data that is only high-pass filtered. This is a separate module because it is expected to require updating. For example, IMEC probes may require different storage requirements to store/display mean waveforms, requiring a new interface or an extension of this one.
 
 
@@ -16,7 +16,7 @@ end
 methods
     function obj = ClusterWaveforms(varargin)
         % CLUSTERWAVEFORMS Constructor for ClusterWaveforms
-        obj = obj@types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -27,14 +27,14 @@ methods
         addParameter(p, 'waveform_filtering',[]);
         addParameter(p, 'waveform_mean',[]);
         addParameter(p, 'waveform_sd',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.clustering_interface = p.Results.clustering_interface;
         obj.waveform_filtering = p.Results.waveform_filtering;
         obj.waveform_mean = p.Results.waveform_mean;
         obj.waveform_sd = p.Results.waveform_sd;
-        if strcmp(class(obj), 'types.core.ClusterWaveforms')
+        if strcmp(class(obj), 'matnwb.types.core.ClusterWaveforms')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -53,11 +53,11 @@ methods
     %% VALIDATORS
     
     function val = validate_clustering_interface(obj, val)
-        val = types.util.checkDtype('clustering_interface', 'types.core.Clustering', val);
+        val = matnwb.types.util.checkDtype('clustering_interface', 'matnwb.types.core.Clustering', val);
     end
     function val = validate_waveform_filtering(obj, val)
-        val = types.util.checkDtype('waveform_filtering', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('waveform_filtering', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -71,11 +71,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_waveform_mean(obj, val)
-        val = types.util.checkDtype('waveform_mean', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('waveform_mean', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -89,11 +89,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_waveform_sd(obj, val)
-        val = types.util.checkDtype('waveform_sd', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('waveform_sd', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -107,11 +107,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -119,17 +119,17 @@ methods
         if startsWith(class(obj.waveform_filtering), 'types.untyped.')
             refs = obj.waveform_filtering.export(fid, [fullpath '/waveform_filtering'], refs);
         elseif ~isempty(obj.waveform_filtering)
-            io.writeDataset(fid, [fullpath '/waveform_filtering'], obj.waveform_filtering);
+            matnwb.io.writeDataset(fid, [fullpath '/waveform_filtering'], obj.waveform_filtering);
         end
         if startsWith(class(obj.waveform_mean), 'types.untyped.')
             refs = obj.waveform_mean.export(fid, [fullpath '/waveform_mean'], refs);
         elseif ~isempty(obj.waveform_mean)
-            io.writeDataset(fid, [fullpath '/waveform_mean'], obj.waveform_mean, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/waveform_mean'], obj.waveform_mean, 'forceArray');
         end
         if startsWith(class(obj.waveform_sd), 'types.untyped.')
             refs = obj.waveform_sd.export(fid, [fullpath '/waveform_sd'], refs);
         elseif ~isempty(obj.waveform_sd)
-            io.writeDataset(fid, [fullpath '/waveform_sd'], obj.waveform_sd, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/waveform_sd'], obj.waveform_sd, 'forceArray');
         end
     end
 end

@@ -1,4 +1,4 @@
-classdef ElectricalSeries < types.core.TimeSeries & types.untyped.GroupClass
+classdef ElectricalSeries < matnwb.types.core.TimeSeries & matnwb.types.untyped.GroupClass
 % ELECTRICALSERIES A time series of acquired voltage data from extracellular recordings. The data field is an int or float array storing data in volts. The first dimension should always represent time. The second dimension, if present, should represent channels.
 
 
@@ -19,8 +19,8 @@ end
 methods
     function obj = ElectricalSeries(varargin)
         % ELECTRICALSERIES Constructor for ElectricalSeries
-        varargin = [{'channel_conversion_axis' types.util.correctType(1, 'int32') 'data_unit' 'volts'} varargin];
-        obj = obj@types.core.TimeSeries(varargin{:});
+        varargin = [{'channel_conversion_axis' matnwb.types.util.correctType(1, 'int32') 'data_unit' 'volts'} varargin];
+        obj = obj@matnwb.types.core.TimeSeries(varargin{:});
         
         
         p = inputParser;
@@ -33,16 +33,16 @@ methods
         addParameter(p, 'data_unit',[]);
         addParameter(p, 'electrodes',[]);
         addParameter(p, 'filtering',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.channel_conversion = p.Results.channel_conversion;
         obj.channel_conversion_axis = p.Results.channel_conversion_axis;
         obj.data = p.Results.data;
         obj.data_unit = p.Results.data_unit;
         obj.electrodes = p.Results.electrodes;
         obj.filtering = p.Results.filtering;
-        if strcmp(class(obj), 'types.core.ElectricalSeries')
+        if strcmp(class(obj), 'matnwb.types.core.ElectricalSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -58,8 +58,8 @@ methods
     %% VALIDATORS
     
     function val = validate_channel_conversion(obj, val)
-        val = types.util.checkDtype('channel_conversion', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('channel_conversion', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -73,11 +73,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'numeric', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data', 'numeric', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -91,14 +91,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf,Inf], [Inf,Inf], [Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_electrodes(obj, val)
-        val = types.util.checkDtype('electrodes', 'types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_filtering(obj, val)
-        val = types.util.checkDtype('filtering', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('filtering', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -112,11 +112,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.TimeSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.TimeSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -124,15 +124,15 @@ methods
             if startsWith(class(obj.channel_conversion), 'types.untyped.')
                 refs = obj.channel_conversion.export(fid, [fullpath '/channel_conversion'], refs);
             elseif ~isempty(obj.channel_conversion)
-                io.writeDataset(fid, [fullpath '/channel_conversion'], obj.channel_conversion, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/channel_conversion'], obj.channel_conversion, 'forceArray');
             end
         end
-        if ~isempty(obj.channel_conversion) && ~isa(obj.channel_conversion, 'types.untyped.SoftLink') && ~isa(obj.channel_conversion, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/channel_conversion/axis'], obj.channel_conversion_axis);
+        if ~isempty(obj.channel_conversion) && ~isa(obj.channel_conversion, 'matnwb.types.untyped.SoftLink') && ~isa(obj.channel_conversion, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/channel_conversion/axis'], obj.channel_conversion_axis);
         end
         refs = obj.electrodes.export(fid, [fullpath '/electrodes'], refs);
         if ~isempty(obj.filtering)
-            io.writeAttribute(fid, [fullpath '/filtering'], obj.filtering);
+            matnwb.io.writeAttribute(fid, [fullpath '/filtering'], obj.filtering);
         end
     end
 end

@@ -1,4 +1,4 @@
-classdef IntracellularElectrodesTable < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef IntracellularElectrodesTable < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % INTRACELLULARELECTRODESTABLE Table for storing intracellular electrode related metadata.
 
 
@@ -11,7 +11,7 @@ methods
     function obj = IntracellularElectrodesTable(varargin)
         % INTRACELLULARELECTRODESTABLE Constructor for IntracellularElectrodesTable
         varargin = [{'description' 'Table for storing intracellular electrode related metadata.'} varargin];
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -20,15 +20,15 @@ methods
         p.StructExpand = false;
         addParameter(p, 'description',[]);
         addParameter(p, 'electrode',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.electrode = p.Results.electrode;
-        if strcmp(class(obj), 'types.core.IntracellularElectrodesTable')
+        if strcmp(class(obj), 'matnwb.matnwb.types.core.IntracellularElectrodesTable')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.IntracellularElectrodesTable')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.matnwb.types.core.IntracellularElectrodesTable')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -38,11 +38,11 @@ methods
     %% VALIDATORS
     
     function val = validate_electrode(obj, val)
-        val = types.util.checkDtype('electrode', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('electrode', 'matnwb.types.hdmf_common.VectorData', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

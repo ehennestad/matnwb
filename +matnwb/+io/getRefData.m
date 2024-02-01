@@ -4,7 +4,7 @@ function ref_data = getRefData(fid, ref)
 refspace = repmat(H5ML.id, size(ref));
 refpaths = {ref.path};
 validPaths = find(~cellfun('isempty', refpaths));
-if isa(ref, 'types.untyped.RegionView')
+if isa(ref, 'matnwb.types.untyped.RegionView')
     for i=validPaths
         try
             did = H5D.open(fid, refpaths{i});
@@ -16,9 +16,9 @@ if isa(ref, 'types.untyped.RegionView')
         %by default, we use block mode.
         regionShapes = ref(i).region;
         for j = 1:length(regionShapes)
-            regionShapes{j} = io.space.findShapes(regionShapes{j});
+            regionShapes{j} = matnwb.io.space.findShapes(regionShapes{j});
         end
-        refspace(i) = io.space.getReadSpace(regionShapes, sid);
+        refspace(i) = matnwb.io.space.getReadSpace(regionShapes, sid);
         H5S.close(sid);
         H5D.close(did);
     end

@@ -46,7 +46,7 @@ function refs = export(obj, fid, fullpath, refs)
         
         refNames = member_name(ref_i);
         for i=1:length(refNames)
-            data.(refNames{i}) = io.parseReference(src_did, ref_tid{i}, ...
+            data.(refNames{i}) = matnwb.io.parseReference(src_did, ref_tid{i}, ...
                 data.(refNames{i}));
         end
         
@@ -56,7 +56,7 @@ function refs = export(obj, fid, fullpath, refs)
             data.(strNames{i}) = mat2cell(s, ones(size(s,1),1));
         end
         
-        io.writeCompound(fid, fullpath, data);
+        matnwb.io.writeCompound(fid, fullpath, data);
     elseif ~H5L.exists(fid, fullpath, 'H5P_DEFAULT')
         % copy data over and return destination.
         ocpl = H5P.create('H5P_OBJECT_COPY');

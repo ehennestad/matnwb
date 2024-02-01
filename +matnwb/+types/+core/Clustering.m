@@ -1,4 +1,4 @@
-classdef Clustering < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef Clustering < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % CLUSTERING DEPRECATED Clustered spike data, whether from automatic clustering tools (e.g., klustakwik) or as a result of manual sorting.
 
 
@@ -13,7 +13,7 @@ end
 methods
     function obj = Clustering(varargin)
         % CLUSTERING Constructor for Clustering
-        obj = obj@types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -24,14 +24,14 @@ methods
         addParameter(p, 'num',[]);
         addParameter(p, 'peak_over_rms',[]);
         addParameter(p, 'times',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.num = p.Results.num;
         obj.peak_over_rms = p.Results.peak_over_rms;
         obj.times = p.Results.times;
-        if strcmp(class(obj), 'types.core.Clustering')
+        if strcmp(class(obj), 'matnwb.types.core.Clustering')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -50,8 +50,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -65,11 +65,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_num(obj, val)
-        val = types.util.checkDtype('num', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('num', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -83,11 +83,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_peak_over_rms(obj, val)
-        val = types.util.checkDtype('peak_over_rms', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('peak_over_rms', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -101,11 +101,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_times(obj, val)
-        val = types.util.checkDtype('times', 'double', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('times', 'double', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -119,33 +119,33 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if startsWith(class(obj.description), 'types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
-            io.writeDataset(fid, [fullpath '/description'], obj.description);
+            matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
         end
         if startsWith(class(obj.num), 'types.untyped.')
             refs = obj.num.export(fid, [fullpath '/num'], refs);
         elseif ~isempty(obj.num)
-            io.writeDataset(fid, [fullpath '/num'], obj.num, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/num'], obj.num, 'forceArray');
         end
         if startsWith(class(obj.peak_over_rms), 'types.untyped.')
             refs = obj.peak_over_rms.export(fid, [fullpath '/peak_over_rms'], refs);
         elseif ~isempty(obj.peak_over_rms)
-            io.writeDataset(fid, [fullpath '/peak_over_rms'], obj.peak_over_rms, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/peak_over_rms'], obj.peak_over_rms, 'forceArray');
         end
         if startsWith(class(obj.times), 'types.untyped.')
             refs = obj.times.export(fid, [fullpath '/times'], refs);
         elseif ~isempty(obj.times)
-            io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');
         end
     end
 end

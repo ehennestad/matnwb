@@ -9,7 +9,7 @@ for i=1:length(classNames)
     name = classNames{i};
     schemaText = classMap(name);
     try
-        processed(name) = spec.schema2matlab(schema.read(schemaText));
+        processed(name) = matnwb.spec.schema2matlab(schema.read(schemaText));
     catch ME
         error('NWB:Spec:InvalidFile',...
             'Data for namespace source `%s` is invalid', name);

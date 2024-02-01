@@ -1,4 +1,4 @@
-classdef Data < types.untyped.MetaClass & types.untyped.DatasetClass
+classdef Data < matnwb.types.untyped.MetaClass & matnwb.types.untyped.DatasetClass
 % DATA An abstract data type for a dataset.
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = Data(varargin)
         % DATA Constructor for Data
-        obj = obj@types.untyped.MetaClass(varargin{:});
+        obj = obj@matnwb.types.untyped.MetaClass(varargin{:});
         
         
         p = inputParser;
@@ -18,11 +18,11 @@ methods
         p.PartialMatching = false;
         p.StructExpand = false;
         addParameter(p, 'data',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
-        if strcmp(class(obj), 'types.hdmf_common.Data')
+        if strcmp(class(obj), 'matnwb.types.hdmf_common.Data')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -35,7 +35,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.untyped.MetaClass(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.untyped.MetaClass(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

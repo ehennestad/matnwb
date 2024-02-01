@@ -1,4 +1,4 @@
-classdef BlueprintPipe < types.untyped.datapipe.Pipe
+classdef BlueprintPipe < matnwb.types.untyped.datapipe.Pipe
     %BLUEPRINTPIPE or "unbound", this DataPipe type is only intended for in-memory
     % operations.  When exported, it will become an Input Pipe.
     
@@ -8,7 +8,7 @@ classdef BlueprintPipe < types.untyped.datapipe.Pipe
     
     properties (SetAccess = private)
         pipeProperties = {};
-        config = types.untyped.datapipe.Configuration.empty;
+        config = matnwb.types.untyped.datapipe.Configuration.empty;
     end
     
     properties (Dependent)
@@ -22,10 +22,10 @@ classdef BlueprintPipe < types.untyped.datapipe.Pipe
         function obj = BlueprintPipe(config)
             errorId = 'NWB:Untyped:DataPipe:InvalidConstructorArgument';
             
-            assert(isa(config, 'types.untyped.datapipe.Configuration'),...
+            assert(isa(config, 'matnwb.types.untyped.datapipe.Configuration'),...
                 errorId,...
                 ['Config must be a valid datapipe Configuration type.\n'...
-                'Expecting `types.untyped.datapipe.Configuration.\n'...
+                'Expecting `matnwb.types.untyped.datapipe.Configuration.\n'...
                 'Got       `%s`'], class(config));
             obj.config = config;
         end
@@ -33,7 +33,7 @@ classdef BlueprintPipe < types.untyped.datapipe.Pipe
     
     methods % set/get
         function set.data(obj, val)
-            import types.untyped.datapipe.Configuration;
+            import matnwb.types.untyped.datapipe.Configuration;
             assert(any(strcmp(class(val), Configuration.SUPPORTED_DATATYPES)),...
                 'NWB:Untyped:DataPipe:Blueprint:InvalidData',...
                 'Only the following numeric types are supported %s',...
@@ -112,11 +112,11 @@ classdef BlueprintPipe < types.untyped.datapipe.Pipe
         end
         
         function setPipeProperty(obj, prop)
-            assert(isa(prop, 'types.untyped.datapipe.Property'),...
+            assert(isa(prop, 'matnwb.types.untyped.datapipe.Property'),...
                 'Can only add filters.');
 
             isDynamicFilter = isa(prop, ...
-                'types.untyped.datapipe.properties.DynamicFilter');
+                'matnwb.types.untyped.datapipe.properties.DynamicFilter');
             
             % dedup pipe properties if it already exists with special case
             % behavior for dynamic filters.
@@ -166,9 +166,9 @@ classdef BlueprintPipe < types.untyped.datapipe.Pipe
         end
         
         function pipe = write(obj, fid, fullpath)
-            import types.untyped.datapipe.Configuration;      
-            import types.untyped.datapipe.properties.Chunking;
-            import types.untyped.datapipe.guessChunkSize;
+            import matnwb.types.untyped.datapipe.Configuration;      
+            import matnwb.types.untyped.datapipe.properties.Chunking;
+            import matnwb.types.untyped.datapipe.guessChunkSize;
             errorId = 'NWB:Untyped:DataPipe:Blueprint:CannotExport';
             
             if isempty(obj.config)
@@ -203,14 +203,14 @@ classdef BlueprintPipe < types.untyped.datapipe.Pipe
             end
             
             dataType = config.dataType; %#ok<PROPLC>
-            tid = io.getBaseType(dataType);
+            tid = matnwb.io.getBaseType(dataType);
             
             sid = allocateSpace(maxSize);
             
             lcpl = 'H5P_DEFAULT';
             
             if ~obj.hasPipeProperty(...
-                    'types.untyped.datapipe.properties.Chunking')
+                    'matnwb.types.untyped.datapipe.properties.Chunking')
                 obj.setPipeProperty(...
                     Chunking(guessChunkSize(dataType, maxSize)));
             end
@@ -226,7 +226,7 @@ classdef BlueprintPipe < types.untyped.datapipe.Pipe
             end
             
             cached = obj.data;
-            pipe = types.untyped.datapipe.BoundPipe(...
+            pipe = matnwb.types.untyped.datapipe.BoundPipe(...
                 H5F.get_name(fid), fullpath, obj.config);
             if ~isempty(cached)
                 pipe.append(cast(cached, obj.config.dataType));

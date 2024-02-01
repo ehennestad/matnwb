@@ -68,7 +68,7 @@ end
 
 times = times(trials_to_take);
 
-D = util.loadEventAlignedTimeSeriesData(timeseries, window, times, ...
+D = matnwb.util.loadEventAlignedTimeSeriesData(timeseries, window, times, ...
     downsample_factor, electrode);
 
 tt = linspace(window(1), window(2), size(D, 3));

@@ -1,8 +1,8 @@
 function writeNamespace(namespaceName, saveDir)
 %check/load dependency namespaces
-Namespace = schemes.loadNamespace(namespaceName, saveDir);
+Namespace = matnwb.schemes.loadNamespace(namespaceName, saveDir);
 
-classFileDir = fullfile(saveDir, '+types', ['+' misc.str2validName(Namespace.name)]);
+classFileDir = fullfile(saveDir, '+types', ['+' matnwb.misc.str2validName(Namespace.name)]);
 
 if 7 ~= exist(classFileDir, 'dir')
     mkdir(classFileDir);
@@ -12,7 +12,7 @@ classes = keys(Namespace.registry);
 pregenerated = containers.Map; %generated nodes and props for faster dependency resolution
 for i=1:length(classes)
     className = classes{i};
-    [processed, classprops, inherited] = file.processClass(className, Namespace, pregenerated);
+    [processed, classprops, inherited] = matnwb.file.processClass(className, Namespace, pregenerated);
     
     if isempty(processed)
         continue;
@@ -20,7 +20,7 @@ for i=1:length(classes)
     
     fid = fopen(fullfile(classFileDir, [className '.m']), 'W');
     try
-        fwrite(fid, file.fillClass(className, Namespace, processed, ...
+        fwrite(fid, matnwb.file.fillClass(className, Namespace, processed, ...
             classprops, inherited), 'char');
     catch ME
         fclose(fid);

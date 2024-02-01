@@ -1,4 +1,4 @@
-classdef EventDetection < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef EventDetection < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % EVENTDETECTION Detected spike events from voltage trace(s).
 
 
@@ -21,7 +21,7 @@ methods
     function obj = EventDetection(varargin)
         % EVENTDETECTION Constructor for EventDetection
         varargin = [{'times_unit' 'seconds'} varargin];
-        obj = obj@types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -33,15 +33,15 @@ methods
         addParameter(p, 'source_idx',[]);
         addParameter(p, 'times',[]);
         addParameter(p, 'times_unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.detection_method = p.Results.detection_method;
         obj.source_electricalseries = p.Results.source_electricalseries;
         obj.source_idx = p.Results.source_idx;
         obj.times = p.Results.times;
         obj.times_unit = p.Results.times_unit;
-        if strcmp(class(obj), 'types.core.EventDetection')
+        if strcmp(class(obj), 'matnwb.types.core.EventDetection')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -60,8 +60,8 @@ methods
     %% VALIDATORS
     
     function val = validate_detection_method(obj, val)
-        val = types.util.checkDtype('detection_method', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('detection_method', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -75,14 +75,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_source_electricalseries(obj, val)
-        val = types.util.checkDtype('source_electricalseries', 'types.core.ElectricalSeries', val);
+        val = matnwb.types.util.checkDtype('source_electricalseries', 'matnwb.types.core.ElectricalSeries', val);
     end
     function val = validate_source_idx(obj, val)
-        val = types.util.checkDtype('source_idx', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('source_idx', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -96,11 +96,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_times(obj, val)
-        val = types.util.checkDtype('times', 'double', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('times', 'double', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -114,32 +114,32 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if startsWith(class(obj.detection_method), 'types.untyped.')
             refs = obj.detection_method.export(fid, [fullpath '/detection_method'], refs);
         elseif ~isempty(obj.detection_method)
-            io.writeDataset(fid, [fullpath '/detection_method'], obj.detection_method);
+            matnwb.io.writeDataset(fid, [fullpath '/detection_method'], obj.detection_method);
         end
         refs = obj.source_electricalseries.export(fid, [fullpath '/source_electricalseries'], refs);
         if startsWith(class(obj.source_idx), 'types.untyped.')
             refs = obj.source_idx.export(fid, [fullpath '/source_idx'], refs);
         elseif ~isempty(obj.source_idx)
-            io.writeDataset(fid, [fullpath '/source_idx'], obj.source_idx, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/source_idx'], obj.source_idx, 'forceArray');
         end
         if startsWith(class(obj.times), 'types.untyped.')
             refs = obj.times.export(fid, [fullpath '/times'], refs);
         elseif ~isempty(obj.times)
-            io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');
         end
-        if ~isempty(obj.times) && ~isa(obj.times, 'types.untyped.SoftLink') && ~isa(obj.times, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/times/unit'], obj.times_unit);
+        if ~isempty(obj.times) && ~isa(obj.times, 'matnwb.types.untyped.SoftLink') && ~isa(obj.times, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/times/unit'], obj.times_unit);
         end
     end
 end

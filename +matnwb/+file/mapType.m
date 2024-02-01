@@ -15,7 +15,7 @@ if iscell(dtype)
     for i=1:numTypes
         typeMap = dtype{i};
         typeName = typeMap('name');
-        type = file.mapType(typeMap('dtype'));
+        type = matnwb.file.mapType(typeMap('dtype'));
         matlabType.(typeName) = type;
     end
     return;

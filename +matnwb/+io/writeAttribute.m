@@ -1,7 +1,7 @@
 function writeAttribute(fid, fullpath, data, varargin)
 
-[tid, sid, data] = io.mapData2H5(fid, data, varargin{:});
-[path, name] = io.pathParts(fullpath);
+[tid, sid, data] = matnwb.io.mapData2H5(fid, data, varargin{:});
+[path, name] = matnwb.io.pathParts(fullpath);
 if isempty(path)
     path = '/'; %weird case if the property is in root
 end

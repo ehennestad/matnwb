@@ -19,18 +19,18 @@ classdef SoftLink < handle
             
             if ischar(target) || isstring(target)
                 validateattributes(target, {'char', 'string'}, {'scalartext'} ...
-                    , 'types.untyped.SoftLink', 'target string', 1);
+                    , 'matnwb.types.untyped.SoftLink', 'target string', 1);
                 obj.path = char(target);
             else
-                validateattributes(target, {'types.untyped.MetaClass'}, {'scalar'} ...
-                    , 'types.untyped.SoftLink', 'target object', 2);
+                validateattributes(target, {'matnwb.types.untyped.MetaClass'}, {'scalar'} ...
+                    , 'matnwb.types.untyped.SoftLink', 'target object', 2);
                 obj.target = target;
             end
         end
         
         function set.path(obj, val)
             validateattributes(val, {'char', 'string'}, {'scalartext'} ...
-                , '(types.untyped.SoftLink).path', 'path', 2);
+                , '(matnwb.types.untyped.SoftLink).path', 'path', 2);
             obj.path = val;
         end
         

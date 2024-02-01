@@ -3,7 +3,7 @@ function TypeMap = getTypeMap(DynamicTable)
 % containing type name and size.
 TypeMap = containers.Map;
 if isempty(DynamicTable.id.data)...
-        || (isa(DynamicTable.id.data, 'types.untyped.DataPipe')...
+        || (isa(DynamicTable.id.data, 'matnwb.types.untyped.DataPipe')...
             && 0 == DynamicTable.id.data.offset)
     return;
 end
@@ -16,7 +16,7 @@ for i = 1:length(DynamicTable.colnames)
         colVecData = DynamicTable.vectordata.get(colnm);
     end
 
-    if isa(colVecData.data, 'types.untyped.DataPipe')
+    if isa(colVecData.data, 'matnwb.types.untyped.DataPipe')
         colval = colVecData.data.load(1);
     elseif istable(colVecData.data)
         colval = colVecData.data;
@@ -30,7 +30,7 @@ for i = 1:length(DynamicTable.colnames)
         TypeStruct.type = class(colval);
     end
     
-    if isa(colVecData.data, 'types.untyped.DataPipe')
+    if isa(colVecData.data, 'matnwb.types.untyped.DataPipe')
         TypeStruct.dims = colVecData.data.internal.maxSize;
     else
         TypeStruct.dims = size(colVecData.data);

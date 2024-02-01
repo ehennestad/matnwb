@@ -1,4 +1,4 @@
-classdef RGBImage < types.core.Image & types.untyped.DatasetClass
+classdef RGBImage < matnwb.types.core.Image & matnwb.types.untyped.DatasetClass
 % RGBIMAGE A color image.
 
 
@@ -6,7 +6,7 @@ classdef RGBImage < types.core.Image & types.untyped.DatasetClass
 methods
     function obj = RGBImage(varargin)
         % RGBIMAGE Constructor for RGBImage
-        obj = obj@types.core.Image(varargin{:});
+        obj = obj@matnwb.types.core.Image(varargin{:});
         
         
         p = inputParser;
@@ -14,11 +14,11 @@ methods
         p.PartialMatching = false;
         p.StructExpand = false;
         addParameter(p, 'data',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
-        if strcmp(class(obj), 'types.core.RGBImage')
+        if strcmp(class(obj), 'matnwb.types.core.RGBImage')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -26,11 +26,11 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'numeric', val);
+        val = matnwb.types.util.checkDtype('data', 'numeric', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.Image(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.Image(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

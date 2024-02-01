@@ -22,14 +22,14 @@ function testInit(testCase)
     
     %% extra data type
     data = rand(100, 1);
-    types.untyped.DataPipe('data', data, 'dataType', 'double');
+    matnwb.types.untyped.DataPipe('data', data, 'dataType', 'double');
     [~,lastId] = lastwarn();
     testCase.verifyEqual(lastId, 'NWB:DataPipe:RedundantDataType');
     
     warning(warnDebugId, '');
     
     %% compressionLevel and hasShuffle ignored if filters is provided
-    pipe = types.untyped.DataPipe('data', data ...
+    pipe = matnwb.types.untyped.DataPipe('data', data ...
         , 'compressionLevel', 3 ...
         , 'hasShuffle', true ...
         , 'filters', [properties.Compression(4)]);
@@ -51,7 +51,7 @@ function testInit(testCase)
     pipe.export(fid, datasetName, {});
     H5F.close(fid);
     
-    pipe = types.untyped.DataPipe('filename', filename, 'path', datasetName, 'dataType', 'double');
+    pipe = matnwb.types.untyped.DataPipe('filename', filename, 'path', datasetName, 'dataType', 'double');
     [~,lastId] = lastwarn();
     testCase.verifyEqual(lastId, 'NWB:DataPipe:UnusedArguments');
     testCase.verifyEqual(pipe.compressionLevel, 2);
@@ -66,7 +66,7 @@ function testIndex(testCase)
     name = '/test_data';
     
     data = rand(100, 100, 100);
-    Pipe = types.untyped.DataPipe('data', data);
+    Pipe = matnwb.types.untyped.DataPipe('data', data);
     
     testCase.verifyEqual(Pipe(:), data(:));
     testCase.verifyEqual(Pipe(:,:,1), data(:,:,1));
@@ -82,14 +82,14 @@ end
 function testAppend(testCase)
     filename = 'testIterativeWrite.h5';
     
-    Pipe = types.untyped.DataPipe(...
+    Pipe = matnwb.types.untyped.DataPipe(...
         'maxSize', [10 13 15],...
         'axis', 3,...
         'chunkSize', [10 13 1],...
         'dataType', 'uint8',...
         'compressionLevel', 5);
     
-    OneDimensionPipe = types.untyped.DataPipe('maxSize', Inf, 'data', [7, 8, 9]);
+    OneDimensionPipe = matnwb.types.untyped.DataPipe('maxSize', Inf, 'data', [7, 8, 9]);
     
     %% create test file
     fid = H5F.create(filename);
@@ -114,12 +114,12 @@ function testAppend(testCase)
     end
     
     %% verify data
-    Pipe = types.untyped.DataPipe('filename', filename, 'path', '/test_data');
+    Pipe = matnwb.types.untyped.DataPipe('filename', filename, 'path', '/test_data');
     readData = Pipe.load();
     testCase.verifyEqual(readData(:,:,1:10), initialData);
     testCase.verifyEqual(readData(:,:,11:end), appendData);
     
-    OneDimensionPipe = types.untyped.DataPipe('filename', filename, 'path', '/test_one_dim_data');
+    OneDimensionPipe = matnwb.types.untyped.DataPipe('filename', filename, 'path', '/test_one_dim_data');
     readData = OneDimensionPipe.load();
     testCase.verifyTrue(isvector(readData));
     testCase.verifyEqual(length(readData), 6);
@@ -127,22 +127,22 @@ function testAppend(testCase)
 end
 
 function testExternalFilters(testCase)
-    import types.untyped.datapipe.dynamic.Filter;
-    import types.untyped.datapipe.properties.DynamicFilter;
-    import types.untyped.datapipe.properties.Shuffle;
+    import matnwb.types.untyped.datapipe.dynamic.Filter;
+    import matnwb.types.untyped.datapipe.properties.DynamicFilter;
+    import matnwb.types.untyped.datapipe.properties.Shuffle;
     
     testCase.assumeTrue(logical(H5Z.filter_avail(uint32(Filter.LZ4))));
     
     filename = 'testExternalWrite.h5';
     
-    Pipe = types.untyped.DataPipe(...
+    Pipe = matnwb.types.untyped.DataPipe(...
         'maxSize', [10 13 15],...
         'axis', 3,...
         'chunkSize', [10 13 1],...
         'dataType', 'uint8',...
         'filters', [Shuffle() DynamicFilter(Filter.LZ4)]);
     
-    OneDimensionPipe = types.untyped.DataPipe('maxSize', Inf, 'data', [7, 8, 9]);
+    OneDimensionPipe = matnwb.types.untyped.DataPipe('maxSize', Inf, 'data', [7, 8, 9]);
     
     %% create test file
     fid = H5F.create(filename);
@@ -167,12 +167,12 @@ function testExternalFilters(testCase)
     end
     
     %% verify data
-    Pipe = types.untyped.DataPipe('filename', filename, 'path', '/test_data');
+    Pipe = matnwb.types.untyped.DataPipe('filename', filename, 'path', '/test_data');
     readData = Pipe.load();
     testCase.verifyEqual(readData(:,:,1:10), initialData);
     testCase.verifyEqual(readData(:,:,11:end), appendData);
     
-    OneDimensionPipe = types.untyped.DataPipe('filename', filename, 'path', '/test_one_dim_data');
+    OneDimensionPipe = matnwb.types.untyped.DataPipe('filename', filename, 'path', '/test_one_dim_data');
     readData = OneDimensionPipe.load();
     testCase.verifyTrue(isvector(readData));
     testCase.verifyEqual(length(readData), 6);
@@ -215,7 +215,7 @@ function testBoundPipe(testCase)
     H5P.set_chunk(dcpl, datapipe.guessChunkSize(class(data), maxSize));
     did = H5D.create( ...
         fid, dsName ...
-        , io.getBaseType(class(data)) ...
+        , matnwb.io.getBaseType(class(data)) ...
         , H5S.create_simple(rank, fliplr(size(data)), fliplr(maxSize)) ...
         , 'H5P_DEFAULT', dcpl, 'H5P_DEFAULT');
     H5D.write(did, 'H5ML_DEFAULT', 'H5S_ALL', 'H5S_ALL', 'H5P_DEFAULT', data);
@@ -239,7 +239,7 @@ function testBoundPipe(testCase)
     fid = H5F.create(filename);
     did = H5D.create( ...
         fid, dsName ...
-        , io.getBaseType(class(data)) ...
+        , matnwb.io.getBaseType(class(data)) ...
         , H5S.create_simple(rank, fliplr(size(data)), fliplr(size(data))) ...
         , 'H5P_DEFAULT', 'H5P_DEFAULT', 'H5P_DEFAULT');
     H5D.write(did, 'H5ML_DEFAULT', 'H5S_ALL', 'H5S_ALL', 'H5P_DEFAULT', data);

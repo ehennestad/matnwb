@@ -26,7 +26,7 @@ classdef Namespace < handle
             for i=1:length(namespaceFiles)
                 nmspcFile = namespaceFiles{i};
                 scheme = source(nmspcFile);
-                obj.registry = [obj.registry; schemes.getClasses(scheme)];
+                obj.registry = [obj.registry; matnwb.schemes.getClasses(scheme)];
             end
         end
         
@@ -64,7 +64,7 @@ classdef Namespace < handle
                 'Namespace for class `%s` not found.', classname);
             
             fullClassName = sprintf('types.%s.%s',...
-                misc.str2validName(Namespace.name),...
+                matnwb.misc.str2validName(Namespace.name),...
                 classname);
         end
         

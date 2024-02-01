@@ -12,7 +12,7 @@ function setup(TestCase)
         , 'session_description', 'test extra values/fields/datasets' ...
         , 'session_start_time', datetime() ...
         );
-    ExpectedFile.acquisition.set('timeseries', types.core.TimeSeries('data', 1:100 ...
+    ExpectedFile.acquisition.set('timeseries', matnwb.types.core.TimeSeries('data', 1:100 ...
         , 'data_unit', 'unit' ...
         , 'starting_time', 0 ...
         , 'starting_time_rate', 1));
@@ -25,7 +25,7 @@ function testExtraAttribute(TestCase)
     warning('on', 'NWB:Debug:ErrorStub');
     
     fid = H5F.open(TestCase.TestData.Filename, 'H5F_ACC_RDWR', 'H5P_DEFAULT');
-    io.writeAttribute(fid, '/acquisition/timeseries/__expected_extra_attrib', 'extra_data');
+    matnwb.io.writeAttribute(fid, '/acquisition/timeseries/__expected_extra_attrib', 'extra_data');
     H5F.close(fid);
     nwbRead(TestCase.TestData.Filename, 'ignorecache');
     [~,warnId] = lastwarn();
@@ -39,7 +39,7 @@ function testInvalidConstraint(TestCase)
     
     fid = H5F.open(TestCase.TestData.Filename, 'H5F_ACC_RDWR', 'H5P_DEFAULT');
     % add a fake valid dataset to force the constrained validation to fail.
-    wrongData = types.hdmf_common.VectorData('data', rand(3,1));
+    wrongData = matnwb.types.hdmf_common.VectorData('data', rand(3,1));
     refs = wrongData.export(fid, '/acquisition/fakedata', {});
     TestCase.assertEmpty(refs);
     H5F.close(fid);

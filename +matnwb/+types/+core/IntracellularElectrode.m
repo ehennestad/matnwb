@@ -1,4 +1,4 @@
-classdef IntracellularElectrode < types.core.NWBContainer & types.untyped.GroupClass
+classdef IntracellularElectrode < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % INTRACELLULARELECTRODE An intracellular electrode and its metadata.
 
 
@@ -21,7 +21,7 @@ end
 methods
     function obj = IntracellularElectrode(varargin)
         % INTRACELLULARELECTRODE Constructor for IntracellularElectrode
-        obj = obj@types.core.NWBContainer(varargin{:});
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
         
         
         p = inputParser;
@@ -37,7 +37,7 @@ methods
         addParameter(p, 'resistance',[]);
         addParameter(p, 'seal',[]);
         addParameter(p, 'slice',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.cell_id = p.Results.cell_id;
         obj.description = p.Results.description;
         obj.device = p.Results.device;
@@ -47,9 +47,9 @@ methods
         obj.resistance = p.Results.resistance;
         obj.seal = p.Results.seal;
         obj.slice = p.Results.slice;
-        if strcmp(class(obj), 'types.core.IntracellularElectrode')
+        if strcmp(class(obj), 'matnwb.types.core.IntracellularElectrode')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -83,8 +83,8 @@ methods
     %% VALIDATORS
     
     function val = validate_cell_id(obj, val)
-        val = types.util.checkDtype('cell_id', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('cell_id', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -98,11 +98,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -116,14 +116,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_device(obj, val)
-        val = types.util.checkDtype('device', 'types.core.Device', val);
+        val = matnwb.types.util.checkDtype('device', 'matnwb.types.core.Device', val);
     end
     function val = validate_filtering(obj, val)
-        val = types.util.checkDtype('filtering', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('filtering', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -137,11 +137,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_initial_access_resistance(obj, val)
-        val = types.util.checkDtype('initial_access_resistance', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('initial_access_resistance', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -155,11 +155,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_location(obj, val)
-        val = types.util.checkDtype('location', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('location', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -173,11 +173,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_resistance(obj, val)
-        val = types.util.checkDtype('resistance', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('resistance', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -191,11 +191,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_seal(obj, val)
-        val = types.util.checkDtype('seal', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('seal', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -209,11 +209,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_slice(obj, val)
-        val = types.util.checkDtype('slice', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('slice', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -227,11 +227,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -239,55 +239,55 @@ methods
             if startsWith(class(obj.cell_id), 'types.untyped.')
                 refs = obj.cell_id.export(fid, [fullpath '/cell_id'], refs);
             elseif ~isempty(obj.cell_id)
-                io.writeDataset(fid, [fullpath '/cell_id'], obj.cell_id);
+                matnwb.io.writeDataset(fid, [fullpath '/cell_id'], obj.cell_id);
             end
         end
         if startsWith(class(obj.description), 'types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
-            io.writeDataset(fid, [fullpath '/description'], obj.description);
+            matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
         end
         refs = obj.device.export(fid, [fullpath '/device'], refs);
         if ~isempty(obj.filtering)
             if startsWith(class(obj.filtering), 'types.untyped.')
                 refs = obj.filtering.export(fid, [fullpath '/filtering'], refs);
             elseif ~isempty(obj.filtering)
-                io.writeDataset(fid, [fullpath '/filtering'], obj.filtering);
+                matnwb.io.writeDataset(fid, [fullpath '/filtering'], obj.filtering);
             end
         end
         if ~isempty(obj.initial_access_resistance)
             if startsWith(class(obj.initial_access_resistance), 'types.untyped.')
                 refs = obj.initial_access_resistance.export(fid, [fullpath '/initial_access_resistance'], refs);
             elseif ~isempty(obj.initial_access_resistance)
-                io.writeDataset(fid, [fullpath '/initial_access_resistance'], obj.initial_access_resistance);
+                matnwb.io.writeDataset(fid, [fullpath '/initial_access_resistance'], obj.initial_access_resistance);
             end
         end
         if ~isempty(obj.location)
             if startsWith(class(obj.location), 'types.untyped.')
                 refs = obj.location.export(fid, [fullpath '/location'], refs);
             elseif ~isempty(obj.location)
-                io.writeDataset(fid, [fullpath '/location'], obj.location);
+                matnwb.io.writeDataset(fid, [fullpath '/location'], obj.location);
             end
         end
         if ~isempty(obj.resistance)
             if startsWith(class(obj.resistance), 'types.untyped.')
                 refs = obj.resistance.export(fid, [fullpath '/resistance'], refs);
             elseif ~isempty(obj.resistance)
-                io.writeDataset(fid, [fullpath '/resistance'], obj.resistance);
+                matnwb.io.writeDataset(fid, [fullpath '/resistance'], obj.resistance);
             end
         end
         if ~isempty(obj.seal)
             if startsWith(class(obj.seal), 'types.untyped.')
                 refs = obj.seal.export(fid, [fullpath '/seal'], refs);
             elseif ~isempty(obj.seal)
-                io.writeDataset(fid, [fullpath '/seal'], obj.seal);
+                matnwb.io.writeDataset(fid, [fullpath '/seal'], obj.seal);
             end
         end
         if ~isempty(obj.slice)
             if startsWith(class(obj.slice), 'types.untyped.')
                 refs = obj.slice.export(fid, [fullpath '/slice'], refs);
             elseif ~isempty(obj.slice)
-                io.writeDataset(fid, [fullpath '/slice'], obj.slice);
+                matnwb.io.writeDataset(fid, [fullpath '/slice'], obj.slice);
             end
         end
     end

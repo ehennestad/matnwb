@@ -1,4 +1,4 @@
-classdef ImagingRetinotopy < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef ImagingRetinotopy < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % IMAGINGRETINOTOPY Intrinsic signal optical imaging or widefield imaging for measuring retinotopy. Stores orthogonal maps (e.g., altitude/azimuth; radius/theta) of responses to specific stimuli and a combined polarity map from which to identify visual areas. This group does not store the raw responses imaged during retinotopic mapping or the stimuli presented, but rather the resulting phase and power maps after applying a Fourier transform on the averaged responses. Note: for data consistency, all images and arrays are stored in the format [row][column] and [row, col], which equates to [y][x]. Field of view and dimension arrays may appear backward (i.e., y before x).
 
 
@@ -43,7 +43,7 @@ end
 methods
     function obj = ImagingRetinotopy(varargin)
         % IMAGINGRETINOTOPY Constructor for ImagingRetinotopy
-        obj = obj@types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -81,7 +81,7 @@ methods
         addParameter(p, 'vasculature_image_dimension',[]);
         addParameter(p, 'vasculature_image_field_of_view',[]);
         addParameter(p, 'vasculature_image_format',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.axis_1_phase_map = p.Results.axis_1_phase_map;
         obj.axis_1_phase_map_dimension = p.Results.axis_1_phase_map_dimension;
         obj.axis_1_phase_map_field_of_view = p.Results.axis_1_phase_map_field_of_view;
@@ -113,9 +113,9 @@ methods
         obj.vasculature_image_dimension = p.Results.vasculature_image_dimension;
         obj.vasculature_image_field_of_view = p.Results.vasculature_image_field_of_view;
         obj.vasculature_image_format = p.Results.vasculature_image_format;
-        if strcmp(class(obj), 'types.core.ImagingRetinotopy')
+        if strcmp(class(obj), 'matnwb.types.core.ImagingRetinotopy')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -215,8 +215,8 @@ methods
     %% VALIDATORS
     
     function val = validate_axis_1_phase_map(obj, val)
-        val = types.util.checkDtype('axis_1_phase_map', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_phase_map', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -230,11 +230,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_1_phase_map_dimension(obj, val)
-        val = types.util.checkDtype('axis_1_phase_map_dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_phase_map_dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -248,11 +248,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_1_phase_map_field_of_view(obj, val)
-        val = types.util.checkDtype('axis_1_phase_map_field_of_view', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_phase_map_field_of_view', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -266,11 +266,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_1_phase_map_unit(obj, val)
-        val = types.util.checkDtype('axis_1_phase_map_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_phase_map_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -284,11 +284,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_1_power_map(obj, val)
-        val = types.util.checkDtype('axis_1_power_map', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_power_map', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -302,11 +302,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_1_power_map_dimension(obj, val)
-        val = types.util.checkDtype('axis_1_power_map_dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_power_map_dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -320,11 +320,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_1_power_map_field_of_view(obj, val)
-        val = types.util.checkDtype('axis_1_power_map_field_of_view', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_power_map_field_of_view', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -338,11 +338,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_1_power_map_unit(obj, val)
-        val = types.util.checkDtype('axis_1_power_map_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_1_power_map_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -356,11 +356,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_phase_map(obj, val)
-        val = types.util.checkDtype('axis_2_phase_map', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_phase_map', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -374,11 +374,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_phase_map_dimension(obj, val)
-        val = types.util.checkDtype('axis_2_phase_map_dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_phase_map_dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -392,11 +392,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_phase_map_field_of_view(obj, val)
-        val = types.util.checkDtype('axis_2_phase_map_field_of_view', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_phase_map_field_of_view', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -410,11 +410,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_phase_map_unit(obj, val)
-        val = types.util.checkDtype('axis_2_phase_map_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_phase_map_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -428,11 +428,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_power_map(obj, val)
-        val = types.util.checkDtype('axis_2_power_map', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_power_map', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -446,11 +446,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_power_map_dimension(obj, val)
-        val = types.util.checkDtype('axis_2_power_map_dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_power_map_dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -464,11 +464,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_power_map_field_of_view(obj, val)
-        val = types.util.checkDtype('axis_2_power_map_field_of_view', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_power_map_field_of_view', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -482,11 +482,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_2_power_map_unit(obj, val)
-        val = types.util.checkDtype('axis_2_power_map_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_2_power_map_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -500,11 +500,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_axis_descriptions(obj, val)
-        val = types.util.checkDtype('axis_descriptions', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('axis_descriptions', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -518,11 +518,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_focal_depth_image(obj, val)
-        val = types.util.checkDtype('focal_depth_image', 'uint16', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('focal_depth_image', 'uint16', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -536,11 +536,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_focal_depth_image_bits_per_pixel(obj, val)
-        val = types.util.checkDtype('focal_depth_image_bits_per_pixel', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('focal_depth_image_bits_per_pixel', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -554,11 +554,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_focal_depth_image_dimension(obj, val)
-        val = types.util.checkDtype('focal_depth_image_dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('focal_depth_image_dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -572,11 +572,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_focal_depth_image_field_of_view(obj, val)
-        val = types.util.checkDtype('focal_depth_image_field_of_view', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('focal_depth_image_field_of_view', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -590,11 +590,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_focal_depth_image_focal_depth(obj, val)
-        val = types.util.checkDtype('focal_depth_image_focal_depth', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('focal_depth_image_focal_depth', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -608,11 +608,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_focal_depth_image_format(obj, val)
-        val = types.util.checkDtype('focal_depth_image_format', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('focal_depth_image_format', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -626,11 +626,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_sign_map(obj, val)
-        val = types.util.checkDtype('sign_map', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('sign_map', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -644,11 +644,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_sign_map_dimension(obj, val)
-        val = types.util.checkDtype('sign_map_dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('sign_map_dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -662,11 +662,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_sign_map_field_of_view(obj, val)
-        val = types.util.checkDtype('sign_map_field_of_view', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('sign_map_field_of_view', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -680,11 +680,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_vasculature_image(obj, val)
-        val = types.util.checkDtype('vasculature_image', 'uint16', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('vasculature_image', 'uint16', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -698,11 +698,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_vasculature_image_bits_per_pixel(obj, val)
-        val = types.util.checkDtype('vasculature_image_bits_per_pixel', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('vasculature_image_bits_per_pixel', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -716,11 +716,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_vasculature_image_dimension(obj, val)
-        val = types.util.checkDtype('vasculature_image_dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('vasculature_image_dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -734,11 +734,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_vasculature_image_field_of_view(obj, val)
-        val = types.util.checkDtype('vasculature_image_field_of_view', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('vasculature_image_field_of_view', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -752,11 +752,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_vasculature_image_format(obj, val)
-        val = types.util.checkDtype('vasculature_image_format', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('vasculature_image_format', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -770,130 +770,130 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if startsWith(class(obj.axis_1_phase_map), 'types.untyped.')
             refs = obj.axis_1_phase_map.export(fid, [fullpath '/axis_1_phase_map'], refs);
         elseif ~isempty(obj.axis_1_phase_map)
-            io.writeDataset(fid, [fullpath '/axis_1_phase_map'], obj.axis_1_phase_map, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/axis_1_phase_map'], obj.axis_1_phase_map, 'forceArray');
         end
-        if ~isempty(obj.axis_1_phase_map) && ~isa(obj.axis_1_phase_map, 'types.untyped.SoftLink') && ~isa(obj.axis_1_phase_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_1_phase_map/dimension'], obj.axis_1_phase_map_dimension, 'forceArray');
+        if ~isempty(obj.axis_1_phase_map) && ~isa(obj.axis_1_phase_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_1_phase_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_1_phase_map/dimension'], obj.axis_1_phase_map_dimension, 'forceArray');
         end
-        if ~isempty(obj.axis_1_phase_map) && ~isa(obj.axis_1_phase_map, 'types.untyped.SoftLink') && ~isa(obj.axis_1_phase_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_1_phase_map/field_of_view'], obj.axis_1_phase_map_field_of_view, 'forceArray');
+        if ~isempty(obj.axis_1_phase_map) && ~isa(obj.axis_1_phase_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_1_phase_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_1_phase_map/field_of_view'], obj.axis_1_phase_map_field_of_view, 'forceArray');
         end
-        if ~isempty(obj.axis_1_phase_map) && ~isa(obj.axis_1_phase_map, 'types.untyped.SoftLink') && ~isa(obj.axis_1_phase_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_1_phase_map/unit'], obj.axis_1_phase_map_unit);
+        if ~isempty(obj.axis_1_phase_map) && ~isa(obj.axis_1_phase_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_1_phase_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_1_phase_map/unit'], obj.axis_1_phase_map_unit);
         end
         if ~isempty(obj.axis_1_power_map)
             if startsWith(class(obj.axis_1_power_map), 'types.untyped.')
                 refs = obj.axis_1_power_map.export(fid, [fullpath '/axis_1_power_map'], refs);
             elseif ~isempty(obj.axis_1_power_map)
-                io.writeDataset(fid, [fullpath '/axis_1_power_map'], obj.axis_1_power_map, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/axis_1_power_map'], obj.axis_1_power_map, 'forceArray');
             end
         end
-        if ~isempty(obj.axis_1_power_map) && ~isa(obj.axis_1_power_map, 'types.untyped.SoftLink') && ~isa(obj.axis_1_power_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_1_power_map/dimension'], obj.axis_1_power_map_dimension, 'forceArray');
+        if ~isempty(obj.axis_1_power_map) && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_1_power_map/dimension'], obj.axis_1_power_map_dimension, 'forceArray');
         end
-        if ~isempty(obj.axis_1_power_map) && ~isa(obj.axis_1_power_map, 'types.untyped.SoftLink') && ~isa(obj.axis_1_power_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_1_power_map/field_of_view'], obj.axis_1_power_map_field_of_view, 'forceArray');
+        if ~isempty(obj.axis_1_power_map) && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_1_power_map/field_of_view'], obj.axis_1_power_map_field_of_view, 'forceArray');
         end
-        if ~isempty(obj.axis_1_power_map) && ~isa(obj.axis_1_power_map, 'types.untyped.SoftLink') && ~isa(obj.axis_1_power_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_1_power_map/unit'], obj.axis_1_power_map_unit);
+        if ~isempty(obj.axis_1_power_map) && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_1_power_map/unit'], obj.axis_1_power_map_unit);
         end
         if startsWith(class(obj.axis_2_phase_map), 'types.untyped.')
             refs = obj.axis_2_phase_map.export(fid, [fullpath '/axis_2_phase_map'], refs);
         elseif ~isempty(obj.axis_2_phase_map)
-            io.writeDataset(fid, [fullpath '/axis_2_phase_map'], obj.axis_2_phase_map, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/axis_2_phase_map'], obj.axis_2_phase_map, 'forceArray');
         end
-        if ~isempty(obj.axis_2_phase_map) && ~isa(obj.axis_2_phase_map, 'types.untyped.SoftLink') && ~isa(obj.axis_2_phase_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_2_phase_map/dimension'], obj.axis_2_phase_map_dimension, 'forceArray');
+        if ~isempty(obj.axis_2_phase_map) && ~isa(obj.axis_2_phase_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_2_phase_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_2_phase_map/dimension'], obj.axis_2_phase_map_dimension, 'forceArray');
         end
-        if ~isempty(obj.axis_2_phase_map) && ~isa(obj.axis_2_phase_map, 'types.untyped.SoftLink') && ~isa(obj.axis_2_phase_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_2_phase_map/field_of_view'], obj.axis_2_phase_map_field_of_view, 'forceArray');
+        if ~isempty(obj.axis_2_phase_map) && ~isa(obj.axis_2_phase_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_2_phase_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_2_phase_map/field_of_view'], obj.axis_2_phase_map_field_of_view, 'forceArray');
         end
-        if ~isempty(obj.axis_2_phase_map) && ~isa(obj.axis_2_phase_map, 'types.untyped.SoftLink') && ~isa(obj.axis_2_phase_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_2_phase_map/unit'], obj.axis_2_phase_map_unit);
+        if ~isempty(obj.axis_2_phase_map) && ~isa(obj.axis_2_phase_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_2_phase_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_2_phase_map/unit'], obj.axis_2_phase_map_unit);
         end
         if ~isempty(obj.axis_2_power_map)
             if startsWith(class(obj.axis_2_power_map), 'types.untyped.')
                 refs = obj.axis_2_power_map.export(fid, [fullpath '/axis_2_power_map'], refs);
             elseif ~isempty(obj.axis_2_power_map)
-                io.writeDataset(fid, [fullpath '/axis_2_power_map'], obj.axis_2_power_map, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/axis_2_power_map'], obj.axis_2_power_map, 'forceArray');
             end
         end
-        if ~isempty(obj.axis_2_power_map) && ~isa(obj.axis_2_power_map, 'types.untyped.SoftLink') && ~isa(obj.axis_2_power_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_2_power_map/dimension'], obj.axis_2_power_map_dimension, 'forceArray');
+        if ~isempty(obj.axis_2_power_map) && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_2_power_map/dimension'], obj.axis_2_power_map_dimension, 'forceArray');
         end
-        if ~isempty(obj.axis_2_power_map) && ~isa(obj.axis_2_power_map, 'types.untyped.SoftLink') && ~isa(obj.axis_2_power_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_2_power_map/field_of_view'], obj.axis_2_power_map_field_of_view, 'forceArray');
+        if ~isempty(obj.axis_2_power_map) && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_2_power_map/field_of_view'], obj.axis_2_power_map_field_of_view, 'forceArray');
         end
-        if ~isempty(obj.axis_2_power_map) && ~isa(obj.axis_2_power_map, 'types.untyped.SoftLink') && ~isa(obj.axis_2_power_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/axis_2_power_map/unit'], obj.axis_2_power_map_unit);
+        if ~isempty(obj.axis_2_power_map) && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/axis_2_power_map/unit'], obj.axis_2_power_map_unit);
         end
         if startsWith(class(obj.axis_descriptions), 'types.untyped.')
             refs = obj.axis_descriptions.export(fid, [fullpath '/axis_descriptions'], refs);
         elseif ~isempty(obj.axis_descriptions)
-            io.writeDataset(fid, [fullpath '/axis_descriptions'], obj.axis_descriptions, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/axis_descriptions'], obj.axis_descriptions, 'forceArray');
         end
         if ~isempty(obj.focal_depth_image)
             if startsWith(class(obj.focal_depth_image), 'types.untyped.')
                 refs = obj.focal_depth_image.export(fid, [fullpath '/focal_depth_image'], refs);
             elseif ~isempty(obj.focal_depth_image)
-                io.writeDataset(fid, [fullpath '/focal_depth_image'], obj.focal_depth_image, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/focal_depth_image'], obj.focal_depth_image, 'forceArray');
             end
         end
-        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/focal_depth_image/bits_per_pixel'], obj.focal_depth_image_bits_per_pixel);
+        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/focal_depth_image/bits_per_pixel'], obj.focal_depth_image_bits_per_pixel);
         end
-        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/focal_depth_image/dimension'], obj.focal_depth_image_dimension, 'forceArray');
+        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/focal_depth_image/dimension'], obj.focal_depth_image_dimension, 'forceArray');
         end
-        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/focal_depth_image/field_of_view'], obj.focal_depth_image_field_of_view, 'forceArray');
+        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/focal_depth_image/field_of_view'], obj.focal_depth_image_field_of_view, 'forceArray');
         end
-        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/focal_depth_image/focal_depth'], obj.focal_depth_image_focal_depth);
+        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/focal_depth_image/focal_depth'], obj.focal_depth_image_focal_depth);
         end
-        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/focal_depth_image/format'], obj.focal_depth_image_format);
+        if ~isempty(obj.focal_depth_image) && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.focal_depth_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/focal_depth_image/format'], obj.focal_depth_image_format);
         end
         if ~isempty(obj.sign_map)
             if startsWith(class(obj.sign_map), 'types.untyped.')
                 refs = obj.sign_map.export(fid, [fullpath '/sign_map'], refs);
             elseif ~isempty(obj.sign_map)
-                io.writeDataset(fid, [fullpath '/sign_map'], obj.sign_map, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/sign_map'], obj.sign_map, 'forceArray');
             end
         end
-        if ~isempty(obj.sign_map) && ~isa(obj.sign_map, 'types.untyped.SoftLink') && ~isa(obj.sign_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/sign_map/dimension'], obj.sign_map_dimension, 'forceArray');
+        if ~isempty(obj.sign_map) && ~isa(obj.sign_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.sign_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/sign_map/dimension'], obj.sign_map_dimension, 'forceArray');
         end
-        if ~isempty(obj.sign_map) && ~isa(obj.sign_map, 'types.untyped.SoftLink') && ~isa(obj.sign_map, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/sign_map/field_of_view'], obj.sign_map_field_of_view, 'forceArray');
+        if ~isempty(obj.sign_map) && ~isa(obj.sign_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.sign_map, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/sign_map/field_of_view'], obj.sign_map_field_of_view, 'forceArray');
         end
         if startsWith(class(obj.vasculature_image), 'types.untyped.')
             refs = obj.vasculature_image.export(fid, [fullpath '/vasculature_image'], refs);
         elseif ~isempty(obj.vasculature_image)
-            io.writeDataset(fid, [fullpath '/vasculature_image'], obj.vasculature_image, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/vasculature_image'], obj.vasculature_image, 'forceArray');
         end
-        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/vasculature_image/bits_per_pixel'], obj.vasculature_image_bits_per_pixel);
+        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/vasculature_image/bits_per_pixel'], obj.vasculature_image_bits_per_pixel);
         end
-        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/vasculature_image/dimension'], obj.vasculature_image_dimension, 'forceArray');
+        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/vasculature_image/dimension'], obj.vasculature_image_dimension, 'forceArray');
         end
-        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/vasculature_image/field_of_view'], obj.vasculature_image_field_of_view, 'forceArray');
+        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/vasculature_image/field_of_view'], obj.vasculature_image_field_of_view, 'forceArray');
         end
-        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/vasculature_image/format'], obj.vasculature_image_format);
+        if ~isempty(obj.vasculature_image) && ~isa(obj.vasculature_image, 'matnwb.types.untyped.SoftLink') && ~isa(obj.vasculature_image, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/vasculature_image/format'], obj.vasculature_image_format);
         end
     end
 end

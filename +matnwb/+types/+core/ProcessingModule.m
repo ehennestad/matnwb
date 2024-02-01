@@ -1,4 +1,4 @@
-classdef ProcessingModule < types.core.NWBContainer & types.untyped.GroupClass
+classdef ProcessingModule < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % PROCESSINGMODULE A collection of processed data.
 
 
@@ -12,10 +12,10 @@ end
 methods
     function obj = ProcessingModule(varargin)
         % PROCESSINGMODULE Constructor for ProcessingModule
-        obj = obj@types.core.NWBContainer(varargin{:});
-        [obj.dynamictable, ivarargin] = types.util.parseConstrained(obj,'dynamictable', 'types.hdmf_common.DynamicTable', varargin{:});
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
+        [obj.dynamictable, ivarargin] = matnwb.types.util.parseConstrained(obj,'dynamictable', 'matnwb.types.hdmf_common.DynamicTable', varargin{:});
         varargin(ivarargin) = [];
-        [obj.nwbdatainterface, ivarargin] = types.util.parseConstrained(obj,'nwbdatainterface', 'types.core.NWBDataInterface', varargin{:});
+        [obj.nwbdatainterface, ivarargin] = matnwb.types.util.parseConstrained(obj,'nwbdatainterface', 'matnwb.matnwb.types.core.NWBDataInterface', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
@@ -23,11 +23,11 @@ methods
         p.PartialMatching = false;
         p.StructExpand = false;
         addParameter(p, 'description',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
-        if strcmp(class(obj), 'types.core.ProcessingModule')
+        if strcmp(class(obj), 'matnwb.types.core.ProcessingModule')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -43,8 +43,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -58,25 +58,25 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_dynamictable(obj, val)
         namedprops = struct();
-        constrained = {'types.hdmf_common.DynamicTable'};
-        types.util.checkSet('dynamictable', namedprops, constrained, val);
+        constrained = {'matnwb.types.hdmf_common.DynamicTable'};
+        matnwb.types.util.checkSet('dynamictable', namedprops, constrained, val);
     end
     function val = validate_nwbdatainterface(obj, val)
         namedprops = struct();
-        constrained = {'types.core.NWBDataInterface'};
-        types.util.checkSet('nwbdatainterface', namedprops, constrained, val);
+        constrained = {'matnwb.matnwb.types.core.NWBDataInterface'};
+        matnwb.types.util.checkSet('nwbdatainterface', namedprops, constrained, val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        io.writeAttribute(fid, [fullpath '/description'], obj.description);
+        matnwb.io.writeAttribute(fid, [fullpath '/description'], obj.description);
         if ~isempty(obj.dynamictable)
             refs = obj.dynamictable.export(fid, fullpath, refs);
         end

@@ -1,4 +1,4 @@
-classdef Group < file.interface.HasProps
+classdef Group < matnwb.file.interface.HasProps
     properties
         doc;
         name;
@@ -83,9 +83,9 @@ classdef Group < file.interface.HasProps
 
             if isKey(source, 'attributes')
                 sourceAttributes = source('attributes');
-                obj.attributes = repmat(file.Attribute, length(sourceAttributes), 1);
+                obj.attributes = repmat(matnwb.file.Attribute, length(sourceAttributes), 1);
                 for i=1:length(sourceAttributes)
-                    attribute = file.Attribute(sourceAttributes{i});
+                    attribute = matnwb.file.Attribute(sourceAttributes{i});
                     if isempty(obj.type)
                         attribute.dependent = obj.name;
                     end
@@ -96,9 +96,9 @@ classdef Group < file.interface.HasProps
             anonDataCnt = 0;
             if isKey(source, 'datasets')
                 sourceDatasets = source('datasets');
-                obj.datasets = repmat(file.Dataset, length(sourceDatasets), 1);
+                obj.datasets = repmat(matnwb.file.Dataset, length(sourceDatasets), 1);
                 for i=1:length(sourceDatasets)
-                    dataset = file.Dataset(sourceDatasets{i});
+                    dataset = matnwb.file.Dataset(sourceDatasets{i});
                     if isempty(dataset.name)
                         anonDataCnt = anonDataCnt + 1;
                     end
@@ -109,9 +109,9 @@ classdef Group < file.interface.HasProps
             anonGroupCnt = 0;
             if isKey(source, 'groups')
                 subGroups = source('groups');
-                obj.subgroups = repmat(file.Group, length(subGroups), 1);
+                obj.subgroups = repmat(matnwb.file.Group, length(subGroups), 1);
                 for i=1:length(subGroups)
-                    group = file.Group(subGroups{i});
+                    group = matnwb.file.Group(subGroups{i});
                     if isempty(group.name)
                         anonGroupCnt = anonGroupCnt + 1;
                     end
@@ -121,9 +121,9 @@ classdef Group < file.interface.HasProps
             
             if isKey(source, 'links')
                 sourceLinks = source('links');
-                obj.links = repmat(file.Link, length(sourceLinks), 1);
+                obj.links = repmat(matnwb.file.Link, length(sourceLinks), 1);
                 for i=1:length(sourceLinks)
-                    obj.links(i) = file.Link(sourceLinks{i});
+                    obj.links(i) = matnwb.file.Link(sourceLinks{i});
                 end
             end
             
@@ -226,8 +226,8 @@ classdef Group < file.interface.HasProps
                     % hoist constrained sets to the current
                     % subname.
                     isPossiblyConstrained =...
-                        isa(Descendant, 'file.Group')...
-                        || isa(Descendant, 'file.Dataset');
+                        isa(Descendant, 'matnwb.file.Group')...
+                        || isa(Descendant, 'matnwb.file.Dataset');
                     isConstrained = isPossiblyConstrained...
                         && all(strcmpi(descendantName, {Descendant.type}))...
                         && all(Descendant.isConstrainedSet);

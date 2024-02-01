@@ -1,4 +1,4 @@
-classdef NWBFile < types.core.NWBContainer & types.untyped.GroupClass
+classdef NWBFile < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % NWBFILE An NWB file storing cellular-based neurophysiology data from a single experimental session.
 
 
@@ -65,25 +65,25 @@ methods
     function obj = NWBFile(varargin)
         % NWBFILE Constructor for NWBFile
         varargin = [{'nwb_version' '2.6.0'} varargin];
-        obj = obj@types.core.NWBContainer(varargin{:});
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
         
         
         p = inputParser;
         p.KeepUnmatched = true;
         p.PartialMatching = false;
         p.StructExpand = false;
-        addParameter(p, 'acquisition',types.untyped.Set());
-        addParameter(p, 'analysis',types.untyped.Set());
+        addParameter(p, 'acquisition',matnwb.types.untyped.Set());
+        addParameter(p, 'analysis',matnwb.types.untyped.Set());
         addParameter(p, 'file_create_date',[]);
-        addParameter(p, 'general',types.untyped.Set());
+        addParameter(p, 'general',matnwb.types.untyped.Set());
         addParameter(p, 'general_data_collection',[]);
-        addParameter(p, 'general_devices',types.untyped.Set());
+        addParameter(p, 'general_devices',matnwb.types.untyped.Set());
         addParameter(p, 'general_experiment_description',[]);
         addParameter(p, 'general_experimenter',[]);
-        addParameter(p, 'general_extracellular_ephys',types.untyped.Set());
+        addParameter(p, 'general_extracellular_ephys',matnwb.types.untyped.Set());
         addParameter(p, 'general_extracellular_ephys_electrodes',[]);
         addParameter(p, 'general_institution',[]);
-        addParameter(p, 'general_intracellular_ephys',types.untyped.Set());
+        addParameter(p, 'general_intracellular_ephys',matnwb.types.untyped.Set());
         addParameter(p, 'general_intracellular_ephys_experimental_conditions',[]);
         addParameter(p, 'general_intracellular_ephys_filtering',[]);
         addParameter(p, 'general_intracellular_ephys_intracellular_recordings',[]);
@@ -94,8 +94,8 @@ methods
         addParameter(p, 'general_keywords',[]);
         addParameter(p, 'general_lab',[]);
         addParameter(p, 'general_notes',[]);
-        addParameter(p, 'general_optogenetics',types.untyped.Set());
-        addParameter(p, 'general_optophysiology',types.untyped.Set());
+        addParameter(p, 'general_optogenetics',matnwb.types.untyped.Set());
+        addParameter(p, 'general_optophysiology',matnwb.types.untyped.Set());
         addParameter(p, 'general_pharmacology',[]);
         addParameter(p, 'general_protocol',[]);
         addParameter(p, 'general_related_publications',[]);
@@ -108,20 +108,20 @@ methods
         addParameter(p, 'general_surgery',[]);
         addParameter(p, 'general_virus',[]);
         addParameter(p, 'identifier',[]);
-        addParameter(p, 'intervals',types.untyped.Set());
+        addParameter(p, 'intervals',matnwb.types.untyped.Set());
         addParameter(p, 'intervals_epochs',[]);
         addParameter(p, 'intervals_invalid_times',[]);
         addParameter(p, 'intervals_trials',[]);
         addParameter(p, 'nwb_version',[]);
-        addParameter(p, 'processing',types.untyped.Set());
-        addParameter(p, 'scratch',types.untyped.Set());
+        addParameter(p, 'processing',matnwb.types.untyped.Set());
+        addParameter(p, 'scratch',matnwb.types.untyped.Set());
         addParameter(p, 'session_description',[]);
         addParameter(p, 'session_start_time',[]);
-        addParameter(p, 'stimulus_presentation',types.untyped.Set());
-        addParameter(p, 'stimulus_templates',types.untyped.Set());
+        addParameter(p, 'stimulus_presentation',matnwb.types.untyped.Set());
+        addParameter(p, 'stimulus_templates',matnwb.types.untyped.Set());
         addParameter(p, 'timestamps_reference_time',[]);
         addParameter(p, 'units',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.acquisition = p.Results.acquisition;
         obj.analysis = p.Results.analysis;
         obj.file_create_date = p.Results.file_create_date;
@@ -171,9 +171,9 @@ methods
         obj.stimulus_templates = p.Results.stimulus_templates;
         obj.timestamps_reference_time = p.Results.timestamps_reference_time;
         obj.units = p.Results.units;
-        if strcmp(class(obj), 'types.core.NWBFile')
+        if strcmp(class(obj), 'matnwb.types.core.NWBFile')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -324,16 +324,16 @@ methods
     %% VALIDATORS
     
     function val = validate_acquisition(obj, val)
-        constrained = {'types.hdmf_common.DynamicTable', 'types.core.NWBDataInterface'};
-        types.util.checkSet('acquisition', struct(), constrained, val);
+        constrained = {'matnwb.types.hdmf_common.DynamicTable', 'matnwb.matnwb.types.core.NWBDataInterface'};
+        matnwb.types.util.checkSet('acquisition', struct(), constrained, val);
     end
     function val = validate_analysis(obj, val)
-        constrained = {'types.hdmf_common.DynamicTable', 'types.core.NWBContainer'};
-        types.util.checkSet('analysis', struct(), constrained, val);
+        constrained = {'matnwb.types.hdmf_common.DynamicTable', 'matnwb.types.core.NWBContainer'};
+        matnwb.types.util.checkSet('analysis', struct(), constrained, val);
     end
     function val = validate_file_create_date(obj, val)
-        val = types.util.checkDtype('file_create_date', 'datetime', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('file_create_date', 'datetime', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -347,16 +347,16 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general(obj, val)
         namedprops = struct();
-        constrained = {'types.core.LabMetaData'};
-        types.util.checkSet('general', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.LabMetaData'};
+        matnwb.types.util.checkSet('general', namedprops, constrained, val);
     end
     function val = validate_general_data_collection(obj, val)
-        val = types.util.checkDtype('general_data_collection', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_data_collection', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -370,16 +370,16 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_devices(obj, val)
         namedprops = struct();
-        constrained = {'types.core.Device'};
-        types.util.checkSet('general_devices', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.Device'};
+        matnwb.types.util.checkSet('general_devices', namedprops, constrained, val);
     end
     function val = validate_general_experiment_description(obj, val)
-        val = types.util.checkDtype('general_experiment_description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_experiment_description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -393,11 +393,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_experimenter(obj, val)
-        val = types.util.checkDtype('general_experimenter', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_experimenter', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -411,19 +411,19 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_extracellular_ephys(obj, val)
         namedprops = struct();
-        constrained = {'types.core.ElectrodeGroup'};
-        types.util.checkSet('general_extracellular_ephys', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.ElectrodeGroup'};
+        matnwb.types.util.checkSet('general_extracellular_ephys', namedprops, constrained, val);
     end
     function val = validate_general_extracellular_ephys_electrodes(obj, val)
-        val = types.util.checkDtype('general_extracellular_ephys_electrodes', 'types.hdmf_common.DynamicTable', val);
+        val = matnwb.types.util.checkDtype('general_extracellular_ephys_electrodes', 'matnwb.types.hdmf_common.DynamicTable', val);
     end
     function val = validate_general_institution(obj, val)
-        val = types.util.checkDtype('general_institution', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_institution', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -437,19 +437,19 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_intracellular_ephys(obj, val)
         namedprops = struct();
-        constrained = {'types.core.IntracellularElectrode'};
-        types.util.checkSet('general_intracellular_ephys', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.IntracellularElectrode'};
+        matnwb.types.util.checkSet('general_intracellular_ephys', namedprops, constrained, val);
     end
     function val = validate_general_intracellular_ephys_experimental_conditions(obj, val)
-        val = types.util.checkDtype('general_intracellular_ephys_experimental_conditions', 'types.core.ExperimentalConditionsTable', val);
+        val = matnwb.types.util.checkDtype('general_intracellular_ephys_experimental_conditions', 'matnwb.types.core.ExperimentalConditionsTable', val);
     end
     function val = validate_general_intracellular_ephys_filtering(obj, val)
-        val = types.util.checkDtype('general_intracellular_ephys_filtering', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_intracellular_ephys_filtering', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -463,26 +463,26 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_intracellular_ephys_intracellular_recordings(obj, val)
-        val = types.util.checkDtype('general_intracellular_ephys_intracellular_recordings', 'types.core.IntracellularRecordingsTable', val);
+        val = matnwb.types.util.checkDtype('general_intracellular_ephys_intracellular_recordings', 'matnwb.types.core.IntracellularRecordingsTable', val);
     end
     function val = validate_general_intracellular_ephys_repetitions(obj, val)
-        val = types.util.checkDtype('general_intracellular_ephys_repetitions', 'types.core.RepetitionsTable', val);
+        val = matnwb.types.util.checkDtype('general_intracellular_ephys_repetitions', 'matnwb.types.core.RepetitionsTable', val);
     end
     function val = validate_general_intracellular_ephys_sequential_recordings(obj, val)
-        val = types.util.checkDtype('general_intracellular_ephys_sequential_recordings', 'types.core.SequentialRecordingsTable', val);
+        val = matnwb.types.util.checkDtype('general_intracellular_ephys_sequential_recordings', 'matnwb.types.core.SequentialRecordingsTable', val);
     end
     function val = validate_general_intracellular_ephys_simultaneous_recordings(obj, val)
-        val = types.util.checkDtype('general_intracellular_ephys_simultaneous_recordings', 'types.core.SimultaneousRecordingsTable', val);
+        val = matnwb.types.util.checkDtype('general_intracellular_ephys_simultaneous_recordings', 'matnwb.types.core.SimultaneousRecordingsTable', val);
     end
     function val = validate_general_intracellular_ephys_sweep_table(obj, val)
-        val = types.util.checkDtype('general_intracellular_ephys_sweep_table', 'types.core.SweepTable', val);
+        val = matnwb.types.util.checkDtype('general_intracellular_ephys_sweep_table', 'matnwb.types.core.SweepTable', val);
     end
     function val = validate_general_keywords(obj, val)
-        val = types.util.checkDtype('general_keywords', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_keywords', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -496,11 +496,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_lab(obj, val)
-        val = types.util.checkDtype('general_lab', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_lab', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -514,11 +514,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_notes(obj, val)
-        val = types.util.checkDtype('general_notes', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_notes', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -532,21 +532,21 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_optogenetics(obj, val)
         namedprops = struct();
-        constrained = {'types.core.OptogeneticStimulusSite'};
-        types.util.checkSet('general_optogenetics', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.OptogeneticStimulusSite'};
+        matnwb.types.util.checkSet('general_optogenetics', namedprops, constrained, val);
     end
     function val = validate_general_optophysiology(obj, val)
         namedprops = struct();
-        constrained = {'types.core.ImagingPlane'};
-        types.util.checkSet('general_optophysiology', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.ImagingPlane'};
+        matnwb.types.util.checkSet('general_optophysiology', namedprops, constrained, val);
     end
     function val = validate_general_pharmacology(obj, val)
-        val = types.util.checkDtype('general_pharmacology', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_pharmacology', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -560,11 +560,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_protocol(obj, val)
-        val = types.util.checkDtype('general_protocol', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_protocol', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -578,11 +578,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_related_publications(obj, val)
-        val = types.util.checkDtype('general_related_publications', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_related_publications', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -596,11 +596,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_session_id(obj, val)
-        val = types.util.checkDtype('general_session_id', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_session_id', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -614,11 +614,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_slices(obj, val)
-        val = types.util.checkDtype('general_slices', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_slices', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -632,11 +632,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_source_script(obj, val)
-        val = types.util.checkDtype('general_source_script', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_source_script', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -650,11 +650,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_source_script_file_name(obj, val)
-        val = types.util.checkDtype('general_source_script_file_name', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_source_script_file_name', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -668,11 +668,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_stimulus(obj, val)
-        val = types.util.checkDtype('general_stimulus', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_stimulus', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -686,14 +686,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_subject(obj, val)
-        val = types.util.checkDtype('general_subject', 'types.core.Subject', val);
+        val = matnwb.types.util.checkDtype('general_subject', 'matnwb.types.core.Subject', val);
     end
     function val = validate_general_surgery(obj, val)
-        val = types.util.checkDtype('general_surgery', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_surgery', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -707,11 +707,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_general_virus(obj, val)
-        val = types.util.checkDtype('general_virus', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('general_virus', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -725,11 +725,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_identifier(obj, val)
-        val = types.util.checkDtype('identifier', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('identifier', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -743,34 +743,34 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_intervals(obj, val)
         namedprops = struct();
-        constrained = {'types.core.TimeIntervals'};
-        types.util.checkSet('intervals', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.TimeIntervals'};
+        matnwb.types.util.checkSet('intervals', namedprops, constrained, val);
     end
     function val = validate_intervals_epochs(obj, val)
-        val = types.util.checkDtype('intervals_epochs', 'types.core.TimeIntervals', val);
+        val = matnwb.types.util.checkDtype('intervals_epochs', 'matnwb.types.core.TimeIntervals', val);
     end
     function val = validate_intervals_invalid_times(obj, val)
-        val = types.util.checkDtype('intervals_invalid_times', 'types.core.TimeIntervals', val);
+        val = matnwb.types.util.checkDtype('intervals_invalid_times', 'matnwb.types.core.TimeIntervals', val);
     end
     function val = validate_intervals_trials(obj, val)
-        val = types.util.checkDtype('intervals_trials', 'types.core.TimeIntervals', val);
+        val = matnwb.types.util.checkDtype('intervals_trials', 'matnwb.types.core.TimeIntervals', val);
     end
     function val = validate_processing(obj, val)
         namedprops = struct();
-        constrained = {'types.core.ProcessingModule'};
-        types.util.checkSet('processing', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.ProcessingModule'};
+        matnwb.types.util.checkSet('processing', namedprops, constrained, val);
     end
     function val = validate_scratch(obj, val)
-        constrained = {'types.hdmf_common.DynamicTable', 'types.core.NWBContainer', 'types.core.ScratchData'};
-        types.util.checkSet('scratch', struct(), constrained, val);
+        constrained = {'matnwb.types.hdmf_common.DynamicTable', 'matnwb.types.core.NWBContainer', 'matnwb.types.core.ScratchData'};
+        matnwb.types.util.checkSet('scratch', struct(), constrained, val);
     end
     function val = validate_session_description(obj, val)
-        val = types.util.checkDtype('session_description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('session_description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -784,11 +784,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_session_start_time(obj, val)
-        val = types.util.checkDtype('session_start_time', 'datetime', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('session_start_time', 'datetime', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -802,20 +802,20 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_stimulus_presentation(obj, val)
         namedprops = struct();
-        constrained = {'types.core.TimeSeries'};
-        types.util.checkSet('stimulus_presentation', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.TimeSeries'};
+        matnwb.types.util.checkSet('stimulus_presentation', namedprops, constrained, val);
     end
     function val = validate_stimulus_templates(obj, val)
-        constrained = {'types.core.Images', 'types.core.TimeSeries'};
-        types.util.checkSet('stimulus_templates', struct(), constrained, val);
+        constrained = {'matnwb.matnwb.types.core.Images', 'matnwb.types.core.TimeSeries'};
+        matnwb.types.util.checkSet('stimulus_templates', struct(), constrained, val);
     end
     function val = validate_timestamps_reference_time(obj, val)
-        val = types.util.checkDtype('timestamps_reference_time', 'datetime', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('timestamps_reference_time', 'datetime', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -829,14 +829,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_units(obj, val)
-        val = types.util.checkDtype('units', 'types.core.Units', val);
+        val = matnwb.types.util.checkDtype('units', 'matnwb.types.core.Units', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -846,221 +846,221 @@ methods
         if startsWith(class(obj.file_create_date), 'types.untyped.')
             refs = obj.file_create_date.export(fid, [fullpath '/file_create_date'], refs);
         elseif ~isempty(obj.file_create_date)
-            io.writeDataset(fid, [fullpath '/file_create_date'], obj.file_create_date, 'forceChunking', 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/file_create_date'], obj.file_create_date, 'forceChunking', 'forceArray');
         end
         refs = obj.general.export(fid, [fullpath '/general'], refs);
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_data_collection)
             if startsWith(class(obj.general_data_collection), 'types.untyped.')
                 refs = obj.general_data_collection.export(fid, [fullpath '/general/data_collection'], refs);
             elseif ~isempty(obj.general_data_collection)
-                io.writeDataset(fid, [fullpath '/general/data_collection'], obj.general_data_collection);
+                matnwb.io.writeDataset(fid, [fullpath '/general/data_collection'], obj.general_data_collection);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_devices)
             refs = obj.general_devices.export(fid, [fullpath '/general/devices'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_experiment_description)
             if startsWith(class(obj.general_experiment_description), 'types.untyped.')
                 refs = obj.general_experiment_description.export(fid, [fullpath '/general/experiment_description'], refs);
             elseif ~isempty(obj.general_experiment_description)
-                io.writeDataset(fid, [fullpath '/general/experiment_description'], obj.general_experiment_description);
+                matnwb.io.writeDataset(fid, [fullpath '/general/experiment_description'], obj.general_experiment_description);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_experimenter)
             if startsWith(class(obj.general_experimenter), 'types.untyped.')
                 refs = obj.general_experimenter.export(fid, [fullpath '/general/experimenter'], refs);
             elseif ~isempty(obj.general_experimenter)
-                io.writeDataset(fid, [fullpath '/general/experimenter'], obj.general_experimenter, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/general/experimenter'], obj.general_experimenter, 'forceArray');
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_extracellular_ephys)
             refs = obj.general_extracellular_ephys.export(fid, [fullpath '/general/extracellular_ephys'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general/extracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/extracellular_ephys']);
         if ~isempty(obj.general_extracellular_ephys_electrodes)
             refs = obj.general_extracellular_ephys_electrodes.export(fid, [fullpath '/general/extracellular_ephys/electrodes'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_institution)
             if startsWith(class(obj.general_institution), 'types.untyped.')
                 refs = obj.general_institution.export(fid, [fullpath '/general/institution'], refs);
             elseif ~isempty(obj.general_institution)
-                io.writeDataset(fid, [fullpath '/general/institution'], obj.general_institution);
+                matnwb.io.writeDataset(fid, [fullpath '/general/institution'], obj.general_institution);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_intracellular_ephys)
             refs = obj.general_intracellular_ephys.export(fid, [fullpath '/general/intracellular_ephys'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_experimental_conditions)
             refs = obj.general_intracellular_ephys_experimental_conditions.export(fid, [fullpath '/general/intracellular_ephys/experimental_conditions'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_filtering)
             if startsWith(class(obj.general_intracellular_ephys_filtering), 'types.untyped.')
                 refs = obj.general_intracellular_ephys_filtering.export(fid, [fullpath '/general/intracellular_ephys/filtering'], refs);
             elseif ~isempty(obj.general_intracellular_ephys_filtering)
-                io.writeDataset(fid, [fullpath '/general/intracellular_ephys/filtering'], obj.general_intracellular_ephys_filtering);
+                matnwb.io.writeDataset(fid, [fullpath '/general/intracellular_ephys/filtering'], obj.general_intracellular_ephys_filtering);
             end
         end
-        io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_intracellular_recordings)
             refs = obj.general_intracellular_ephys_intracellular_recordings.export(fid, [fullpath '/general/intracellular_ephys/intracellular_recordings'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_repetitions)
             refs = obj.general_intracellular_ephys_repetitions.export(fid, [fullpath '/general/intracellular_ephys/repetitions'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_sequential_recordings)
             refs = obj.general_intracellular_ephys_sequential_recordings.export(fid, [fullpath '/general/intracellular_ephys/sequential_recordings'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_simultaneous_recordings)
             refs = obj.general_intracellular_ephys_simultaneous_recordings.export(fid, [fullpath '/general/intracellular_ephys/simultaneous_recordings'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
+        matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_sweep_table)
             refs = obj.general_intracellular_ephys_sweep_table.export(fid, [fullpath '/general/intracellular_ephys/sweep_table'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_keywords)
             if startsWith(class(obj.general_keywords), 'types.untyped.')
                 refs = obj.general_keywords.export(fid, [fullpath '/general/keywords'], refs);
             elseif ~isempty(obj.general_keywords)
-                io.writeDataset(fid, [fullpath '/general/keywords'], obj.general_keywords, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/general/keywords'], obj.general_keywords, 'forceArray');
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_lab)
             if startsWith(class(obj.general_lab), 'types.untyped.')
                 refs = obj.general_lab.export(fid, [fullpath '/general/lab'], refs);
             elseif ~isempty(obj.general_lab)
-                io.writeDataset(fid, [fullpath '/general/lab'], obj.general_lab);
+                matnwb.io.writeDataset(fid, [fullpath '/general/lab'], obj.general_lab);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_notes)
             if startsWith(class(obj.general_notes), 'types.untyped.')
                 refs = obj.general_notes.export(fid, [fullpath '/general/notes'], refs);
             elseif ~isempty(obj.general_notes)
-                io.writeDataset(fid, [fullpath '/general/notes'], obj.general_notes);
+                matnwb.io.writeDataset(fid, [fullpath '/general/notes'], obj.general_notes);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_optogenetics)
             refs = obj.general_optogenetics.export(fid, [fullpath '/general/optogenetics'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_optophysiology)
             refs = obj.general_optophysiology.export(fid, [fullpath '/general/optophysiology'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_pharmacology)
             if startsWith(class(obj.general_pharmacology), 'types.untyped.')
                 refs = obj.general_pharmacology.export(fid, [fullpath '/general/pharmacology'], refs);
             elseif ~isempty(obj.general_pharmacology)
-                io.writeDataset(fid, [fullpath '/general/pharmacology'], obj.general_pharmacology);
+                matnwb.io.writeDataset(fid, [fullpath '/general/pharmacology'], obj.general_pharmacology);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_protocol)
             if startsWith(class(obj.general_protocol), 'types.untyped.')
                 refs = obj.general_protocol.export(fid, [fullpath '/general/protocol'], refs);
             elseif ~isempty(obj.general_protocol)
-                io.writeDataset(fid, [fullpath '/general/protocol'], obj.general_protocol);
+                matnwb.io.writeDataset(fid, [fullpath '/general/protocol'], obj.general_protocol);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_related_publications)
             if startsWith(class(obj.general_related_publications), 'types.untyped.')
                 refs = obj.general_related_publications.export(fid, [fullpath '/general/related_publications'], refs);
             elseif ~isempty(obj.general_related_publications)
-                io.writeDataset(fid, [fullpath '/general/related_publications'], obj.general_related_publications, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/general/related_publications'], obj.general_related_publications, 'forceArray');
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_session_id)
             if startsWith(class(obj.general_session_id), 'types.untyped.')
                 refs = obj.general_session_id.export(fid, [fullpath '/general/session_id'], refs);
             elseif ~isempty(obj.general_session_id)
-                io.writeDataset(fid, [fullpath '/general/session_id'], obj.general_session_id);
+                matnwb.io.writeDataset(fid, [fullpath '/general/session_id'], obj.general_session_id);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_slices)
             if startsWith(class(obj.general_slices), 'types.untyped.')
                 refs = obj.general_slices.export(fid, [fullpath '/general/slices'], refs);
             elseif ~isempty(obj.general_slices)
-                io.writeDataset(fid, [fullpath '/general/slices'], obj.general_slices);
+                matnwb.io.writeDataset(fid, [fullpath '/general/slices'], obj.general_slices);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_source_script)
             if startsWith(class(obj.general_source_script), 'types.untyped.')
                 refs = obj.general_source_script.export(fid, [fullpath '/general/source_script'], refs);
             elseif ~isempty(obj.general_source_script)
-                io.writeDataset(fid, [fullpath '/general/source_script'], obj.general_source_script);
+                matnwb.io.writeDataset(fid, [fullpath '/general/source_script'], obj.general_source_script);
             end
         end
-        if ~isempty(obj.general_source_script) && ~isa(obj.general_source_script, 'types.untyped.SoftLink') && ~isa(obj.general_source_script, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/general/source_script/file_name'], obj.general_source_script_file_name);
+        if ~isempty(obj.general_source_script) && ~isa(obj.general_source_script, 'matnwb.types.untyped.SoftLink') && ~isa(obj.general_source_script, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/general/source_script/file_name'], obj.general_source_script_file_name);
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_stimulus)
             if startsWith(class(obj.general_stimulus), 'types.untyped.')
                 refs = obj.general_stimulus.export(fid, [fullpath '/general/stimulus'], refs);
             elseif ~isempty(obj.general_stimulus)
-                io.writeDataset(fid, [fullpath '/general/stimulus'], obj.general_stimulus);
+                matnwb.io.writeDataset(fid, [fullpath '/general/stimulus'], obj.general_stimulus);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_subject)
             refs = obj.general_subject.export(fid, [fullpath '/general/subject'], refs);
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_surgery)
             if startsWith(class(obj.general_surgery), 'types.untyped.')
                 refs = obj.general_surgery.export(fid, [fullpath '/general/surgery'], refs);
             elseif ~isempty(obj.general_surgery)
-                io.writeDataset(fid, [fullpath '/general/surgery'], obj.general_surgery);
+                matnwb.io.writeDataset(fid, [fullpath '/general/surgery'], obj.general_surgery);
             end
         end
-        io.writeGroup(fid, [fullpath '/general']);
+        matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_virus)
             if startsWith(class(obj.general_virus), 'types.untyped.')
                 refs = obj.general_virus.export(fid, [fullpath '/general/virus'], refs);
             elseif ~isempty(obj.general_virus)
-                io.writeDataset(fid, [fullpath '/general/virus'], obj.general_virus);
+                matnwb.io.writeDataset(fid, [fullpath '/general/virus'], obj.general_virus);
             end
         end
         if startsWith(class(obj.identifier), 'types.untyped.')
             refs = obj.identifier.export(fid, [fullpath '/identifier'], refs);
         elseif ~isempty(obj.identifier)
-            io.writeDataset(fid, [fullpath '/identifier'], obj.identifier);
+            matnwb.io.writeDataset(fid, [fullpath '/identifier'], obj.identifier);
         end
         if ~isempty(obj.intervals)
             refs = obj.intervals.export(fid, [fullpath '/intervals'], refs);
         end
-        io.writeGroup(fid, [fullpath '/intervals']);
+        matnwb.io.writeGroup(fid, [fullpath '/intervals']);
         if ~isempty(obj.intervals_epochs)
             refs = obj.intervals_epochs.export(fid, [fullpath '/intervals/epochs'], refs);
         end
-        io.writeGroup(fid, [fullpath '/intervals']);
+        matnwb.io.writeGroup(fid, [fullpath '/intervals']);
         if ~isempty(obj.intervals_invalid_times)
             refs = obj.intervals_invalid_times.export(fid, [fullpath '/intervals/invalid_times'], refs);
         end
-        io.writeGroup(fid, [fullpath '/intervals']);
+        matnwb.io.writeGroup(fid, [fullpath '/intervals']);
         if ~isempty(obj.intervals_trials)
             refs = obj.intervals_trials.export(fid, [fullpath '/intervals/trials'], refs);
         end
-        io.writeAttribute(fid, [fullpath '/nwb_version'], obj.nwb_version);
+        matnwb.io.writeAttribute(fid, [fullpath '/nwb_version'], obj.nwb_version);
         refs = obj.processing.export(fid, [fullpath '/processing'], refs);
         if ~isempty(obj.scratch)
             refs = obj.scratch.export(fid, [fullpath '/scratch'], refs);
@@ -1068,21 +1068,21 @@ methods
         if startsWith(class(obj.session_description), 'types.untyped.')
             refs = obj.session_description.export(fid, [fullpath '/session_description'], refs);
         elseif ~isempty(obj.session_description)
-            io.writeDataset(fid, [fullpath '/session_description'], obj.session_description);
+            matnwb.io.writeDataset(fid, [fullpath '/session_description'], obj.session_description);
         end
         if startsWith(class(obj.session_start_time), 'types.untyped.')
             refs = obj.session_start_time.export(fid, [fullpath '/session_start_time'], refs);
         elseif ~isempty(obj.session_start_time)
-            io.writeDataset(fid, [fullpath '/session_start_time'], obj.session_start_time);
+            matnwb.io.writeDataset(fid, [fullpath '/session_start_time'], obj.session_start_time);
         end
-        io.writeGroup(fid, [fullpath '/stimulus']);
+        matnwb.io.writeGroup(fid, [fullpath '/stimulus']);
         refs = obj.stimulus_presentation.export(fid, [fullpath '/stimulus/presentation'], refs);
-        io.writeGroup(fid, [fullpath '/stimulus']);
+        matnwb.io.writeGroup(fid, [fullpath '/stimulus']);
         refs = obj.stimulus_templates.export(fid, [fullpath '/stimulus/templates'], refs);
         if startsWith(class(obj.timestamps_reference_time), 'types.untyped.')
             refs = obj.timestamps_reference_time.export(fid, [fullpath '/timestamps_reference_time'], refs);
         elseif ~isempty(obj.timestamps_reference_time)
-            io.writeDataset(fid, [fullpath '/timestamps_reference_time'], obj.timestamps_reference_time);
+            matnwb.io.writeDataset(fid, [fullpath '/timestamps_reference_time'], obj.timestamps_reference_time);
         end
         if ~isempty(obj.units)
             refs = obj.units.export(fid, [fullpath '/units'], refs);

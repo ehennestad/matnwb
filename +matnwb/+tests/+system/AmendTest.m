@@ -1,4 +1,4 @@
-classdef AmendTest < tests.system.NwbTestInterface
+classdef AmendTest < matnwb.tests.system.NwbTestInterface
     methods (Test)
         function testAmend(testCase)
             filename = ['MatNWB.' testCase.className() '.testAmend.nwb'];
@@ -9,7 +9,7 @@ classdef AmendTest < tests.system.NwbTestInterface
             writeContainer = testCase.getContainer(testCase.file);
             readFile = nwbRead(filename, 'ignorecache');
             readContainer = testCase.getContainer(readFile);
-            tests.util.verifyContainerEqual(testCase, readContainer, writeContainer);
+            matnwb.tests.util.verifyContainerEqual(testCase, readContainer, writeContainer);
         end
     end
     

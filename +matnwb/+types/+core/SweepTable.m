@@ -1,4 +1,4 @@
-classdef SweepTable < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef SweepTable < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % SWEEPTABLE [DEPRECATED] Table used to group different PatchClampSeries. SweepTable is being replaced by IntracellularRecordingsTable and SimultaneousRecordingsTable tables. Additional SequentialRecordingsTable, RepetitionsTable, and ExperimentalConditions tables provide enhanced support for experiment metadata.
 
 
@@ -12,7 +12,7 @@ end
 methods
     function obj = SweepTable(varargin)
         % SWEEPTABLE Constructor for SweepTable
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -22,16 +22,16 @@ methods
         addParameter(p, 'series',[]);
         addParameter(p, 'series_index',[]);
         addParameter(p, 'sweep_number',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.series = p.Results.series;
         obj.series_index = p.Results.series_index;
         obj.sweep_number = p.Results.sweep_number;
-        if strcmp(class(obj), 'types.core.SweepTable')
+        if strcmp(class(obj), 'matnwb.types.core.SweepTable')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.SweepTable')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.SweepTable')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -47,17 +47,17 @@ methods
     %% VALIDATORS
     
     function val = validate_series(obj, val)
-        val = types.util.checkDtype('series', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('series', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_series_index(obj, val)
-        val = types.util.checkDtype('series_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('series_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_sweep_number(obj, val)
-        val = types.util.checkDtype('sweep_number', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('sweep_number', 'matnwb.types.hdmf_common.VectorData', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

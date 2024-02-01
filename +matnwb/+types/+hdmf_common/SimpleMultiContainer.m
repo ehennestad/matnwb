@@ -1,4 +1,4 @@
-classdef SimpleMultiContainer < types.hdmf_common.Container & types.untyped.GroupClass
+classdef SimpleMultiContainer < matnwb.types.hdmf_common.Container & matnwb.types.untyped.GroupClass
 % SIMPLEMULTICONTAINER A simple Container for holding onto multiple containers.
 
 
@@ -11,20 +11,20 @@ end
 methods
     function obj = SimpleMultiContainer(varargin)
         % SIMPLEMULTICONTAINER Constructor for SimpleMultiContainer
-        obj = obj@types.hdmf_common.Container(varargin{:});
-        [obj.container, ivarargin] = types.util.parseConstrained(obj,'container', 'types.hdmf_common.Container', varargin{:});
+        obj = obj@matnwb.types.hdmf_common.Container(varargin{:});
+        [obj.container, ivarargin] = matnwb.types.util.parseConstrained(obj,'container', 'matnwb.types.hdmf_common.Container', varargin{:});
         varargin(ivarargin) = [];
-        [obj.data, ivarargin] = types.util.parseConstrained(obj,'data', 'types.hdmf_common.Data', varargin{:});
+        [obj.data, ivarargin] = matnwb.types.util.parseConstrained(obj,'data', 'matnwb.types.hdmf_common.Data', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
         p.KeepUnmatched = true;
         p.PartialMatching = false;
         p.StructExpand = false;
-        misc.parseSkipInvalidName(p, varargin);
-        if strcmp(class(obj), 'types.hdmf_common.SimpleMultiContainer')
+        matnwb.misc.parseSkipInvalidName(p, varargin);
+        if strcmp(class(obj), 'matnwb.types.hdmf_common.SimpleMultiContainer')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -38,16 +38,16 @@ methods
     
     function val = validate_container(obj, val)
         namedprops = struct();
-        constrained = {'types.hdmf_common.Container'};
-        types.util.checkSet('container', namedprops, constrained, val);
+        constrained = {'matnwb.types.hdmf_common.Container'};
+        matnwb.types.util.checkSet('container', namedprops, constrained, val);
     end
     function val = validate_data(obj, val)
-        constrained = { 'types.hdmf_common.Data' };
-        types.util.checkSet('data', struct(), constrained, val);
+        constrained = { 'matnwb.types.hdmf_common.Data' };
+        matnwb.types.util.checkSet('data', struct(), constrained, val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.Container(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.Container(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

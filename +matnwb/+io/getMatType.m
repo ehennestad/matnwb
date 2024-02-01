@@ -20,13 +20,13 @@ elseif H5T.equal(tid, 'H5T_STD_U64LE')
     type = 'uint64';
 elseif H5T.equal(tid, 'H5T_STD_I64LE')
     type = 'int64';
-elseif H5T.equal(tid, io.getBaseType('char'))
+elseif H5T.equal(tid, matnwb.io.getBaseType('char'))
     type = 'char';
 elseif H5T.equal(tid, 'H5T_STD_REF_OBJ')
-    type = 'types.untyped.ObjectView';
+    type = 'matnwb.types.untyped.ObjectView';
 elseif H5T.equal(tid, 'H5T_STD_REF_DSETREG')
-    type = 'types.untyped.RegionView';
-elseif io.isBool(tid)
+    type = 'matnwb.types.untyped.RegionView';
+elseif matnwb.io.isBool(tid)
     type = 'logical';
 elseif H5ML.get_constant_value('H5T_COMPOUND') == H5T.get_class(tid)
     type = 'table';

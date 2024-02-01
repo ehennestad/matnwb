@@ -29,7 +29,7 @@ function addVarargRow(DynamicTable, varargin)
         validateattributes(p.Results.id, {'numeric'}, {'scalar'});
     end
 
-    TypeMap = types.util.dynamictable.getTypeMap(DynamicTable);
+    TypeMap = matnwb.types.util.dynamictable.getTypeMap(DynamicTable);
     for iRow = 1:length(rowNames)
         rn = rowNames{iRow};
         rv = p.Results.(rn);
@@ -38,18 +38,18 @@ function addVarargRow(DynamicTable, varargin)
             validateType(TypeMap(rn), rv);
         end
 
-        types.util.dynamictable.addRawData(DynamicTable, rn, rv);
+        matnwb.types.util.dynamictable.addRawData(DynamicTable, rn, rv);
     end
 
     if specifiesId
         newId = p.Results.id;
-    elseif isa(DynamicTable.id.data, 'types.untyped.DataPipe')
+    elseif isa(DynamicTable.id.data, 'matnwb.types.untyped.DataPipe')
         newId = DynamicTable.id.data.offset;
     else
         newId = length(DynamicTable.id.data);
     end
 
-    if isa(DynamicTable.id.data, 'types.untyped.DataPipe')
+    if isa(DynamicTable.id.data, 'matnwb.types.untyped.DataPipe')
         DynamicTable.id.data.append(newId);
     else
         DynamicTable.id.data = [double(DynamicTable.id.data); newId];

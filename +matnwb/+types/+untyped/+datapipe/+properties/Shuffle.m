@@ -1,4 +1,4 @@
-classdef Shuffle < types.untyped.datapipe.Property
+classdef Shuffle < matnwb.types.untyped.datapipe.Property
     %SHUFFLE Shuffle Filter
     
     properties (Constant)
@@ -8,7 +8,7 @@ classdef Shuffle < types.untyped.datapipe.Property
     %% Properties
     methods (Static)
         function tf = isInDcpl(dcpl)
-            import types.untyped.datapipe.properties.Shuffle;
+            import matnwb.types.untyped.datapipe.properties.Shuffle;
             
             tf = false;
             filterId = H5ML.get_constant_value(Shuffle.FILTER_NAME);

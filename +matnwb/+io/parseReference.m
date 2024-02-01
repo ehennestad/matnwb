@@ -22,13 +22,13 @@ function Reference = parseSingleReference(datasetId, referenceType, data)
 
     %% H5R_OBJECT
     if referenceType == H5ML.get_constant_value('H5R_OBJECT')
-        Reference = types.untyped.ObjectView(target);
+        Reference = matnwb.types.untyped.ObjectView(target);
         return;
     end
 
     %% H5R_DATASET_REGION
     if isempty(target)
-        Reference = types.untyped.RegionView(target);
+        Reference = matnwb.types.untyped.RegionView(target);
         return;
     end
     spaceId = H5R.get_region(datasetId, referenceType, data);
@@ -59,5 +59,5 @@ function Reference = parseSingleReference(datasetId, referenceType, data)
     end
 
     H5S.close(spaceId);
-    Reference = types.untyped.RegionView(target, selections{:});
+    Reference = matnwb.types.untyped.RegionView(target, selections{:});
 end

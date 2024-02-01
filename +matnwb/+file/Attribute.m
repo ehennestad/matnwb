@@ -57,13 +57,13 @@ classdef Attribute
             end
             
             if isKey(source, 'shape')
-                obj.shape = file.formatShape(source('shape'));
-                obj.scalar = file.isShapeScalar(obj.shape);
+                obj.shape = matnwb.file.formatShape(source('shape'));
+                obj.scalar = matnwb.file.isShapeScalar(obj.shape);
             else
                 obj.shape = 1;
             end
             
-            obj.dtype = file.mapType(source('dtype'));
+            obj.dtype = matnwb.file.mapType(source('dtype'));
         end
     end
 end

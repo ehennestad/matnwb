@@ -19,7 +19,7 @@ function template = fillClass(name, namespace, processed, classprops, inherited)
 
         isRequired = ischar(prop) || isa(prop, 'containers.Map') || isstruct(prop);
         isPropertyRequired = false;
-        if isa(prop, 'file.interface.HasProps')
+        if isa(prop, 'matnwb.file.interface.HasProps')
             isPropertyRequired = false(size(prop));
             for iProp = 1:length(prop)
                 p = prop(iProp);
@@ -33,7 +33,7 @@ function template = fillClass(name, namespace, processed, classprops, inherited)
             optional = [optional {propertyName}];
         end
 
-        if isa(prop, 'file.Attribute')
+        if isa(prop, 'matnwb.file.Attribute')
             if prop.readonly
                 readonly = [readonly {propertyName}];
             end
@@ -66,16 +66,16 @@ function template = fillClass(name, namespace, processed, classprops, inherited)
 
     %% CLASSDEF
     if length(processed) <= 1
-        depnm = 'types.untyped.MetaClass'; %WRITE
+        depnm = 'matnwb.types.untyped.MetaClass'; %WRITE
     else
         parentName = processed(2).type; %WRITE
         depnm = namespace.getFullClassName(parentName);
     end
 
-    if isa(processed, 'file.Group')
-        classTag = 'types.untyped.GroupClass';
+    if isa(processed, 'matnwb.file.Group')
+        classTag = 'matnwb.types.untyped.GroupClass';
     else
-        classTag = 'types.untyped.DatasetClass';
+        classTag = 'matnwb.types.untyped.DatasetClass';
     end
 
     %% return classfile string
@@ -87,11 +87,11 @@ function template = fillClass(name, namespace, processed, classprops, inherited)
     readonly = setdiff(readonly, hiddenAndReadonly);
     PropertyGroups = struct(...
         'Function', {...
-        @()file.fillProps(classprops, hiddenAndReadonly, 'PropertyAttributes', 'Hidden, SetAccess = protected') ...
-        , @()file.fillProps(classprops, hidden, 'PropertyAttributes', 'Hidden') ...
-        , @()file.fillProps(classprops, readonly, 'PropertyAttributes', 'SetAccess = protected') ...
-        , @()file.fillProps(classprops, required, 'IsRequired', true) ...
-        , @()file.fillProps(classprops, optional)...
+        @()matnwb.file.fillProps(classprops, hiddenAndReadonly, 'PropertyAttributes', 'Hidden, SetAccess = protected') ...
+        , @()matnwb.file.fillProps(classprops, hidden, 'PropertyAttributes', 'Hidden') ...
+        , @()matnwb.file.fillProps(classprops, readonly, 'PropertyAttributes', 'SetAccess = protected') ...
+        , @()matnwb.file.fillProps(classprops, required, 'IsRequired', true) ...
+        , @()matnwb.file.fillProps(classprops, optional)...
         } ...
         , 'Separator', { ...
         '% HIDDEN READONLY PROPERTIES' ...
@@ -115,26 +115,26 @@ function template = fillClass(name, namespace, processed, classprops, inherited)
             }, newline);
     end
 
-    constructorBody = file.fillConstructor(...
+    constructorBody = matnwb.file.fillConstructor(...
         name,...
         depnm,...
         defaults,... %all defaults, regardless of inheritance
         classprops,...
         namespace);
-    setterFcns = file.fillSetters(setdiff(nonInherited, union(readonly, hiddenAndReadonly)));
-    validatorFcns = file.fillValidators(allProperties, classprops, namespace);
-    exporterFcns = file.fillExport(nonInherited, class, depnm);
+    setterFcns = matnwb.file.fillSetters(setdiff(nonInherited, union(readonly, hiddenAndReadonly)));
+    validatorFcns = matnwb.file.fillValidators(allProperties, classprops, namespace);
+    exporterFcns = matnwb.file.fillExport(nonInherited, class, depnm);
     methodBody = strjoin({constructorBody...
         '%% SETTERS' setterFcns...
         '%% VALIDATORS' validatorFcns...
         '%% EXPORT' exporterFcns}, newline);
 
     if strcmp(name, 'DynamicTable')
-        methodBody = strjoin({methodBody, '%% TABLE METHODS', file.fillDynamicTableMethods()}, newline);
+        methodBody = strjoin({methodBody, '%% TABLE METHODS', matnwb.file.fillDynamicTableMethods()}, newline);
     end
 
     fullMethodBody = strjoin({'methods' ...
-        file.addSpaces(methodBody, 4) 'end'}, newline);
+        matnwb.file.addSpaces(methodBody, 4) 'end'}, newline);
     template = strjoin({classDefinitionHeader fullPropertyDefinition fullMethodBody 'end'}, ...
         [newline newline]);
 end

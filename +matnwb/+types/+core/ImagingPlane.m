@@ -1,4 +1,4 @@
-classdef ImagingPlane < types.core.NWBContainer & types.untyped.GroupClass
+classdef ImagingPlane < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % IMAGINGPLANE An imaging plane and its metadata.
 
 
@@ -27,9 +27,9 @@ end
 methods
     function obj = ImagingPlane(varargin)
         % IMAGINGPLANE Constructor for ImagingPlane
-        varargin = [{'grid_spacing_unit' 'meters' 'manifold_conversion' types.util.correctType(1, 'single') 'manifold_unit' 'meters' 'origin_coords_unit' 'meters'} varargin];
-        obj = obj@types.core.NWBContainer(varargin{:});
-        [obj.opticalchannel, ivarargin] = types.util.parseConstrained(obj,'opticalchannel', 'types.core.OpticalChannel', varargin{:});
+        varargin = [{'grid_spacing_unit' 'meters' 'manifold_conversion' matnwb.types.util.correctType(1, 'single') 'manifold_unit' 'meters' 'origin_coords_unit' 'meters'} varargin];
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
+        [obj.opticalchannel, ivarargin] = matnwb.types.util.parseConstrained(obj,'opticalchannel', 'matnwb.types.core.OpticalChannel', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
@@ -50,7 +50,7 @@ methods
         addParameter(p, 'origin_coords',[]);
         addParameter(p, 'origin_coords_unit',[]);
         addParameter(p, 'reference_frame',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.device = p.Results.device;
         obj.excitation_lambda = p.Results.excitation_lambda;
@@ -65,9 +65,9 @@ methods
         obj.origin_coords = p.Results.origin_coords;
         obj.origin_coords_unit = p.Results.origin_coords_unit;
         obj.reference_frame = p.Results.reference_frame;
-        if strcmp(class(obj), 'types.core.ImagingPlane')
+        if strcmp(class(obj), 'matnwb.types.core.ImagingPlane')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -119,8 +119,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -134,14 +134,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_device(obj, val)
-        val = types.util.checkDtype('device', 'types.core.Device', val);
+        val = matnwb.types.util.checkDtype('device', 'matnwb.types.core.Device', val);
     end
     function val = validate_excitation_lambda(obj, val)
-        val = types.util.checkDtype('excitation_lambda', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('excitation_lambda', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -155,11 +155,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_grid_spacing(obj, val)
-        val = types.util.checkDtype('grid_spacing', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('grid_spacing', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -173,11 +173,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[3], [2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_grid_spacing_unit(obj, val)
-        val = types.util.checkDtype('grid_spacing_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('grid_spacing_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -191,11 +191,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_imaging_rate(obj, val)
-        val = types.util.checkDtype('imaging_rate', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('imaging_rate', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -209,11 +209,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_indicator(obj, val)
-        val = types.util.checkDtype('indicator', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('indicator', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -227,11 +227,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_location(obj, val)
-        val = types.util.checkDtype('location', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('location', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -245,11 +245,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_manifold(obj, val)
-        val = types.util.checkDtype('manifold', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('manifold', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -263,11 +263,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[3,Inf,Inf,Inf], [3,Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_manifold_conversion(obj, val)
-        val = types.util.checkDtype('manifold_conversion', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('manifold_conversion', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -281,11 +281,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_manifold_unit(obj, val)
-        val = types.util.checkDtype('manifold_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('manifold_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -299,16 +299,16 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_opticalchannel(obj, val)
         namedprops = struct();
-        constrained = {'types.core.OpticalChannel'};
-        types.util.checkSet('opticalchannel', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.OpticalChannel'};
+        matnwb.types.util.checkSet('opticalchannel', namedprops, constrained, val);
     end
     function val = validate_origin_coords(obj, val)
-        val = types.util.checkDtype('origin_coords', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('origin_coords', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -322,11 +322,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[3], [2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_origin_coords_unit(obj, val)
-        val = types.util.checkDtype('origin_coords_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('origin_coords_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -340,11 +340,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_reference_frame(obj, val)
-        val = types.util.checkDtype('reference_frame', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('reference_frame', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -358,11 +358,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -370,71 +370,71 @@ methods
             if startsWith(class(obj.description), 'types.untyped.')
                 refs = obj.description.export(fid, [fullpath '/description'], refs);
             elseif ~isempty(obj.description)
-                io.writeDataset(fid, [fullpath '/description'], obj.description);
+                matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
             end
         end
         refs = obj.device.export(fid, [fullpath '/device'], refs);
         if startsWith(class(obj.excitation_lambda), 'types.untyped.')
             refs = obj.excitation_lambda.export(fid, [fullpath '/excitation_lambda'], refs);
         elseif ~isempty(obj.excitation_lambda)
-            io.writeDataset(fid, [fullpath '/excitation_lambda'], obj.excitation_lambda);
+            matnwb.io.writeDataset(fid, [fullpath '/excitation_lambda'], obj.excitation_lambda);
         end
         if ~isempty(obj.grid_spacing)
             if startsWith(class(obj.grid_spacing), 'types.untyped.')
                 refs = obj.grid_spacing.export(fid, [fullpath '/grid_spacing'], refs);
             elseif ~isempty(obj.grid_spacing)
-                io.writeDataset(fid, [fullpath '/grid_spacing'], obj.grid_spacing, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/grid_spacing'], obj.grid_spacing, 'forceArray');
             end
         end
-        if ~isempty(obj.grid_spacing) && ~isa(obj.grid_spacing, 'types.untyped.SoftLink') && ~isa(obj.grid_spacing, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/grid_spacing/unit'], obj.grid_spacing_unit);
+        if ~isempty(obj.grid_spacing) && ~isa(obj.grid_spacing, 'matnwb.types.untyped.SoftLink') && ~isa(obj.grid_spacing, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/grid_spacing/unit'], obj.grid_spacing_unit);
         end
         if ~isempty(obj.imaging_rate)
             if startsWith(class(obj.imaging_rate), 'types.untyped.')
                 refs = obj.imaging_rate.export(fid, [fullpath '/imaging_rate'], refs);
             elseif ~isempty(obj.imaging_rate)
-                io.writeDataset(fid, [fullpath '/imaging_rate'], obj.imaging_rate);
+                matnwb.io.writeDataset(fid, [fullpath '/imaging_rate'], obj.imaging_rate);
             end
         end
         if startsWith(class(obj.indicator), 'types.untyped.')
             refs = obj.indicator.export(fid, [fullpath '/indicator'], refs);
         elseif ~isempty(obj.indicator)
-            io.writeDataset(fid, [fullpath '/indicator'], obj.indicator);
+            matnwb.io.writeDataset(fid, [fullpath '/indicator'], obj.indicator);
         end
         if startsWith(class(obj.location), 'types.untyped.')
             refs = obj.location.export(fid, [fullpath '/location'], refs);
         elseif ~isempty(obj.location)
-            io.writeDataset(fid, [fullpath '/location'], obj.location);
+            matnwb.io.writeDataset(fid, [fullpath '/location'], obj.location);
         end
         if ~isempty(obj.manifold)
             if startsWith(class(obj.manifold), 'types.untyped.')
                 refs = obj.manifold.export(fid, [fullpath '/manifold'], refs);
             elseif ~isempty(obj.manifold)
-                io.writeDataset(fid, [fullpath '/manifold'], obj.manifold, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/manifold'], obj.manifold, 'forceArray');
             end
         end
-        if ~isempty(obj.manifold) && ~isa(obj.manifold, 'types.untyped.SoftLink') && ~isa(obj.manifold, 'types.untyped.ExternalLink') && ~isempty(obj.manifold_conversion)
-            io.writeAttribute(fid, [fullpath '/manifold/conversion'], obj.manifold_conversion);
+        if ~isempty(obj.manifold) && ~isa(obj.manifold, 'matnwb.types.untyped.SoftLink') && ~isa(obj.manifold, 'matnwb.types.untyped.ExternalLink') && ~isempty(obj.manifold_conversion)
+            matnwb.io.writeAttribute(fid, [fullpath '/manifold/conversion'], obj.manifold_conversion);
         end
-        if ~isempty(obj.manifold) && ~isa(obj.manifold, 'types.untyped.SoftLink') && ~isa(obj.manifold, 'types.untyped.ExternalLink') && ~isempty(obj.manifold_unit)
-            io.writeAttribute(fid, [fullpath '/manifold/unit'], obj.manifold_unit);
+        if ~isempty(obj.manifold) && ~isa(obj.manifold, 'matnwb.types.untyped.SoftLink') && ~isa(obj.manifold, 'matnwb.types.untyped.ExternalLink') && ~isempty(obj.manifold_unit)
+            matnwb.io.writeAttribute(fid, [fullpath '/manifold/unit'], obj.manifold_unit);
         end
         refs = obj.opticalchannel.export(fid, fullpath, refs);
         if ~isempty(obj.origin_coords)
             if startsWith(class(obj.origin_coords), 'types.untyped.')
                 refs = obj.origin_coords.export(fid, [fullpath '/origin_coords'], refs);
             elseif ~isempty(obj.origin_coords)
-                io.writeDataset(fid, [fullpath '/origin_coords'], obj.origin_coords, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/origin_coords'], obj.origin_coords, 'forceArray');
             end
         end
-        if ~isempty(obj.origin_coords) && ~isa(obj.origin_coords, 'types.untyped.SoftLink') && ~isa(obj.origin_coords, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/origin_coords/unit'], obj.origin_coords_unit);
+        if ~isempty(obj.origin_coords) && ~isa(obj.origin_coords, 'matnwb.types.untyped.SoftLink') && ~isa(obj.origin_coords, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/origin_coords/unit'], obj.origin_coords_unit);
         end
         if ~isempty(obj.reference_frame)
             if startsWith(class(obj.reference_frame), 'types.untyped.')
                 refs = obj.reference_frame.export(fid, [fullpath '/reference_frame'], refs);
             elseif ~isempty(obj.reference_frame)
-                io.writeDataset(fid, [fullpath '/reference_frame'], obj.reference_frame);
+                matnwb.io.writeDataset(fid, [fullpath '/reference_frame'], obj.reference_frame);
             end
         end
     end

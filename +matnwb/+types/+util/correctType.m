@@ -26,7 +26,7 @@ function val = correctType(val, type)
             
             % convert strings to datetimes
             if ischar(val) || isstring(val) || isCellString
-                val = formatDatetime(io.timestamp2datetime(val));
+                val = formatDatetime(matnwb.io.timestamp2datetime(val));
                 return;
             end
             if isdatetime(val)
@@ -106,8 +106,8 @@ function nearestType = findNearestType(val, type)
     isTypeUnsigned = ~isTypeFloat && startsWith(type, 'u');
     isValueTypeUnsigned = ~isfloat(val) && startsWith(class(val), 'u');
     
-    valueTypeBitSize = 8 * io.getMatTypeSize(class(val));
-    preferredTypeBitSize = 8 * io.getMatTypeSize(type);
+    valueTypeBitSize = 8 * matnwb.matnwb.io.getMatTypeSize(class(val));
+    preferredTypeBitSize = 8 * matnwb.matnwb.io.getMatTypeSize(type);
     idealTypeBitSize = max(valueTypeBitSize, preferredTypeBitSize);
     
     % In certain classes of conversion, simply scaling upwards in size resolves

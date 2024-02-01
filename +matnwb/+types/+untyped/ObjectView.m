@@ -24,11 +24,11 @@ classdef ObjectView < handle
             
             if ischar(target) || isstring(target)
                 validateattributes(target, {'char', 'string'}, {'scalartext'} ...
-                    , 'types.untyped.ObjectView', 'target string', 1);
+                    , 'matnwb.types.untyped.ObjectView', 'target string', 1);
                 obj.path = char(target);
             else
-                validateattributes(target, {'types.untyped.MetaClass'}, {'scalar'} ...
-                    , 'types.untyped.ObjectView', 'target object', 1);
+                validateattributes(target, {'matnwb.types.untyped.MetaClass'}, {'scalar'} ...
+                    , 'matnwb.types.untyped.ObjectView', 'target object', 1);
                 obj.target = target;
             end
         end
@@ -44,7 +44,7 @@ classdef ObjectView < handle
         end
         
         function refs = export(obj, fid, fullpath, refs)
-            io.writeDataset(fid, fullpath, obj);
+            matnwb.io.writeDataset(fid, fullpath, obj);
         end
         
         function path = get.path(obj)

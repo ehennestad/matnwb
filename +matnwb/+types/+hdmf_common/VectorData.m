@@ -1,4 +1,4 @@
-classdef VectorData < types.hdmf_common.Data & types.untyped.DatasetClass
+classdef VectorData < matnwb.types.hdmf_common.Data & matnwb.types.untyped.DatasetClass
 % VECTORDATA An n-dimensional dataset representing a column of a DynamicTable. If used without an accompanying VectorIndex, first dimension is along the rows of the DynamicTable and each step along the first dimension is a cell of the larger table. VectorData can also be used to represent a ragged array if paired with a VectorIndex. This allows for storing arrays of varying length in a single cell of the DynamicTable by indexing into this VectorData. The first vector is at VectorData[0:VectorIndex[0]]. The second vector is at VectorData[VectorIndex[0]:VectorIndex[1]], and so on.
 
 
@@ -20,7 +20,7 @@ methods
     function obj = VectorData(varargin)
         % VECTORDATA Constructor for VectorData
         varargin = [{'unit' 'volts'} varargin];
-        obj = obj@types.hdmf_common.Data(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.Data(varargin{:});
         
         
         p = inputParser;
@@ -32,15 +32,15 @@ methods
         addParameter(p, 'resolution',[]);
         addParameter(p, 'sampling_rate',[]);
         addParameter(p, 'unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.description = p.Results.description;
         obj.resolution = p.Results.resolution;
         obj.sampling_rate = p.Results.sampling_rate;
         obj.unit = p.Results.unit;
-        if strcmp(class(obj), 'types.hdmf_common.VectorData')
+        if strcmp(class(obj), 'matnwb.types.hdmf_common.VectorData')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -58,8 +58,8 @@ methods
     function val = validate_data(obj, val)
     end
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -73,11 +73,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_resolution(obj, val)
-        val = types.util.checkDtype('resolution', 'double', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('resolution', 'double', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -91,11 +91,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_sampling_rate(obj, val)
-        val = types.util.checkDtype('sampling_rate', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('sampling_rate', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -109,25 +109,25 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.Data(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.Data(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        io.writeAttribute(fid, [fullpath '/description'], obj.description);
+        matnwb.io.writeAttribute(fid, [fullpath '/description'], obj.description);
         if ~isempty(obj.resolution) && any(endsWith(fullpath, 'units/spike_times'))
-            io.writeAttribute(fid, [fullpath '/resolution'], obj.resolution);
+            matnwb.io.writeAttribute(fid, [fullpath '/resolution'], obj.resolution);
         end
         validDataSamplingPaths = strcat('units/', {'waveform_mean', 'waveform_sd', 'waveforms'});
         if ~isempty(obj.sampling_rate) && any(endsWith(fullpath, validDataSamplingPaths))
-            io.writeAttribute(fid, [fullpath '/sampling_rate'], obj.sampling_rate);
+            matnwb.io.writeAttribute(fid, [fullpath '/sampling_rate'], obj.sampling_rate);
         end
         validUnitPaths = strcat('units/', {'waveform_mean', 'waveform_sd', 'waveforms'});
         if ~isempty(obj.unit) && any(endsWith(fullpath, validUnitPaths))
-            io.writeAttribute(fid, [fullpath '/unit'], obj.unit);
+            matnwb.io.writeAttribute(fid, [fullpath '/unit'], obj.unit);
         end
     end
 end

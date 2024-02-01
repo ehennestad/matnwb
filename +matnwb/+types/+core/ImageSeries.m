@@ -1,4 +1,4 @@
-classdef ImageSeries < types.core.TimeSeries & types.untyped.GroupClass
+classdef ImageSeries < matnwb.types.core.TimeSeries & matnwb.types.untyped.GroupClass
 % IMAGESERIES General image data that is common between acquisition and stimulus time series. Sometimes the image data is stored in the file in a raw format while other times it will be stored as a series of external image files in the host file system. The data field will either be binary data, if the data is stored in the NWB file, or empty, if the data is stored in an external image stack. [frame][x][y] or [frame][x][y][z].
 
 
@@ -14,7 +14,7 @@ end
 methods
     function obj = ImageSeries(varargin)
         % IMAGESERIES Constructor for ImageSeries
-        obj = obj@types.core.TimeSeries(varargin{:});
+        obj = obj@matnwb.types.core.TimeSeries(varargin{:});
         
         
         p = inputParser;
@@ -27,16 +27,16 @@ methods
         addParameter(p, 'external_file',[]);
         addParameter(p, 'external_file_starting_frame',[]);
         addParameter(p, 'format',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.device = p.Results.device;
         obj.dimension = p.Results.dimension;
         obj.external_file = p.Results.external_file;
         obj.external_file_starting_frame = p.Results.external_file_starting_frame;
         obj.format = p.Results.format;
-        if strcmp(class(obj), 'types.core.ImageSeries')
+        if strcmp(class(obj), 'matnwb.matnwb.types.core.ImageSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -58,8 +58,8 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'numeric', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data', 'numeric', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -73,14 +73,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf,Inf,Inf], [Inf,Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_device(obj, val)
-        val = types.util.checkDtype('device', 'types.core.Device', val);
+        val = matnwb.types.util.checkDtype('device', 'matnwb.types.core.Device', val);
     end
     function val = validate_dimension(obj, val)
-        val = types.util.checkDtype('dimension', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('dimension', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -94,11 +94,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_external_file(obj, val)
-        val = types.util.checkDtype('external_file', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('external_file', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -112,11 +112,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_external_file_starting_frame(obj, val)
-        val = types.util.checkDtype('external_file_starting_frame', 'int32', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('external_file_starting_frame', 'int32', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -130,11 +130,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_format(obj, val)
-        val = types.util.checkDtype('format', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('format', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -148,11 +148,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.TimeSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.TimeSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -163,24 +163,24 @@ methods
             if startsWith(class(obj.dimension), 'types.untyped.')
                 refs = obj.dimension.export(fid, [fullpath '/dimension'], refs);
             elseif ~isempty(obj.dimension)
-                io.writeDataset(fid, [fullpath '/dimension'], obj.dimension, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/dimension'], obj.dimension, 'forceArray');
             end
         end
         if ~isempty(obj.external_file)
             if startsWith(class(obj.external_file), 'types.untyped.')
                 refs = obj.external_file.export(fid, [fullpath '/external_file'], refs);
             elseif ~isempty(obj.external_file)
-                io.writeDataset(fid, [fullpath '/external_file'], obj.external_file, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/external_file'], obj.external_file, 'forceArray');
             end
         end
-        if ~isempty(obj.external_file) && ~isa(obj.external_file, 'types.untyped.SoftLink') && ~isa(obj.external_file, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/external_file/starting_frame'], obj.external_file_starting_frame, 'forceArray');
+        if ~isempty(obj.external_file) && ~isa(obj.external_file, 'matnwb.types.untyped.SoftLink') && ~isa(obj.external_file, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/external_file/starting_frame'], obj.external_file_starting_frame, 'forceArray');
         end
         if ~isempty(obj.format)
             if startsWith(class(obj.format), 'types.untyped.')
                 refs = obj.format.export(fid, [fullpath '/format'], refs);
             elseif ~isempty(obj.format)
-                io.writeDataset(fid, [fullpath '/format'], obj.format);
+                matnwb.io.writeDataset(fid, [fullpath '/format'], obj.format);
             end
         end
     end

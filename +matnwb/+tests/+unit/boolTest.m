@@ -10,7 +10,7 @@ end
 function setup(testCase)
     testCase.applyFixture(matlab.unittest.fixtures.WorkingFolderFixture);
     generateCore('savedir', '.');
-    schemaPath = fullfile(misc.getMatnwbDir(),...
+    schemaPath = fullfile(matnwb.misc.getMatnwbDir(),...
         '+tests', '+unit', 'boolSchema', 'bool.namespace.yaml');
     generateExtension(schemaPath, 'savedir', '.');
     rehash();
@@ -31,5 +31,5 @@ function testIo(testCase)
     nwb.acquisition.set('scalarbool', scalarBoolContainer);
     nwb.export('test.nwb');
     nwbActual = nwbRead('test.nwb', 'ignorecache');
-    tests.util.verifyContainerEqual(testCase, nwbActual, nwb);
+    matnwb.tests.util.verifyContainerEqual(testCase, nwbActual, nwb);
 end

@@ -92,13 +92,13 @@ classdef Set < handle & matlab.mixin.CustomDisplay
         %overloads horzcat(A1,A2,...,An)
         function C = horzcat(varargin)
             error('NWB:Set:Unsupported',...
-                'types.untyped.Set does not support concatenation');
+                'matnwb.types.untyped.Set does not support concatenation');
         end
         
         %overloads vertcat(A1, A2,...,An)
         function C = vertcat(varargin)
             error('NWB:Set:Unsupported',...
-                'types.untyped.Set does not support concatenation.');
+                'matnwb.types.untyped.Set does not support concatenation.');
         end
         
         function setValidationFcn(obj, fcn)
@@ -175,7 +175,7 @@ classdef Set < handle & matlab.mixin.CustomDisplay
         end
         
         function refs = export(obj, fid, fullpath, refs)
-            io.writeGroup(fid, fullpath);
+            matnwb.io.writeGroup(fid, fullpath);
             k = keys(obj.Map);
             val = values(obj.Map, k);
             for i=1:length(k)
@@ -185,7 +185,7 @@ classdef Set < handle & matlab.mixin.CustomDisplay
                 if startsWith(class(v), 'types.')
                     refs = v.export(fid, propFullPath, refs);
                 else
-                    refs = io.writeDataset(fid, propFullPath, v, refs);
+                    refs = matnwb.io.writeDataset(fid, propFullPath, v, refs);
                 end
             end
         end
@@ -194,7 +194,7 @@ classdef Set < handle & matlab.mixin.CustomDisplay
     methods(Access=protected)
         function displayEmptyObject(obj)
             hdr = ['  Empty '...
-                '<a href="matlab:helpPopup types.untyped.Set" style="font-weight:bold">'...
+                '<a href="matlab:helpPopup matnwb.types.untyped.Set" style="font-weight:bold">'...
                 'Set</a>'];
             footer = getFooter(obj);
             disp([hdr newline footer]);
@@ -216,7 +216,7 @@ classdef Set < handle & matlab.mixin.CustomDisplay
                 spacing = repmat(' ', 1, max_mklen - mklen(i));
                 body{i} = [spacing mk ': [' class(obj.Map(mk)) ']'];
             end
-            body = file.addSpaces(strjoin(body, newline), 4);
+            body = matnwb.file.addSpaces(strjoin(body, newline), 4);
             disp([hdr newline body newline footer]);
         end
     end

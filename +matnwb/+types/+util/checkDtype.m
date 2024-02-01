@@ -4,8 +4,8 @@ function value = checkDtype(name, typeDescriptor, value)
 persistent WHITELIST;
 if isempty(WHITELIST)
     WHITELIST = {...
-        'types.untyped.ExternalLink'...
-        'types.untyped.SoftLink'...
+        'matnwb.types.untyped.ExternalLink'...
+        'matnwb.types.untyped.SoftLink'...
         };
 end
 %% compound type processing
@@ -66,7 +66,7 @@ if isstruct(typeDescriptor)
 
         if (isstruct(value) && isscalar(value)) || istable(value)
             % scalar struct or table with columns.
-            value.(name) = types.util.checkDtype(subName,subType,value.(name));
+            value.(name) = matnwb.types.util.checkDtype(subName,subType,value.(name));
         elseif isstruct(value)
             % array of structs
             for j=1:length(value)
@@ -77,10 +77,10 @@ if isstruct(typeDescriptor)
                     'NWB:CheckDType:InvalidType',...
                     ['Fields for an array of structs for '...
                     'compound types should have non-cell scalar values or char arrays.']);
-                value(j).(name) = types.util.checkDtype(subName, subType, elem);
+                value(j).(name) = matnwb.types.util.checkDtype(subName, subType, elem);
             end
         else
-            value(expectedFields{iField}) = types.util.checkDtype( ...
+            value(expectedFields{iField}) = matnwb.types.util.checkDtype( ...
                 subName, subType, value(expectedFields{iField}));
         end
     end
@@ -90,7 +90,7 @@ end
 
 %% primitives
 
-if isa(value, 'types.untyped.SoftLink')
+if isa(value, 'matnwb.types.untyped.SoftLink')
     % Softlinks cannot be validated at this level.
     return;
 end
@@ -115,15 +115,15 @@ end
 
 % retrieve comparable value
 valueWrapper = [];
-if isa(value, 'types.untyped.DataStub') ...
-    || isa(value, 'types.untyped.DataPipe') ...
-    || isa(value, 'types.untyped.Anon') ...
-    || (isa(value, 'types.untyped.ExternalLink') && ~strcmp(typeDescriptor, 'types.untyped.ExternalLink'))
+if isa(value, 'matnwb.types.untyped.DataStub') ...
+    || isa(value, 'matnwb.types.untyped.DataPipe') ...
+    || isa(value, 'matnwb.types.untyped.Anon') ...
+    || (isa(value, 'matnwb.types.untyped.ExternalLink') && ~strcmp(typeDescriptor, 'matnwb.types.untyped.ExternalLink'))
     valueWrapper = value;
     value = unwrapValue(value);
 end
 
-correctedValue = types.util.correctType(value, typeDescriptor);
+correctedValue = matnwb.types.util.correctType(value, typeDescriptor);
 % this specific conversion is fine as HDF5 doesn't have a representative
 % datetime type. Thus we suppress the warning for this case.
 isDatetimeConversion = isa(correctedValue, 'datetime')...
@@ -154,19 +154,19 @@ function unwrapped = unwrapValue(wrapped, history)
             , ['Infinite loop of a previously defined wrapped value detected. ' ...
             'Please ensure infinite loops do not occur with reference types like Links.']);
     end
-    if isa(wrapped, 'types.untyped.DataStub')
+    if isa(wrapped, 'matnwb.types.untyped.DataStub')
         %grab first element and check
         if any(wrapped.dims == 0)
             unwrapped = [];
         else
             unwrapped = wrapped.load(1);
         end
-    elseif isa(wrapped, 'types.untyped.DataPipe')
+    elseif isa(wrapped, 'matnwb.types.untyped.DataPipe')
         unwrapped = cast([], wrapped.dataType);
-    elseif isa(wrapped, 'types.untyped.Anon')
+    elseif isa(wrapped, 'matnwb.types.untyped.Anon')
         history{end+1} = wrapped;
         unwrapped = unwrapValue(wrapped.value, history);
-    elseif isa(wrapped, 'types.untyped.ExternalLink')
+    elseif isa(wrapped, 'matnwb.types.untyped.ExternalLink')
         history{end+1} = wrapped;
         unwrapped = unwrapValue(wrapped.deref(), history);
     else

@@ -1,4 +1,4 @@
-classdef TimeIntervals < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef TimeIntervals < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % TIMEINTERVALS A container for aggregating epoch data and the TimeSeries that each epoch applies to.
 
 
@@ -18,7 +18,7 @@ end
 methods
     function obj = TimeIntervals(varargin)
         % TIMEINTERVALS Constructor for TimeIntervals
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -31,19 +31,19 @@ methods
         addParameter(p, 'tags_index',[]);
         addParameter(p, 'timeseries',[]);
         addParameter(p, 'timeseries_index',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.start_time = p.Results.start_time;
         obj.stop_time = p.Results.stop_time;
         obj.tags = p.Results.tags;
         obj.tags_index = p.Results.tags_index;
         obj.timeseries = p.Results.timeseries;
         obj.timeseries_index = p.Results.timeseries_index;
-        if strcmp(class(obj), 'types.core.TimeIntervals')
+        if strcmp(class(obj), 'matnwb.types.core.TimeIntervals')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.TimeIntervals')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.TimeIntervals')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -68,26 +68,26 @@ methods
     %% VALIDATORS
     
     function val = validate_start_time(obj, val)
-        val = types.util.checkDtype('start_time', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('start_time', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_stop_time(obj, val)
-        val = types.util.checkDtype('stop_time', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('stop_time', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_tags(obj, val)
-        val = types.util.checkDtype('tags', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('tags', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_tags_index(obj, val)
-        val = types.util.checkDtype('tags_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('tags_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_timeseries(obj, val)
-        val = types.util.checkDtype('timeseries', 'types.core.TimeSeriesReferenceVectorData', val);
+        val = matnwb.types.util.checkDtype('timeseries', 'matnwb.matnwb.types.core.TimeSeriesReferenceVectorData', val);
     end
     function val = validate_timeseries_index(obj, val)
-        val = types.util.checkDtype('timeseries_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('timeseries_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

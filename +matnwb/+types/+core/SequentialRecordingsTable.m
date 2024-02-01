@@ -1,4 +1,4 @@
-classdef SequentialRecordingsTable < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef SequentialRecordingsTable < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % SEQUENTIALRECORDINGSTABLE A table for grouping different sequential recordings from the SimultaneousRecordingsTable table together. This is typically used to group together sequential recordings where a sequence of stimuli of the same type with varying parameters have been presented in a sequence.
 
 
@@ -12,7 +12,7 @@ end
 methods
     function obj = SequentialRecordingsTable(varargin)
         % SEQUENTIALRECORDINGSTABLE Constructor for SequentialRecordingsTable
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -22,16 +22,16 @@ methods
         addParameter(p, 'simultaneous_recordings',[]);
         addParameter(p, 'simultaneous_recordings_index',[]);
         addParameter(p, 'stimulus_type',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.simultaneous_recordings = p.Results.simultaneous_recordings;
         obj.simultaneous_recordings_index = p.Results.simultaneous_recordings_index;
         obj.stimulus_type = p.Results.stimulus_type;
-        if strcmp(class(obj), 'types.core.SequentialRecordingsTable')
+        if strcmp(class(obj), 'matnwb.types.core.SequentialRecordingsTable')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.SequentialRecordingsTable')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.SequentialRecordingsTable')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -47,17 +47,17 @@ methods
     %% VALIDATORS
     
     function val = validate_simultaneous_recordings(obj, val)
-        val = types.util.checkDtype('simultaneous_recordings', 'types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('simultaneous_recordings', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_simultaneous_recordings_index(obj, val)
-        val = types.util.checkDtype('simultaneous_recordings_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('simultaneous_recordings_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_stimulus_type(obj, val)
-        val = types.util.checkDtype('stimulus_type', 'types.hdmf_common.VectorData', val);
+        val = matnwb.types.util.checkDtype('stimulus_type', 'matnwb.types.hdmf_common.VectorData', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

@@ -10,9 +10,9 @@ end
 o = nwb;
 errmsg = 'Could not resolve path `%s`.';
 while ~isempty(tokens)
-    if isa(o, 'types.untyped.Set')
+    if isa(o, 'matnwb.types.untyped.Set')
         [o, tokens] = resolveSet(o, tokens);
-    elseif isa(o, 'types.untyped.Anon')
+    elseif isa(o, 'matnwb.types.untyped.Anon')
         [o, tokens] = resolveAnon(o, tokens);
     else
         [o, tokens] = resolveObj(o, tokens);
@@ -65,7 +65,7 @@ end
 proplen = length(props);
 issetprops = false(proplen, 1);
 for i=1:proplen
-    issetprops(i) = isa(obj.(props{i}), 'types.untyped.Set');
+    issetprops(i) = isa(obj.(props{i}), 'matnwb.types.untyped.Set');
 end
 setprops = props(issetprops);
 setpropslen = length(setprops);

@@ -1,6 +1,6 @@
 function festr = fillExport(propertyNames, RawClass, parentName)
     exportHeader = 'function refs = export(obj, fid, fullpath, refs)';
-    if isa(RawClass, 'file.Dataset')
+    if isa(RawClass, 'matnwb.file.Dataset')
         propertyNames = propertyNames(~strcmp(propertyNames, 'data'));
     end
 
@@ -11,7 +11,7 @@ function festr = fillExport(propertyNames, RawClass, parentName)
         'end'...
         }, newline)};
 
-    if isa(RawClass, 'file.Group') && strcmp(RawClass.type, 'NWBFile')
+    if isa(RawClass, 'matnwb.file.Group') && strcmp(RawClass.type, 'NWBFile')
         %NWBFile is technically the root `group`, which in HDF5 is a single `/`
         % this messes with property creation so we reassign the path here to
         % empty string so concatenation looks right
@@ -33,8 +33,8 @@ function festr = fillExport(propertyNames, RawClass, parentName)
         end
 
         elisions = strjoin(elisions, '/');
-        if ~isempty(elideProps) && all(cellfun('isclass', elideProps, 'file.Group'))
-            exportBody{end+1} = ['io.writeGroup(fid, [fullpath ''/' elisions ''']);'];
+        if ~isempty(elideProps) && all(cellfun('isclass', elideProps, 'matnwb.file.Group'))
+            exportBody{end+1} = ['matnwb.io.writeGroup(fid, [fullpath ''/' elisions ''']);'];
         end
 
         if strcmp(propertyName, 'unit') && strcmp(RawClass.type, 'VectorData')
@@ -50,7 +50,7 @@ function festr = fillExport(propertyNames, RawClass, parentName)
 
     festr = strjoin({ ...
         exportHeader ...
-        , file.addSpaces(strjoin(exportBody, newline), 4) ...
+        , matnwb.file.addSpaces(strjoin(exportBody, newline), 4) ...
         , 'end' ...
         }, newline);
 end
@@ -58,7 +58,7 @@ end
 function exportBody = fillVectorDataResolutionConditional()
     exportBody = strjoin({...
         'if ~isempty(obj.resolution) && any(endsWith(fullpath, ''units/spike_times''))' ...
-        , '    io.writeAttribute(fid, [fullpath ''/resolution''], obj.resolution);' ...
+        , '    matnwb.io.writeAttribute(fid, [fullpath ''/resolution''], obj.resolution);' ...
         , 'end'}, newline);
 end
 
@@ -66,7 +66,7 @@ function exportBody = fillVectorDataUnitConditional()
     exportBody = strjoin({...
           'validUnitPaths = strcat(''units/'', {''waveform_mean'', ''waveform_sd'', ''waveforms''});' ...
         , 'if ~isempty(obj.unit) && any(endsWith(fullpath, validUnitPaths))' ...
-        , '    io.writeAttribute(fid, [fullpath ''/unit''], obj.unit);' ...
+        , '    matnwb.io.writeAttribute(fid, [fullpath ''/unit''], obj.unit);' ...
         , 'end'}, newline);
 end
 
@@ -74,7 +74,7 @@ function exportBody = fillVectorDataSamplingRateConditional()
     exportBody = strjoin({...
           'validDataSamplingPaths = strcat(''units/'', {''waveform_mean'', ''waveform_sd'', ''waveforms''});' ...
         , 'if ~isempty(obj.sampling_rate) && any(endsWith(fullpath, validDataSamplingPaths))' ...
-        , '    io.writeAttribute(fid, [fullpath ''/sampling_rate''], obj.sampling_rate);' ...
+        , '    matnwb.io.writeAttribute(fid, [fullpath ''/sampling_rate''], obj.sampling_rate);' ...
         , 'end'}, newline);
 end
 
@@ -83,7 +83,7 @@ function path = traverseRaw(propertyName, RawClass)
     % these tokens are relative to the Raw class
     path = {}; 
 
-    if isa(RawClass, 'file.Dataset')
+    if isa(RawClass, 'matnwb.file.Dataset')
         if isempty(RawClass.attributes)
             return;
         end
@@ -92,7 +92,7 @@ function path = traverseRaw(propertyName, RawClass)
         return;
     end
 
-    % probably a file.Group
+    % probably a matnwb.file.Group
 
     % get names of both subgroups and datasets
     subgroupNames = {};
@@ -175,14 +175,14 @@ function dataExportString = fillDataExport(name, prop, elisions)
         elisionpath = ['[fullpath ''/' elisions ''']'];
     end
 
-    if (isa(prop, 'file.Group') || isa(prop, 'file.Dataset')) && prop.isConstrainedSet
+    if (isa(prop, 'matnwb.file.Group') || isa(prop, 'matnwb.file.Dataset')) && prop.isConstrainedSet
         % is a sub-object (with an export function)
         dataExportString = ['refs = obj.' name '.export(fid, ' elisionpath ', refs);'];
-    elseif isa(prop, 'file.Link') || isa(prop, 'file.Group') ||...
-            (isa(prop, 'file.Dataset') && ~isempty(prop.type))
+    elseif isa(prop, 'matnwb.file.Link') || isa(prop, 'matnwb.file.Group') ||...
+            (isa(prop, 'matnwb.file.Dataset') && ~isempty(prop.type))
         % obj, loc_id, path, refs
         dataExportString = ['refs = obj.' name '.export(fid, ' fullpath ', refs);'];
-    elseif isa(prop, 'file.Dataset') %untyped dataset
+    elseif isa(prop, 'matnwb.file.Dataset') %untyped dataset
         options = {};
 
         % special case due to unique behavior of file_create_date
@@ -194,9 +194,9 @@ function dataExportString = fillDataExport(name, prop, elisions)
 
         % untyped compound
         if isstruct(prop.dtype)
-            writerStr = 'io.writeCompound';
+            writerStr = 'matnwb.io.writeCompound';
         else
-            writerStr = 'io.writeDataset';
+            writerStr = 'matnwb.io.writeDataset';
         end
 
         % just to guarantee optional arguments are correct syntax
@@ -216,13 +216,13 @@ function dataExportString = fillDataExport(name, prop, elisions)
         else
             forceArrayFlag = ', ''forceArray''';
         end
-        dataExportString = sprintf('io.writeAttribute(fid, %1$s, obj.%2$s%3$s);',...
+        dataExportString = sprintf('matnwb.io.writeAttribute(fid, %1$s, obj.%2$s%3$s);',...
             fullpath, name, forceArrayFlag);
     end
 
     propertyChecks = {};
 
-    if isa(prop, 'file.Attribute') && ~isempty(prop.dependent)
+    if isa(prop, 'matnwb.file.Attribute') && ~isempty(prop.dependent)
         %if attribute is dependent, check before writing
         if isempty(elisions) || strcmp(elisions, prop.dependent)
             depPropname = prop.dependent;
@@ -233,8 +233,8 @@ function dataExportString = fillDataExport(name, prop, elisions)
         end
         propertyReference = sprintf('obj.%s', depPropname);
         propertyChecks{end+1} = sprintf(['~isempty(%1$s) ' ...
-        '&& ~isa(%1$s, ''types.untyped.SoftLink'') ' ...
-        '&& ~isa(%1$s, ''types.untyped.ExternalLink'')'], propertyReference);
+        '&& ~isa(%1$s, ''matnwb.types.untyped.SoftLink'') ' ...
+        '&& ~isa(%1$s, ''matnwb.types.untyped.ExternalLink'')'], propertyReference);
     end
 
     if ~prop.required
@@ -243,7 +243,7 @@ function dataExportString = fillDataExport(name, prop, elisions)
 
     if ~isempty(propertyChecks)
         dataExportString = sprintf('if %s\n%s\nend' ...
-            , strjoin(propertyChecks, ' && '), file.addSpaces(dataExportString, 4) ...
+            , strjoin(propertyChecks, ' && '), matnwb.file.addSpaces(dataExportString, 4) ...
             );
     end
 end

@@ -1,4 +1,4 @@
-classdef IntracellularStimuliTable < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef IntracellularStimuliTable < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % INTRACELLULARSTIMULITABLE Table for storing intracellular stimulus related metadata.
 
 
@@ -11,7 +11,7 @@ methods
     function obj = IntracellularStimuliTable(varargin)
         % INTRACELLULARSTIMULITABLE Constructor for IntracellularStimuliTable
         varargin = [{'description' 'Table for storing intracellular stimulus related metadata.'} varargin];
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -20,15 +20,15 @@ methods
         p.StructExpand = false;
         addParameter(p, 'description',[]);
         addParameter(p, 'stimulus',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.stimulus = p.Results.stimulus;
-        if strcmp(class(obj), 'types.core.IntracellularStimuliTable')
+        if strcmp(class(obj), 'matnwb.types.core.IntracellularStimuliTable')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.IntracellularStimuliTable')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.IntracellularStimuliTable')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -38,11 +38,11 @@ methods
     %% VALIDATORS
     
     function val = validate_stimulus(obj, val)
-        val = types.util.checkDtype('stimulus', 'types.core.TimeSeriesReferenceVectorData', val);
+        val = matnwb.types.util.checkDtype('stimulus', 'matnwb.matnwb.types.core.TimeSeriesReferenceVectorData', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

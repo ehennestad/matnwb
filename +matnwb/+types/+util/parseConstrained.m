@@ -8,32 +8,32 @@ function [set, ivarargin] = parseConstrained(obj, pname, type, varargin)
         end
 
         arg = varargin{i+1};
-        if isa(arg, 'types.untyped.ExternalLink')
+        if isa(arg, 'matnwb.types.untyped.ExternalLink')
             ikeys(i) = isa(arg.deref(), type);
             continue;
         end
 
-        ikeys(i) = isa(arg, type) || isa(arg, 'types.untyped.SoftLink');
+        ikeys(i) = isa(arg, type) || isa(arg, 'matnwb.types.untyped.SoftLink');
     end
     ivals = circshift(ikeys,1);
 
     ivarargin = ikeys | ivals;
 
-    if isa(obj.(pname), 'types.untyped.Set')
+    if isa(obj.(pname), 'matnwb.types.untyped.Set')
         set = obj.(pname);
     else
-        set = types.untyped.Set();
+        set = matnwb.types.untyped.Set();
     end
 
     if ~any(ikeys)
         return;
     end
 
-    validationFunction = @(nm, val)types.util.checkConstraint(pname, nm, struct(), {type}, val);
+    validationFunction = @(nm, val)matnwb.types.util.checkConstraint(pname, nm, struct(), {type}, val);
 
     if 0 == set.Count
         % construct set from empty with generated map.
-        set = types.untyped.Set(containers.Map(varargin(ikeys), varargin(ivals)), validationFunction);
+        set = matnwb.types.untyped.Set(containers.Map(varargin(ikeys), varargin(ivals)), validationFunction);
         return;
     end
 

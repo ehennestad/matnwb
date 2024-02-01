@@ -1,4 +1,4 @@
-classdef CSRMatrix < types.hdmf_common.Container & types.untyped.GroupClass
+classdef CSRMatrix < matnwb.types.hdmf_common.Container & matnwb.types.untyped.GroupClass
 % CSRMATRIX A compressed sparse row matrix. Data are stored in the standard CSR format, where column indices for row i are stored in indices[indptr[i]:indptr[i+1]] and their corresponding values are stored in data[indptr[i]:indptr[i+1]].
 
 
@@ -16,7 +16,7 @@ end
 methods
     function obj = CSRMatrix(varargin)
         % CSRMATRIX Constructor for CSRMatrix
-        obj = obj@types.hdmf_common.Container(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.Container(varargin{:});
         
         
         p = inputParser;
@@ -27,14 +27,14 @@ methods
         addParameter(p, 'indices',[]);
         addParameter(p, 'indptr',[]);
         addParameter(p, 'shape',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.indices = p.Results.indices;
         obj.indptr = p.Results.indptr;
         obj.shape = p.Results.shape;
-        if strcmp(class(obj), 'types.hdmf_common.CSRMatrix')
+        if strcmp(class(obj), 'matnwb.types.hdmf_common.CSRMatrix')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -56,8 +56,8 @@ methods
     
     end
     function val = validate_indices(obj, val)
-        val = types.util.checkDtype('indices', 'uint', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('indices', 'uint', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -71,11 +71,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_indptr(obj, val)
-        val = types.util.checkDtype('indptr', 'uint', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('indptr', 'uint', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -89,11 +89,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_shape(obj, val)
-        val = types.util.checkDtype('shape', 'uint', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('shape', 'uint', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -107,30 +107,30 @@ methods
             valsz = size(val);
         end
         validshapes = {[2]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.Container(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.Container(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if startsWith(class(obj.data), 'types.untyped.')
             refs = obj.data.export(fid, [fullpath '/data'], refs);
         elseif ~isempty(obj.data)
-            io.writeDataset(fid, [fullpath '/data'], obj.data, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/data'], obj.data, 'forceArray');
         end
         if startsWith(class(obj.indices), 'types.untyped.')
             refs = obj.indices.export(fid, [fullpath '/indices'], refs);
         elseif ~isempty(obj.indices)
-            io.writeDataset(fid, [fullpath '/indices'], obj.indices, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/indices'], obj.indices, 'forceArray');
         end
         if startsWith(class(obj.indptr), 'types.untyped.')
             refs = obj.indptr.export(fid, [fullpath '/indptr'], refs);
         elseif ~isempty(obj.indptr)
-            io.writeDataset(fid, [fullpath '/indptr'], obj.indptr, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/indptr'], obj.indptr, 'forceArray');
         end
-        io.writeAttribute(fid, [fullpath '/shape'], obj.shape, 'forceArray');
+        matnwb.io.writeAttribute(fid, [fullpath '/shape'], obj.shape, 'forceArray');
     end
 end
 

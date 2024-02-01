@@ -9,7 +9,7 @@ function subTable = getRow(DynamicTable, ind, varargin)
 % `colnames` or "columns" keyword argument if one exists.
 
 validateattributes(DynamicTable,...
-    {'types.core.DynamicTable', 'types.hdmf_common.DynamicTable'}, {'scalar'});
+    {'types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'}, {'scalar'});
 validateattributes(ind, {'numeric'}, {'positive', 'vector'});
 
 p = inputParser;
@@ -21,7 +21,7 @@ columns = p.Results.columns;
 row = cell(1, length(columns));
 
 if isempty(DynamicTable.id)
-    DynamicTable.id = types.hdmf_common.ElementIdentifiers();
+    DynamicTable.id = matnwb.types.hdmf_common.ElementIdentifiers();
     return;
 end
 
@@ -34,7 +34,7 @@ for i = 1:length(columns)
 
     indexNames = {cn};
     while true
-        name = types.util.dynamictable.getIndex(DynamicTable, indexNames{end});
+        name = matnwb.types.util.dynamictable.getIndex(DynamicTable, indexNames{end});
         if isempty(name)
             break;
         end
@@ -86,9 +86,9 @@ else
 end
 
 if isscalar(colIndStack)
-    if isa(Vector.data, 'types.untyped.DataStub') || ...
-            isa(Vector.data,'types.untyped.DataPipe')
-        if isa(Vector.data, 'types.untyped.DataStub')
+    if isa(Vector.data, 'matnwb.types.untyped.DataStub') || ...
+            isa(Vector.data,'matnwb.types.untyped.DataPipe')
+        if isa(Vector.data, 'matnwb.types.untyped.DataStub')
             refProp = Vector.data.dims;
         else
             refProp = Vector.data.internal.maxSize;
@@ -111,7 +111,7 @@ if isscalar(colIndStack)
     end
     
     selectInd = repmat({':'}, 1, rank);
-    if isa(Vector.data, 'types.untyped.DataPipe')
+    if isa(Vector.data, 'matnwb.types.untyped.DataPipe')
         selectInd{Vector.data.axis} = matInd;
     else
         selectInd{end} = matInd;
@@ -137,15 +137,15 @@ if isscalar(colIndStack)
 
     % shift dimensions of non-row vectors. otherwise will result in
     % invalid MATLAB table with uneven column height
-    if isa(Vector.data, 'types.untyped.DataPipe')
+    if isa(Vector.data, 'matnwb.types.untyped.DataPipe')
         selected = permute(selected, ...
             circshift(1:ndims(selected), -(Vector.data.axis-1)));
     end
 else
-    assert(isa(Vector, 'types.hdmf_common.VectorIndex') || isa(Vector, 'types.core.VectorIndex'),...
+    assert(isa(Vector, 'matnwb.types.hdmf_common.VectorIndex') || isa(Vector, 'types.core.VectorIndex'),...
         'NWB:DynamicTable:GetRow:InternalError',...
         'Internal VectorIndex Stack is not using VectorIndex objects!');
-    if isa(Vector.data, 'types.untyped.DataStub') || isa(Vector.data, 'types.untyped.DataPipe')
+    if isa(Vector.data, 'matnwb.types.untyped.DataStub') || isa(Vector.data, 'matnwb.types.untyped.DataPipe')
         stopInds = uint64(Vector.data.load(matInd));
     else
         stopInds = uint64(Vector.data(matInd));
@@ -155,7 +155,7 @@ else
     zeroMask = startIndInd == 0;
     startInds = zeros(size(startIndInd));
     if ~isempty(startIndInd(~zeroMask))
-        if isa(Vector.data, 'types.untyped.DataStub') || isa(Vector.data, 'types.untyped.DataPipe')
+        if isa(Vector.data, 'matnwb.types.untyped.DataStub') || isa(Vector.data, 'matnwb.types.untyped.DataPipe')
             startInds(~zeroMask) = Vector.data.load(startIndInd(~zeroMask));
         else
             startInds(~zeroMask) = Vector.data(startIndInd(~zeroMask));
@@ -175,8 +175,8 @@ end
 end
 
 function ind = getIndById(DynamicTable, id)
-if isa(DynamicTable.id.data, 'types.untyped.DataStub')...
-        || isa(DynamicTable.id.data, 'types.untyped.DataPipe')
+if isa(DynamicTable.id.data, 'matnwb.types.untyped.DataStub')...
+        || isa(DynamicTable.id.data, 'matnwb.types.untyped.DataPipe')
     ids = DynamicTable.id.data.load();
 else
     ids = DynamicTable.id.data;

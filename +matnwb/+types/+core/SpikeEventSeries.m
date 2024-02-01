@@ -1,4 +1,4 @@
-classdef SpikeEventSeries < types.core.ElectricalSeries & types.untyped.GroupClass
+classdef SpikeEventSeries < matnwb.types.core.ElectricalSeries & matnwb.types.untyped.GroupClass
 % SPIKEEVENTSERIES Stores snapshots/snippets of recorded spike events (i.e., threshold crossings). This may also be raw data, as reported by ephys hardware. If so, the TimeSeries::description field should describe how events were detected. All SpikeEventSeries should reside in a module (under EventWaveform interface) even if the spikes were reported and stored by hardware. All events span the same recording channels and store snapshots of equal duration. TimeSeries::data array structure: [num events] [num channels] [num samples] (or [num events] [num samples] for single electrode).
 
 
@@ -6,8 +6,8 @@ classdef SpikeEventSeries < types.core.ElectricalSeries & types.untyped.GroupCla
 methods
     function obj = SpikeEventSeries(varargin)
         % SPIKEEVENTSERIES Constructor for SpikeEventSeries
-        varargin = [{'data_unit' 'volts' 'timestamps_interval' types.util.correctType(1, 'int32') 'timestamps_unit' 'seconds'} varargin];
-        obj = obj@types.core.ElectricalSeries(varargin{:});
+        varargin = [{'data_unit' 'volts' 'timestamps_interval' matnwb.types.util.correctType(1, 'int32') 'timestamps_unit' 'seconds'} varargin];
+        obj = obj@matnwb.types.core.ElectricalSeries(varargin{:});
         
         
         p = inputParser;
@@ -19,15 +19,15 @@ methods
         addParameter(p, 'timestamps',[]);
         addParameter(p, 'timestamps_interval',[]);
         addParameter(p, 'timestamps_unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
         obj.data_unit = p.Results.data_unit;
         obj.timestamps = p.Results.timestamps;
         obj.timestamps_interval = p.Results.timestamps_interval;
         obj.timestamps_unit = p.Results.timestamps_unit;
-        if strcmp(class(obj), 'types.core.SpikeEventSeries')
+        if strcmp(class(obj), 'matnwb.types.core.SpikeEventSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -35,8 +35,8 @@ methods
     %% VALIDATORS
     
     function val = validate_data(obj, val)
-        val = types.util.checkDtype('data', 'numeric', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data', 'numeric', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -50,11 +50,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf,Inf,Inf], [Inf,Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_timestamps(obj, val)
-        val = types.util.checkDtype('timestamps', 'double', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('timestamps', 'double', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -68,11 +68,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.ElectricalSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.ElectricalSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

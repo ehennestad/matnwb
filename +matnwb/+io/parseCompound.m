@@ -21,7 +21,7 @@ function data = parseCompound(datasetId, data)
                 %then mark for transpose
                 isCharacterType(iField) = ~H5T.is_variable_str(fieldTypeId);
             case H5ML.get_constant_value('H5T_ENUM')
-                isLogicalType(iField) = io.isBool(fieldTypeId);
+                isLogicalType(iField) = matnwb.io.isBool(fieldTypeId);
             otherwise
                 %do nothing
         end
@@ -36,7 +36,7 @@ function data = parseCompound(datasetId, data)
         name = referenceFieldName{iFieldName};
         rawReference = data.(name);
         rawTypeId = referenceTypeId{iFieldName};
-        data.(name) = io.parseReference(datasetId, rawTypeId, rawReference);
+        data.(name) = matnwb.io.parseReference(datasetId, rawTypeId, rawReference);
     end
 
     % transpose character arrays because they are column-ordered

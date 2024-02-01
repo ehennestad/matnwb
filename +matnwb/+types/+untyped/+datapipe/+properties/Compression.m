@@ -1,4 +1,4 @@
-classdef Compression < types.untyped.datapipe.Property
+classdef Compression < matnwb.types.untyped.datapipe.Property
     %COMPRESSION Deflate compression filter
     
     properties (Constant)
@@ -7,7 +7,7 @@ classdef Compression < types.untyped.datapipe.Property
     
     methods (Static)
         function compression = fromDcpl(dcpl)
-            import types.untyped.datapipe.properties.Compression;
+            import matnwb.types.untyped.datapipe.properties.Compression;
             
             filterId = H5ML.get_constant_value(Compression.FILTER_NAME);
             [~, level, ~, ~] = H5P.get_filter_by_id(dcpl, filterId);
@@ -28,7 +28,7 @@ classdef Compression < types.untyped.datapipe.Property
     %% Property
     methods (Static)
         function tf = isInDcpl(dcpl)
-            import types.untyped.datapipe.properties.Compression;
+            import matnwb.types.untyped.datapipe.properties.Compression;
             tf = false;
             
             filterId = H5ML.get_constant_value(Compression.FILTER_NAME);

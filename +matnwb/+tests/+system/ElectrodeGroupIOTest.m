@@ -1,13 +1,13 @@
-classdef ElectrodeGroupIOTest < tests.system.PyNWBIOTest
+classdef ElectrodeGroupIOTest < matnwb.tests.system.PyNWBIOTest
     methods
         function addContainer(testCase, file) %#ok<INUSL>
             % Device description is for pynwb compatibility
-            dev = types.core.Device('description', 'dev1 description');
+            dev = matnwb.types.core.Device('description', 'dev1 description');
             file.general_devices.set('dev1', dev);
-            eg = types.core.ElectrodeGroup( ...
+            eg = matnwb.types.core.ElectrodeGroup( ...
                 'description', 'a test ElectrodeGroup', ...
                 'location', 'a nonexistent place', ...
-                'device', types.untyped.SoftLink(dev));
+                'device', matnwb.types.untyped.SoftLink(dev));
             file.general_extracellular_ephys.set('elec1', eg);
         end
         

@@ -1,4 +1,4 @@
-classdef OptogeneticStimulusSite < types.core.NWBContainer & types.untyped.GroupClass
+classdef OptogeneticStimulusSite < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % OPTOGENETICSTIMULUSSITE A site of optogenetic stimulation.
 
 
@@ -16,7 +16,7 @@ end
 methods
     function obj = OptogeneticStimulusSite(varargin)
         % OPTOGENETICSTIMULUSSITE Constructor for OptogeneticStimulusSite
-        obj = obj@types.core.NWBContainer(varargin{:});
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
         
         
         p = inputParser;
@@ -27,14 +27,14 @@ methods
         addParameter(p, 'device',[]);
         addParameter(p, 'excitation_lambda',[]);
         addParameter(p, 'location',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.device = p.Results.device;
         obj.excitation_lambda = p.Results.excitation_lambda;
         obj.location = p.Results.location;
-        if strcmp(class(obj), 'types.core.OptogeneticStimulusSite')
+        if strcmp(class(obj), 'matnwb.types.core.OptogeneticStimulusSite')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -53,8 +53,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -68,14 +68,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_device(obj, val)
-        val = types.util.checkDtype('device', 'types.core.Device', val);
+        val = matnwb.types.util.checkDtype('device', 'matnwb.types.core.Device', val);
     end
     function val = validate_excitation_lambda(obj, val)
-        val = types.util.checkDtype('excitation_lambda', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('excitation_lambda', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -89,11 +89,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_location(obj, val)
-        val = types.util.checkDtype('location', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('location', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -107,29 +107,29 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if startsWith(class(obj.description), 'types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
-            io.writeDataset(fid, [fullpath '/description'], obj.description);
+            matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
         end
         refs = obj.device.export(fid, [fullpath '/device'], refs);
         if startsWith(class(obj.excitation_lambda), 'types.untyped.')
             refs = obj.excitation_lambda.export(fid, [fullpath '/excitation_lambda'], refs);
         elseif ~isempty(obj.excitation_lambda)
-            io.writeDataset(fid, [fullpath '/excitation_lambda'], obj.excitation_lambda);
+            matnwb.io.writeDataset(fid, [fullpath '/excitation_lambda'], obj.excitation_lambda);
         end
         if startsWith(class(obj.location), 'types.untyped.')
             refs = obj.location.export(fid, [fullpath '/location'], refs);
         elseif ~isempty(obj.location)
-            io.writeDataset(fid, [fullpath '/location'], obj.location);
+            matnwb.io.writeDataset(fid, [fullpath '/location'], obj.location);
         end
     end
 end

@@ -6,7 +6,7 @@ validateattributes(shapes, {'cell'}, {'nonempty', 'vector'});
 for i = 1:length(shapes)
     validateattributes(shapes{i}, {'cell'}, {'vector'});
     for j = 1:length(shapes{i})
-        validateattributes(shapes{i}{j}, {'io.space.Shape'}, {'scalar'});
+        validateattributes(shapes{i}{j}, {'matnwb.io.space.Shape'}, {'scalar'});
     end
 end
 validateattributes(sid, {'H5ML.id'}, {'scalar', 'nonempty'});
@@ -49,7 +49,7 @@ memSize = zeros(1, rank);
 for i = 1:rank
     for j = 1:length(shapes{i})
         Selection = shapes{i}{j};
-        if isa(Selection, 'io.space.shape.Point')
+        if isa(Selection, 'matnwb.io.space.shape.Point')
             memSize(i) = memSize(i) + 1;
         else
             memSize(i) = memSize(i) + Selection.length;

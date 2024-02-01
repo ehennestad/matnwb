@@ -19,7 +19,7 @@ if isKey(scheme, 'groups')
             continue;
         end
         if isKey(groupMap, 'groups') || isKey(groupMap, 'datasets')
-            Classes = [Classes; schemes.getClasses(groupMap, varargin{:})];
+            Classes = [Classes; matnwb.schemes.getClasses(groupMap, varargin{:})];
         end
     end
 end

@@ -1,4 +1,4 @@
-classdef OpticalChannel < types.core.NWBContainer & types.untyped.GroupClass
+classdef OpticalChannel < matnwb.types.core.NWBContainer & matnwb.types.untyped.GroupClass
 % OPTICALCHANNEL An optical channel used to record from an imaging plane.
 
 
@@ -11,7 +11,7 @@ end
 methods
     function obj = OpticalChannel(varargin)
         % OPTICALCHANNEL Constructor for OpticalChannel
-        obj = obj@types.core.NWBContainer(varargin{:});
+        obj = obj@matnwb.types.core.NWBContainer(varargin{:});
         
         
         p = inputParser;
@@ -20,12 +20,12 @@ methods
         p.StructExpand = false;
         addParameter(p, 'description',[]);
         addParameter(p, 'emission_lambda',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.emission_lambda = p.Results.emission_lambda;
-        if strcmp(class(obj), 'types.core.OpticalChannel')
+        if strcmp(class(obj), 'matnwb.types.core.OpticalChannel')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -38,8 +38,8 @@ methods
     %% VALIDATORS
     
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -53,11 +53,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_emission_lambda(obj, val)
-        val = types.util.checkDtype('emission_lambda', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('emission_lambda', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -71,23 +71,23 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBContainer(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBContainer(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if startsWith(class(obj.description), 'types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
-            io.writeDataset(fid, [fullpath '/description'], obj.description);
+            matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
         end
         if startsWith(class(obj.emission_lambda), 'types.untyped.')
             refs = obj.emission_lambda.export(fid, [fullpath '/emission_lambda'], refs);
         elseif ~isempty(obj.emission_lambda)
-            io.writeDataset(fid, [fullpath '/emission_lambda'], obj.emission_lambda);
+            matnwb.io.writeDataset(fid, [fullpath '/emission_lambda'], obj.emission_lambda);
         end
     end
 end

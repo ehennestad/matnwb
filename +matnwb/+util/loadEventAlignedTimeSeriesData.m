@@ -29,13 +29,13 @@ dims = timeseries.data.dims;
 if isempty(electrodes)
     D = NaN(length(times), dims(1), int16(inds_len));
     for i = 1:length(times)
-        D(i,:,:) = util.loadTimeSeriesData(timeseries, window + times(i), ...
+        D(i,:,:) = matnwb.util.loadTimeSeriesData(timeseries, window + times(i), ...
             downsample_factor, electrodes);
     end
 else
     D = NaN(length(times), length(electrodes), inds_len);
     for i = 1:length(times)
-        D(i,:,:) = reshape(util.loadTimeSeriesData(timeseries, window + times(i), ...
+        D(i,:,:) = reshape(matnwb.util.loadTimeSeriesData(timeseries, window + times(i), ...
             downsample_factor, electrodes)', [1 length(electrodes) inds_len]);
     end
 end

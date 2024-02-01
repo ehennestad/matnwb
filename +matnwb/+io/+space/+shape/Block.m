@@ -1,4 +1,4 @@
-classdef Block < io.space.Shape
+classdef Block < matnwb.io.space.Shape
     %BLOCK Shape indicating a non-scalar hyperslab selection
     
     properties

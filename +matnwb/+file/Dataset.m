@@ -1,4 +1,4 @@
-classdef Dataset < file.interface.HasProps
+classdef Dataset < matnwb.file.interface.HasProps
     properties
         name;
         doc;
@@ -56,7 +56,7 @@ classdef Dataset < file.interface.HasProps
             
             dataTypeKey = 'dtype';
             if isKey(source, dataTypeKey)
-                obj.dtype = file.mapType(source(dataTypeKey));
+                obj.dtype = matnwb.file.mapType(source(dataTypeKey));
             end
             
             if isKey(source, 'quantity')
@@ -83,8 +83,8 @@ classdef Dataset < file.interface.HasProps
             end
             
             if isKey(source, 'shape')
-                obj.shape = file.formatShape(source('shape'));
-                obj.scalar = file.isShapeScalar(obj.shape);
+                obj.shape = matnwb.file.formatShape(source('shape'));
+                obj.scalar = matnwb.file.isShapeScalar(obj.shape);
             else
                 obj.shape = 1;
             end
@@ -93,9 +93,9 @@ classdef Dataset < file.interface.HasProps
             if isKey(source, attributeKey)
                 sourceAttributes = source(attributeKey);
                 numAttributes = length(sourceAttributes);
-                obj.attributes = repmat(file.Attribute, numAttributes, 1);
+                obj.attributes = repmat(matnwb.file.Attribute, numAttributes, 1);
                 for i=1:numAttributes
-                    attribute = file.Attribute(sourceAttributes{i});
+                    attribute = matnwb.file.Attribute(sourceAttributes{i});
                     if isempty(obj.type)
                         attribute.dependent = obj.name;
                     end

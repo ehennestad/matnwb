@@ -10,16 +10,16 @@ end
 
 links = containers.Map;
 refs = containers.Map;
-[~, root] = io.pathParts(info.Name);
+[~, root] = matnwb.io.pathParts(info.Name);
 [attributeProperties, Type] =...
-    io.parseAttributes(filename, info.Attributes, info.Name, Blacklist);
+    matnwb.io.parseAttributes(filename, info.Attributes, info.Name, Blacklist);
 
 %parse datasets
 datasetProperties = containers.Map;
 for i=1:length(info.Datasets)
     datasetInfo = info.Datasets(i);
     fullPath = [info.Name '/' datasetInfo.Name];
-    dataset = io.parseDataset(filename, datasetInfo, fullPath, Blacklist);
+    dataset = matnwb.io.parseDataset(filename, datasetInfo, fullPath, Blacklist);
     if isa(dataset, 'containers.Map')
         datasetProperties = [datasetProperties; dataset];
     else
@@ -34,8 +34,8 @@ for i=1:length(info.Groups)
     if any(strcmp(group.Name, Blacklist.groups))
         continue;
     end
-    [~, gname] = io.pathParts(group.Name);
-    subg = io.parseGroup(filename, group, Blacklist);
+    [~, gname] = matnwb.io.pathParts(group.Name);
+    subg = matnwb.io.parseGroup(filename, group, Blacklist);
     groupProperties(gname) = subg;
 end
 
@@ -45,15 +45,15 @@ for i=1:length(info.Links)
     link = info.Links(i);
     switch link.Type
         case 'soft link'
-            lnk = types.untyped.SoftLink(link.Value{1});
+            lnk = matnwb.types.untyped.SoftLink(link.Value{1});
         otherwise %todo assuming external link here
-            lnk = types.untyped.ExternalLink(link.Value{:});
+            lnk = matnwb.types.untyped.ExternalLink(link.Value{:});
     end
     linkProperties(link.Name) = lnk;
 end
 
 if isempty(Type.typename)
-    parsed = types.untyped.Set(...
+    parsed = matnwb.types.untyped.Set(...
         [attributeProperties; datasetProperties; groupProperties; linkProperties]);
     
     if isempty(parsed)
@@ -68,14 +68,14 @@ else
         groupProperties = [groupProperties; elided_gprops];
     end
     %construct as kwargs and instantiate object
-    kwargs = io.map2kwargs(...
+    kwargs = matnwb.io.map2kwargs(...
         [attributeProperties; datasetProperties; groupProperties; linkProperties]);
     if isempty(root)
         %we are root
         if strcmp(Type.name, 'NWBFile')
             parsed = NwbFile(kwargs{:});
         else
-            file.cloneNwbFileClass(Type.name, Type.typename);
+            matnwb.file.cloneNwbFileClass(Type.name, Type.typename);
             rehash();
             parsed = eval([Type.typename '(kwargs{:})']);
         end
@@ -106,7 +106,7 @@ end
 for i=1:length(potentials)
     pvar = potentials{i};
     pvalue = elidevals{i};
-    if isa(pvalue, 'containers.Map') || isa(pvalue, 'types.untyped.Set')
+    if isa(pvalue, 'containers.Map') || isa(pvalue, 'matnwb.types.untyped.Set')
         if pvalue.Count == 0
             drop(i) = true;
             continue; %delete

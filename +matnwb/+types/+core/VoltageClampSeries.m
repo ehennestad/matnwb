@@ -1,4 +1,4 @@
-classdef VoltageClampSeries < types.core.PatchClampSeries & types.untyped.GroupClass
+classdef VoltageClampSeries < matnwb.types.core.PatchClampSeries & matnwb.types.untyped.GroupClass
 % VOLTAGECLAMPSERIES Current data from an intracellular voltage-clamp recording. A corresponding VoltageClampStimulusSeries (stored separately as a stimulus) is used to store the voltage injected.
 
 
@@ -27,7 +27,7 @@ methods
     function obj = VoltageClampSeries(varargin)
         % VOLTAGECLAMPSERIES Constructor for VoltageClampSeries
         varargin = [{'capacitance_fast_unit' 'farads' 'capacitance_slow_unit' 'farads' 'data_unit' 'amperes' 'resistance_comp_bandwidth_unit' 'hertz' 'resistance_comp_correction_unit' 'percent' 'resistance_comp_prediction_unit' 'percent' 'whole_cell_capacitance_comp_unit' 'farads' 'whole_cell_series_resistance_comp_unit' 'ohms'} varargin];
-        obj = obj@types.core.PatchClampSeries(varargin{:});
+        obj = obj@matnwb.types.core.PatchClampSeries(varargin{:});
         
         
         p = inputParser;
@@ -50,7 +50,7 @@ methods
         addParameter(p, 'whole_cell_capacitance_comp_unit',[]);
         addParameter(p, 'whole_cell_series_resistance_comp',[]);
         addParameter(p, 'whole_cell_series_resistance_comp_unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.capacitance_fast = p.Results.capacitance_fast;
         obj.capacitance_fast_unit = p.Results.capacitance_fast_unit;
         obj.capacitance_slow = p.Results.capacitance_slow;
@@ -67,9 +67,9 @@ methods
         obj.whole_cell_capacitance_comp_unit = p.Results.whole_cell_capacitance_comp_unit;
         obj.whole_cell_series_resistance_comp = p.Results.whole_cell_series_resistance_comp;
         obj.whole_cell_series_resistance_comp_unit = p.Results.whole_cell_series_resistance_comp_unit;
-        if strcmp(class(obj), 'types.core.VoltageClampSeries')
+        if strcmp(class(obj), 'matnwb.types.core.VoltageClampSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -97,8 +97,8 @@ methods
     %% VALIDATORS
     
     function val = validate_capacitance_fast(obj, val)
-        val = types.util.checkDtype('capacitance_fast', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('capacitance_fast', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -112,11 +112,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_capacitance_slow(obj, val)
-        val = types.util.checkDtype('capacitance_slow', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('capacitance_slow', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -130,14 +130,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data(obj, val)
     
     end
     function val = validate_resistance_comp_bandwidth(obj, val)
-        val = types.util.checkDtype('resistance_comp_bandwidth', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('resistance_comp_bandwidth', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -151,11 +151,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_resistance_comp_correction(obj, val)
-        val = types.util.checkDtype('resistance_comp_correction', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('resistance_comp_correction', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -169,11 +169,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_resistance_comp_prediction(obj, val)
-        val = types.util.checkDtype('resistance_comp_prediction', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('resistance_comp_prediction', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -187,11 +187,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_whole_cell_capacitance_comp(obj, val)
-        val = types.util.checkDtype('whole_cell_capacitance_comp', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('whole_cell_capacitance_comp', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -205,11 +205,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_whole_cell_series_resistance_comp(obj, val)
-        val = types.util.checkDtype('whole_cell_series_resistance_comp', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('whole_cell_series_resistance_comp', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -223,11 +223,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.PatchClampSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.PatchClampSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -235,71 +235,71 @@ methods
             if startsWith(class(obj.capacitance_fast), 'types.untyped.')
                 refs = obj.capacitance_fast.export(fid, [fullpath '/capacitance_fast'], refs);
             elseif ~isempty(obj.capacitance_fast)
-                io.writeDataset(fid, [fullpath '/capacitance_fast'], obj.capacitance_fast);
+                matnwb.io.writeDataset(fid, [fullpath '/capacitance_fast'], obj.capacitance_fast);
             end
         end
-        if ~isempty(obj.capacitance_fast) && ~isa(obj.capacitance_fast, 'types.untyped.SoftLink') && ~isa(obj.capacitance_fast, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/capacitance_fast/unit'], obj.capacitance_fast_unit);
+        if ~isempty(obj.capacitance_fast) && ~isa(obj.capacitance_fast, 'matnwb.types.untyped.SoftLink') && ~isa(obj.capacitance_fast, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/capacitance_fast/unit'], obj.capacitance_fast_unit);
         end
         if ~isempty(obj.capacitance_slow)
             if startsWith(class(obj.capacitance_slow), 'types.untyped.')
                 refs = obj.capacitance_slow.export(fid, [fullpath '/capacitance_slow'], refs);
             elseif ~isempty(obj.capacitance_slow)
-                io.writeDataset(fid, [fullpath '/capacitance_slow'], obj.capacitance_slow);
+                matnwb.io.writeDataset(fid, [fullpath '/capacitance_slow'], obj.capacitance_slow);
             end
         end
-        if ~isempty(obj.capacitance_slow) && ~isa(obj.capacitance_slow, 'types.untyped.SoftLink') && ~isa(obj.capacitance_slow, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/capacitance_slow/unit'], obj.capacitance_slow_unit);
+        if ~isempty(obj.capacitance_slow) && ~isa(obj.capacitance_slow, 'matnwb.types.untyped.SoftLink') && ~isa(obj.capacitance_slow, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/capacitance_slow/unit'], obj.capacitance_slow_unit);
         end
         if ~isempty(obj.resistance_comp_bandwidth)
             if startsWith(class(obj.resistance_comp_bandwidth), 'types.untyped.')
                 refs = obj.resistance_comp_bandwidth.export(fid, [fullpath '/resistance_comp_bandwidth'], refs);
             elseif ~isempty(obj.resistance_comp_bandwidth)
-                io.writeDataset(fid, [fullpath '/resistance_comp_bandwidth'], obj.resistance_comp_bandwidth);
+                matnwb.io.writeDataset(fid, [fullpath '/resistance_comp_bandwidth'], obj.resistance_comp_bandwidth);
             end
         end
-        if ~isempty(obj.resistance_comp_bandwidth) && ~isa(obj.resistance_comp_bandwidth, 'types.untyped.SoftLink') && ~isa(obj.resistance_comp_bandwidth, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/resistance_comp_bandwidth/unit'], obj.resistance_comp_bandwidth_unit);
+        if ~isempty(obj.resistance_comp_bandwidth) && ~isa(obj.resistance_comp_bandwidth, 'matnwb.types.untyped.SoftLink') && ~isa(obj.resistance_comp_bandwidth, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/resistance_comp_bandwidth/unit'], obj.resistance_comp_bandwidth_unit);
         end
         if ~isempty(obj.resistance_comp_correction)
             if startsWith(class(obj.resistance_comp_correction), 'types.untyped.')
                 refs = obj.resistance_comp_correction.export(fid, [fullpath '/resistance_comp_correction'], refs);
             elseif ~isempty(obj.resistance_comp_correction)
-                io.writeDataset(fid, [fullpath '/resistance_comp_correction'], obj.resistance_comp_correction);
+                matnwb.io.writeDataset(fid, [fullpath '/resistance_comp_correction'], obj.resistance_comp_correction);
             end
         end
-        if ~isempty(obj.resistance_comp_correction) && ~isa(obj.resistance_comp_correction, 'types.untyped.SoftLink') && ~isa(obj.resistance_comp_correction, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/resistance_comp_correction/unit'], obj.resistance_comp_correction_unit);
+        if ~isempty(obj.resistance_comp_correction) && ~isa(obj.resistance_comp_correction, 'matnwb.types.untyped.SoftLink') && ~isa(obj.resistance_comp_correction, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/resistance_comp_correction/unit'], obj.resistance_comp_correction_unit);
         end
         if ~isempty(obj.resistance_comp_prediction)
             if startsWith(class(obj.resistance_comp_prediction), 'types.untyped.')
                 refs = obj.resistance_comp_prediction.export(fid, [fullpath '/resistance_comp_prediction'], refs);
             elseif ~isempty(obj.resistance_comp_prediction)
-                io.writeDataset(fid, [fullpath '/resistance_comp_prediction'], obj.resistance_comp_prediction);
+                matnwb.io.writeDataset(fid, [fullpath '/resistance_comp_prediction'], obj.resistance_comp_prediction);
             end
         end
-        if ~isempty(obj.resistance_comp_prediction) && ~isa(obj.resistance_comp_prediction, 'types.untyped.SoftLink') && ~isa(obj.resistance_comp_prediction, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/resistance_comp_prediction/unit'], obj.resistance_comp_prediction_unit);
+        if ~isempty(obj.resistance_comp_prediction) && ~isa(obj.resistance_comp_prediction, 'matnwb.types.untyped.SoftLink') && ~isa(obj.resistance_comp_prediction, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/resistance_comp_prediction/unit'], obj.resistance_comp_prediction_unit);
         end
         if ~isempty(obj.whole_cell_capacitance_comp)
             if startsWith(class(obj.whole_cell_capacitance_comp), 'types.untyped.')
                 refs = obj.whole_cell_capacitance_comp.export(fid, [fullpath '/whole_cell_capacitance_comp'], refs);
             elseif ~isempty(obj.whole_cell_capacitance_comp)
-                io.writeDataset(fid, [fullpath '/whole_cell_capacitance_comp'], obj.whole_cell_capacitance_comp);
+                matnwb.io.writeDataset(fid, [fullpath '/whole_cell_capacitance_comp'], obj.whole_cell_capacitance_comp);
             end
         end
-        if ~isempty(obj.whole_cell_capacitance_comp) && ~isa(obj.whole_cell_capacitance_comp, 'types.untyped.SoftLink') && ~isa(obj.whole_cell_capacitance_comp, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/whole_cell_capacitance_comp/unit'], obj.whole_cell_capacitance_comp_unit);
+        if ~isempty(obj.whole_cell_capacitance_comp) && ~isa(obj.whole_cell_capacitance_comp, 'matnwb.types.untyped.SoftLink') && ~isa(obj.whole_cell_capacitance_comp, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/whole_cell_capacitance_comp/unit'], obj.whole_cell_capacitance_comp_unit);
         end
         if ~isempty(obj.whole_cell_series_resistance_comp)
             if startsWith(class(obj.whole_cell_series_resistance_comp), 'types.untyped.')
                 refs = obj.whole_cell_series_resistance_comp.export(fid, [fullpath '/whole_cell_series_resistance_comp'], refs);
             elseif ~isempty(obj.whole_cell_series_resistance_comp)
-                io.writeDataset(fid, [fullpath '/whole_cell_series_resistance_comp'], obj.whole_cell_series_resistance_comp);
+                matnwb.io.writeDataset(fid, [fullpath '/whole_cell_series_resistance_comp'], obj.whole_cell_series_resistance_comp);
             end
         end
-        if ~isempty(obj.whole_cell_series_resistance_comp) && ~isa(obj.whole_cell_series_resistance_comp, 'types.untyped.SoftLink') && ~isa(obj.whole_cell_series_resistance_comp, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/whole_cell_series_resistance_comp/unit'], obj.whole_cell_series_resistance_comp_unit);
+        if ~isempty(obj.whole_cell_series_resistance_comp) && ~isa(obj.whole_cell_series_resistance_comp, 'matnwb.types.untyped.SoftLink') && ~isa(obj.whole_cell_series_resistance_comp, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/whole_cell_series_resistance_comp/unit'], obj.whole_cell_series_resistance_comp_unit);
         end
     end
 end

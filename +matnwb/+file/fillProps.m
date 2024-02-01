@@ -35,7 +35,7 @@ function s = fillProps(props, names, varargin)
     
     s = strjoin({...
         ['properties' options]...
-        file.addSpaces(strjoin(proplines, newline), 4)...
+        matnwb.file.addSpaces(strjoin(proplines, newline), 4)...
         'end'}, newline);
 end
 
@@ -50,7 +50,7 @@ function propStr = getPropStr(prop, propName)
             columnDocStr{i} = getPropStr(prop.(name), name);
         end
         typeStr = ['Table with columns: (', strjoin(columnDocStr, ', '), ')'];
-    elseif isa(prop, 'file.Attribute')
+    elseif isa(prop, 'matnwb.file.Attribute')
         if isa(prop.dtype, 'containers.Map')
             switch prop.dtype('reftype')
                 case 'region'
@@ -74,14 +74,14 @@ function propStr = getPropStr(prop, propName)
                 error('Invalid reftype found whilst filling Constructor prop docs.');
         end
         typeStr = sprintf('%s Reference to %s', refTypeName, prop('target_type'));
-    elseif isa(prop, 'file.interface.HasProps')
+    elseif isa(prop, 'matnwb.file.interface.HasProps')
         typeStrCell = cell(size(prop));
         for iProp = 1:length(typeStrCell)
             anonProp = prop(iProp);
-            if isa(anonProp, 'file.Dataset') && isempty(anonProp.type)
+            if isa(anonProp, 'matnwb.file.Dataset') && isempty(anonProp.type)
                 typeStrCell{iProp} = getPropStr(anonProp.dtype);
             elseif isempty(anonProp.type)
-                typeStrCell{iProp} = 'types.untyped.Set';
+                typeStrCell{iProp} = 'matnwb.types.untyped.Set';
             else
                 typeStrCell{iProp} = anonProp.type;
             end
@@ -91,13 +91,13 @@ function propStr = getPropStr(prop, propName)
         typeStr = prop.type;
     end
     
-    if isa(prop, 'file.interface.HasProps')
+    if isa(prop, 'matnwb.file.interface.HasProps')
         propStrCell = cell(size(prop));
         for iProp = 1:length(prop)
             propStrCell{iProp} = prop(iProp).doc;
         end
         propStr = sprintf('(%s) %s', typeStr, strjoin(propStrCell, ' | '));
-    elseif isa(prop, 'file.Attribute')
+    elseif isa(prop, 'matnwb.file.Attribute')
         propStr = sprintf('(%s) %s', typeStr, prop.doc);
     else
         propStr = typeStr;

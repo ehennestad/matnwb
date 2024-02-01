@@ -10,20 +10,20 @@ classdef MetaClass < handle
     
     methods (Access = private)
         function refs = write_base(obj, fid, fullpath, refs)
-            if isa(obj, 'types.untyped.GroupClass')
-                io.writeGroup(fid, fullpath);
+            if isa(obj, 'matnwb.types.untyped.GroupClass')
+                matnwb.io.writeGroup(fid, fullpath);
                 return;
             end
             
             try
-                if isa(obj.data, 'types.untyped.DataStub')...
-                        || isa(obj.data, 'types.untyped.DataPipe')
+                if isa(obj.data, 'matnwb.types.untyped.DataStub')...
+                        || isa(obj.data, 'matnwb.types.untyped.DataPipe')
                     refs = obj.data.export(fid, fullpath, refs);
                 elseif istable(obj.data) || isstruct(obj.data) ||...
                         isa(obj.data, 'containers.Map')
-                    io.writeCompound(fid, fullpath, obj.data);
+                    matnwb.io.writeCompound(fid, fullpath, obj.data);
                 else
-                    io.writeDataset(fid, fullpath, obj.data, 'forceArray');
+                    matnwb.io.writeDataset(fid, fullpath, obj.data, 'forceArray');
                 end
             catch ME
                 refs = obj.captureReferenceErrors(ME, fullpath, refs);
@@ -51,12 +51,12 @@ classdef MetaClass < handle
                 props{i} = obj.(propnames{i});
             end
             
-            refProps = cellfun('isclass', props, 'types.untyped.ObjectView') |...
-                cellfun('isclass', props, 'types.untyped.RegionView');
+            refProps = cellfun('isclass', props, 'matnwb.types.untyped.ObjectView') |...
+                cellfun('isclass', props, 'matnwb.types.untyped.RegionView');
             props = props(refProps);
             for i=1:length(props)
                 try
-                    io.getRefData(fid, props{i});
+                    matnwb.io.getRefData(fid, props{i});
                 catch ME
                     refs = obj.captureReferenceErrors(ME, fullpath, refs);
                 end
@@ -70,9 +70,9 @@ classdef MetaClass < handle
             
             uuid = char(java.util.UUID.randomUUID().toString());
             if isa(obj, 'NwbFile')
-                io.writeAttribute(fid, '/namespace', 'core');
-                io.writeAttribute(fid, '/neurodata_type', 'NWBFile');
-                io.writeAttribute(fid, '/object_id', uuid);
+                matnwb.io.writeAttribute(fid, '/namespace', 'core');
+                matnwb.io.writeAttribute(fid, '/neurodata_type', 'NWBFile');
+                matnwb.io.writeAttribute(fid, '/object_id', uuid);
             else
                 namespacePath = [fullpath '/namespace'];
                 neuroTypePath = [fullpath '/neurodata_type'];
@@ -80,9 +80,9 @@ classdef MetaClass < handle
                 dotparts = split(class(obj), '.');
                 namespace = strrep(dotparts{2}, '_', '-');
                 classtype = dotparts{3};
-                io.writeAttribute(fid, namespacePath, namespace);
-                io.writeAttribute(fid, neuroTypePath, classtype);
-                io.writeAttribute(fid, uuidPath, uuid);
+                matnwb.io.writeAttribute(fid, namespacePath, namespace);
+                matnwb.io.writeAttribute(fid, neuroTypePath, classtype);
+                matnwb.io.writeAttribute(fid, uuidPath, uuid);
             end
         end
         
@@ -90,7 +90,7 @@ classdef MetaClass < handle
             propnames = properties(obj);
             for i=1:length(propnames)
                 prop = obj.(propnames{i});
-                if isa(prop, 'types.untyped.DataStub')
+                if isa(prop, 'matnwb.types.untyped.DataStub')
                     obj.(propnames{i}) = prop.load();
                 end
             end

@@ -1,4 +1,4 @@
-classdef CorrectedImageStack < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef CorrectedImageStack < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % CORRECTEDIMAGESTACK Reuslts from motion correction of an image stack.
 
 
@@ -15,7 +15,7 @@ end
 methods
     function obj = CorrectedImageStack(varargin)
         % CORRECTEDIMAGESTACK Constructor for CorrectedImageStack
-        obj = obj@types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -25,13 +25,13 @@ methods
         addParameter(p, 'corrected',[]);
         addParameter(p, 'original',[]);
         addParameter(p, 'xy_translation',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.corrected = p.Results.corrected;
         obj.original = p.Results.original;
         obj.xy_translation = p.Results.xy_translation;
-        if strcmp(class(obj), 'types.core.CorrectedImageStack')
+        if strcmp(class(obj), 'matnwb.types.core.CorrectedImageStack')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -47,17 +47,17 @@ methods
     %% VALIDATORS
     
     function val = validate_corrected(obj, val)
-        val = types.util.checkDtype('corrected', 'types.core.ImageSeries', val);
+        val = matnwb.types.util.checkDtype('corrected', 'matnwb.matnwb.types.core.ImageSeries', val);
     end
     function val = validate_original(obj, val)
-        val = types.util.checkDtype('original', 'types.core.ImageSeries', val);
+        val = matnwb.types.util.checkDtype('original', 'matnwb.matnwb.types.core.ImageSeries', val);
     end
     function val = validate_xy_translation(obj, val)
-        val = types.util.checkDtype('xy_translation', 'types.core.TimeSeries', val);
+        val = matnwb.types.util.checkDtype('xy_translation', 'matnwb.types.core.TimeSeries', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

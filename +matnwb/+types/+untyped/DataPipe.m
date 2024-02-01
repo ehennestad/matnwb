@@ -63,11 +63,11 @@ classdef (Sealed) DataPipe < handle
     methods
         %% Lifecycle
         function obj = DataPipe(varargin)
-            import types.untyped.datapipe.BoundPipe;
-            import types.untyped.datapipe.BlueprintPipe;
-            import types.untyped.datapipe.Configuration;
+            import matnwb.types.untyped.datapipe.BoundPipe;
+            import matnwb.types.untyped.datapipe.BlueprintPipe;
+            import matnwb.types.untyped.datapipe.Configuration;
             import types.untyped.datapipe.properties.*;
-            import types.untyped.datapipe.guessChunkSize;
+            import matnwb.types.untyped.datapipe.guessChunkSize;
             
             p = inputParser;
             p.addParameter('maxSize', []);
@@ -87,7 +87,7 @@ classdef (Sealed) DataPipe < handle
             p.addParameter('hasShuffle', false, ...
                 @(b) isscalar(b) && (islogical(b) || isnumeric(b)));
             p.addParameter('filters', DynamicFilter.empty(), ...
-                @(x) isa(x, 'types.untyped.datapipe.Property'));
+                @(x) isa(x, 'matnwb.types.untyped.datapipe.Property'));
             p.KeepUnmatched = true;
             p.parse(varargin{:});
             
@@ -162,8 +162,8 @@ classdef (Sealed) DataPipe < handle
                     'override `compressionLevel` and `hasShuffle` keyword ' ...
                     'arguments. If you wish to use either `compressionLevel` ' ...
                     'or `hasShuffle`, please add their respective filter ' ...
-                    'properties `types.untyped.datapipe.properties.Compression` ' ...
-                    'and `types.untyped.datapipe.properties.Shuffle` to the ' ...
+                    'properties `matnwb.types.untyped.datapipe.properties.Compression` ' ...
+                    'and `matnwb.types.untyped.datapipe.properties.Shuffle` to the ' ...
                     '`filters` properties array.']);
             end
             
@@ -186,7 +186,7 @@ classdef (Sealed) DataPipe < handle
         
         %% SET/GET
         function tf = get.isBound(obj)
-            tf = isa(obj.internal, 'types.untyped.datapipe.BoundPipe');
+            tf = isa(obj.internal, 'matnwb.types.untyped.datapipe.BoundPipe');
         end
         
         function val = get.axis(obj)
@@ -215,16 +215,16 @@ classdef (Sealed) DataPipe < handle
         
         function val = get.chunkSize(obj)
             val = obj.internal.getPipeProperty(...
-                'types.untyped.datapipe.properties.Chunking').chunkSize;
+                'matnwb.types.untyped.datapipe.properties.Chunking').chunkSize;
         end
         
         function set.chunkSize(obj, val)
-            import types.untyped.datapipe.properties.Chunking;
+            import matnwb.types.untyped.datapipe.properties.Chunking;
             obj.internal.setPipeProperty(Chunking(val));
         end
         
         function val = get.compressionLevel(obj)
-            compressionClass = 'types.untyped.datapipe.properties.Compression';
+            compressionClass = 'matnwb.types.untyped.datapipe.properties.Compression';
             val = -1;
             if obj.internal.hasPipeProperty(compressionClass)
                 val = obj.internal.getPipeProperty(compressionClass).level;
@@ -232,11 +232,11 @@ classdef (Sealed) DataPipe < handle
         end
         
         function set.compressionLevel(obj, val)
-            import types.untyped.datapipe.properties.Compression;
+            import matnwb.types.untyped.datapipe.properties.Compression;
             validateattributes(val, {'numeric'}, {'scalar'}, 1);
             assert(-1 <= val, 'NWB:SetCompressionLevel:InvalidValue', ...
                 'Compression Level cannot be less than -1.');
-            compressionClass = 'types.untyped.datapipe.properties.Compression';
+            compressionClass = 'matnwb.types.untyped.datapipe.properties.Compression';
             if -1 == val
                 obj.internal.removePipeProperty(compressionClass);
             else
@@ -246,16 +246,16 @@ classdef (Sealed) DataPipe < handle
         
         function tf = get.hasShuffle(obj)
             tf = obj.internal.hasPipeProperty(...
-                'types.untyped.datapipe.properties.Shuffle');
+                'matnwb.types.untyped.datapipe.properties.Shuffle');
         end
         
         function set.hasShuffle(obj, tf)
-            import types.untyped.datapipe.properties.Shuffle;
+            import matnwb.types.untyped.datapipe.properties.Shuffle;
             if tf
                 obj.internal.setPipeProperty(Shuffle());
             else
                 obj.internal.removePipeProperty(...
-                    'types.untyped.datapipe.properties.Shuffle');
+                    'matnwb.types.untyped.datapipe.properties.Shuffle');
             end
         end
         
@@ -274,9 +274,9 @@ classdef (Sealed) DataPipe < handle
         
         %% Display
         function sz = size(obj, varargin)
-            if isa(obj.internal, 'types.untyped.datapipe.BoundPipe')
+            if isa(obj.internal, 'matnwb.types.untyped.datapipe.BoundPipe')
                 sz = obj.internal.dims(varargin{:});
-            elseif isa(obj.internal, 'types.untyped.datapipe.BlueprintPipe')
+            elseif isa(obj.internal, 'matnwb.types.untyped.datapipe.BlueprintPipe')
                 sz = size(obj.internal.data, varargin{:});
             else
                 error('NWB:DataPipe:UnhandledPipe', ['Internal Datapipe of type `%s` does not '...
@@ -292,9 +292,9 @@ classdef (Sealed) DataPipe < handle
                 return;
             end
             
-            if isa(obj.internal, 'types.untyped.datapipe.BoundPipe')
+            if isa(obj.internal, 'matnwb.types.untyped.datapipe.BoundPipe')
                 data = obj.internal.stub(CurrentSubRef.subs{:});
-            elseif isa(obj.internal, 'types.untyped.datapipe.BlueprintPipe')
+            elseif isa(obj.internal, 'matnwb.types.untyped.datapipe.BlueprintPipe')
                 data = obj.internal.data(CurrentSubRef.subs{:});
             else
                 error('NWB:DataPipe:InvalidState', ...

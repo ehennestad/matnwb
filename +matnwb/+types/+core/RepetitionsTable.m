@@ -1,4 +1,4 @@
-classdef RepetitionsTable < types.hdmf_common.DynamicTable & types.untyped.GroupClass
+classdef RepetitionsTable < matnwb.types.hdmf_common.DynamicTable & matnwb.types.untyped.GroupClass
 % REPETITIONSTABLE A table for grouping different sequential intracellular recordings together. With each SequentialRecording typically representing a particular type of stimulus, the RepetitionsTable table is typically used to group sets of stimuli applied in sequence.
 
 
@@ -11,7 +11,7 @@ end
 methods
     function obj = RepetitionsTable(varargin)
         % REPETITIONSTABLE Constructor for RepetitionsTable
-        obj = obj@types.hdmf_common.DynamicTable(varargin{:});
+        obj = obj@matnwb.types.hdmf_common.DynamicTable(varargin{:});
         
         
         p = inputParser;
@@ -20,15 +20,15 @@ methods
         p.StructExpand = false;
         addParameter(p, 'sequential_recordings',[]);
         addParameter(p, 'sequential_recordings_index',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.sequential_recordings = p.Results.sequential_recordings;
         obj.sequential_recordings_index = p.Results.sequential_recordings_index;
-        if strcmp(class(obj), 'types.core.RepetitionsTable')
+        if strcmp(class(obj), 'matnwb.types.core.RepetitionsTable')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'types.core.RepetitionsTable')
-            types.util.dynamictable.checkConfig(obj);
+        if strcmp(class(obj), 'matnwb.types.core.RepetitionsTable')
+            matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end
     %% SETTERS
@@ -41,14 +41,14 @@ methods
     %% VALIDATORS
     
     function val = validate_sequential_recordings(obj, val)
-        val = types.util.checkDtype('sequential_recordings', 'types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('sequential_recordings', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_sequential_recordings_index(obj, val)
-        val = types.util.checkDtype('sequential_recordings_index', 'types.hdmf_common.VectorIndex', val);
+        val = matnwb.types.util.checkDtype('sequential_recordings_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.hdmf_common.DynamicTable(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

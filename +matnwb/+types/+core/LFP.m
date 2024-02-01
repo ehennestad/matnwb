@@ -1,4 +1,4 @@
-classdef LFP < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef LFP < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % LFP LFP data from one or more channels. The electrode map in each published ElectricalSeries will identify which channels are providing LFP data. Filter properties should be noted in the ElectricalSeries 'filtering' attribute.
 
 
@@ -10,18 +10,18 @@ end
 methods
     function obj = LFP(varargin)
         % LFP Constructor for LFP
-        obj = obj@types.core.NWBDataInterface(varargin{:});
-        [obj.electricalseries, ivarargin] = types.util.parseConstrained(obj,'electricalseries', 'types.core.ElectricalSeries', varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        [obj.electricalseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'electricalseries', 'matnwb.types.core.ElectricalSeries', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
         p.KeepUnmatched = true;
         p.PartialMatching = false;
         p.StructExpand = false;
-        misc.parseSkipInvalidName(p, varargin);
-        if strcmp(class(obj), 'types.core.LFP')
+        matnwb.misc.parseSkipInvalidName(p, varargin);
+        if strcmp(class(obj), 'matnwb.types.core.LFP')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -32,12 +32,12 @@ methods
     
     function val = validate_electricalseries(obj, val)
         namedprops = struct();
-        constrained = {'types.core.ElectricalSeries'};
-        types.util.checkSet('electricalseries', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.ElectricalSeries'};
+        matnwb.types.util.checkSet('electricalseries', namedprops, constrained, val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

@@ -16,26 +16,26 @@ function addColumn(DynamicTable, varargin)
 % existing columns
 
 validateattributes(DynamicTable,...
-    {'types.core.DynamicTable', 'types.hdmf_common.DynamicTable'},...
+    {'types.core.DynamicTable', 'matnwb.types.hdmf_common.DynamicTable'},...
     {'scalar'});
 
 assert(nargin > 1, 'NWB:DynamicTable:AddColumn:NoData', 'Not enough arguments');
 
 if isempty(DynamicTable.id)
-    if 8 == exist('types.hdmf_common.ElementIdentifiers', 'class')
-        DynamicTable.id = types.hdmf_common.ElementIdentifiers();
+    if 8 == exist('matnwb.types.hdmf_common.ElementIdentifiers', 'class')
+        DynamicTable.id = matnwb.types.hdmf_common.ElementIdentifiers();
     else % legacy Element Identifiers
         DynamicTable.id = types.core.ElementIdentifiers();
     end
 end
 
-assert(~isa(DynamicTable.id.data, 'types.untyped.DataStub'),...
+assert(~isa(DynamicTable.id.data, 'matnwb.types.untyped.DataStub'),...
     'NWB:DynamicTable:AddColumn:Uneditable',...
     ['Cannot write to on-file Dynamic Tables without enabling data pipes. '...
     'If this was produced with pynwb, please enable chunking for this table.']);
 
 if istable(varargin{1})
-    types.util.dynamictable.addTableColumn(DynamicTable, varargin{:});
+    matnwb.types.util.dynamictable.addTableColumn(DynamicTable, varargin{:});
 else
-    types.util.dynamictable.addVarargColumn(DynamicTable, varargin{:});
+    matnwb.types.util.dynamictable.addVarargColumn(DynamicTable, varargin{:});
 end

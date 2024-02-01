@@ -1,4 +1,4 @@
-classdef Point < io.space.Shape
+classdef Point < matnwb.io.space.Shape
     %POINT index points of a selection
     
     properties
@@ -12,7 +12,7 @@ classdef Point < io.space.Shape
         end
     end
     
-    %% io.space.Shape
+    %% matnwb.io.space.Shape
     methods
         function [start, stride, count, block] = getSpaceSpec(obj)
             start = obj.index;

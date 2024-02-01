@@ -1,4 +1,4 @@
-classdef EventWaveform < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef EventWaveform < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % EVENTWAVEFORM Represents either the waveforms of detected events, as extracted from a raw data trace in /acquisition, or the event waveforms that were stored during experiment acquisition.
 
 
@@ -10,18 +10,18 @@ end
 methods
     function obj = EventWaveform(varargin)
         % EVENTWAVEFORM Constructor for EventWaveform
-        obj = obj@types.core.NWBDataInterface(varargin{:});
-        [obj.spikeeventseries, ivarargin] = types.util.parseConstrained(obj,'spikeeventseries', 'types.core.SpikeEventSeries', varargin{:});
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        [obj.spikeeventseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'spikeeventseries', 'matnwb.types.core.SpikeEventSeries', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
         p.KeepUnmatched = true;
         p.PartialMatching = false;
         p.StructExpand = false;
-        misc.parseSkipInvalidName(p, varargin);
-        if strcmp(class(obj), 'types.core.EventWaveform')
+        matnwb.misc.parseSkipInvalidName(p, varargin);
+        if strcmp(class(obj), 'matnwb.types.core.EventWaveform')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -32,12 +32,12 @@ methods
     
     function val = validate_spikeeventseries(obj, val)
         namedprops = struct();
-        constrained = {'types.core.SpikeEventSeries'};
-        types.util.checkSet('spikeeventseries', namedprops, constrained, val);
+        constrained = {'matnwb.types.core.SpikeEventSeries'};
+        matnwb.types.util.checkSet('spikeeventseries', namedprops, constrained, val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

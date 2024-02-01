@@ -5,7 +5,7 @@ function parsed = parseDataset(filename, info, fullpath, Blacklist)
     name = info.Name;
 
     %check if typed and parse attributes
-    [attrargs, Type] = io.parseAttributes(filename, info.Attributes, fullpath, Blacklist);
+    [attrargs, Type] = matnwb.io.parseAttributes(filename, info.Attributes, fullpath, Blacklist);
 
     fid = H5F.open(filename, 'H5F_ACC_RDONLY', 'H5P_DEFAULT');
     did = H5D.open(fid, fullpath);
@@ -24,7 +24,7 @@ function parsed = parseDataset(filename, info, fullpath, Blacklist)
     % unfortunately also a bottleneck
     if strcmp(datatype.Class, 'H5T_REFERENCE')
         tid = H5D.get_type(did);
-        data = io.parseReference(did, tid, H5D.read(did));
+        data = matnwb.io.parseReference(did, tid, H5D.read(did));
         H5T.close(tid);
     elseif ~strcmp(dataspace.Type, 'simple')
         data = H5D.read(did);
@@ -42,7 +42,7 @@ function parsed = parseDataset(filename, info, fullpath, Blacklist)
                     data = strtrim(mat2cell(data, ones(datadim(1), 1), datadim(2)));
                 end
             case 'H5T_ENUM'
-                if io.isBool(datatype.Type)
+                if matnwb.io.isBool(datatype.Type)
                     data = strcmp('TRUE', data);
                 else
                     warning('NWB:Dataset:UnknownEnum', ...
@@ -61,11 +61,11 @@ function parsed = parseDataset(filename, info, fullpath, Blacklist)
         isNumeric = class_id == H5ML.get_constant_value('H5T_INTEGER')...
             || class_id == H5ML.get_constant_value('H5T_FLOAT');
         if isChunked && isNumeric
-            data = types.untyped.DataPipe('filename', filename, 'path', fullpath);
+            data = matnwb.types.untyped.DataPipe('filename', filename, 'path', fullpath);
         elseif any(dataspace.Size == 0)
             data = [];
         else
-            data = types.untyped.DataStub(filename, fullpath);
+            data = matnwb.types.untyped.DataStub(filename, fullpath);
         end
         H5T.close(tid);
         H5P.close(pid);
@@ -77,7 +77,7 @@ function parsed = parseDataset(filename, info, fullpath, Blacklist)
         parsed(name) = data;
     else
         props('data') = data;
-        kwargs = io.map2kwargs(props);
+        kwargs = matnwb.io.map2kwargs(props);
         parsed = eval([Type.typename '(kwargs{:})']);
     end
     H5D.close(did);

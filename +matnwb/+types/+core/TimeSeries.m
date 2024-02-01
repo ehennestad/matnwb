@@ -1,4 +1,4 @@
-classdef TimeSeries < types.core.NWBDataInterface & types.untyped.GroupClass
+classdef TimeSeries < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % TIMESERIES General purpose time series.
 
 
@@ -31,8 +31,8 @@ end
 methods
     function obj = TimeSeries(varargin)
         % TIMESERIES Constructor for TimeSeries
-        varargin = [{'comments' 'no comments' 'data_conversion' types.util.correctType(1, 'single') 'data_offset' types.util.correctType(0, 'single') 'data_resolution' types.util.correctType(-1, 'single') 'description' 'no description' 'starting_time_unit' 'seconds' 'timestamps_interval' types.util.correctType(1, 'int32') 'timestamps_unit' 'seconds'} varargin];
-        obj = obj@types.core.NWBDataInterface(varargin{:});
+        varargin = [{'comments' 'no comments' 'data_conversion' matnwb.types.util.correctType(1, 'single') 'data_offset' matnwb.types.util.correctType(0, 'single') 'data_resolution' matnwb.types.util.correctType(-1, 'single') 'description' 'no description' 'starting_time_unit' 'seconds' 'timestamps_interval' matnwb.types.util.correctType(1, 'int32') 'timestamps_unit' 'seconds'} varargin];
+        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -55,7 +55,7 @@ methods
         addParameter(p, 'timestamps',[]);
         addParameter(p, 'timestamps_interval',[]);
         addParameter(p, 'timestamps_unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.comments = p.Results.comments;
         obj.control = p.Results.control;
         obj.control_description = p.Results.control_description;
@@ -72,9 +72,9 @@ methods
         obj.timestamps = p.Results.timestamps;
         obj.timestamps_interval = p.Results.timestamps_interval;
         obj.timestamps_unit = p.Results.timestamps_unit;
-        if strcmp(class(obj), 'types.core.TimeSeries')
+        if strcmp(class(obj), 'matnwb.types.core.TimeSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -120,8 +120,8 @@ methods
     %% VALIDATORS
     
     function val = validate_comments(obj, val)
-        val = types.util.checkDtype('comments', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('comments', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -135,11 +135,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_control(obj, val)
-        val = types.util.checkDtype('control', 'uint8', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('control', 'uint8', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -153,11 +153,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_control_description(obj, val)
-        val = types.util.checkDtype('control_description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('control_description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -171,14 +171,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data(obj, val)
     
     end
     function val = validate_data_continuity(obj, val)
-        val = types.util.checkDtype('data_continuity', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_continuity', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -192,11 +192,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_conversion(obj, val)
-        val = types.util.checkDtype('data_conversion', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_conversion', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -210,11 +210,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_offset(obj, val)
-        val = types.util.checkDtype('data_offset', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_offset', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -228,11 +228,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_resolution(obj, val)
-        val = types.util.checkDtype('data_resolution', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_resolution', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -246,11 +246,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data_unit(obj, val)
-        val = types.util.checkDtype('data_unit', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('data_unit', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -264,11 +264,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_description(obj, val)
-        val = types.util.checkDtype('description', 'char', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('description', 'char', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -282,11 +282,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_starting_time(obj, val)
-        val = types.util.checkDtype('starting_time', 'double', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('starting_time', 'double', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -300,11 +300,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_starting_time_rate(obj, val)
-        val = types.util.checkDtype('starting_time_rate', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('starting_time_rate', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -318,11 +318,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_timestamps(obj, val)
-        val = types.util.checkDtype('timestamps', 'double', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('timestamps', 'double', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -336,79 +336,79 @@ methods
             valsz = size(val);
         end
         validshapes = {[Inf]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if ~isempty(obj.comments)
-            io.writeAttribute(fid, [fullpath '/comments'], obj.comments);
+            matnwb.io.writeAttribute(fid, [fullpath '/comments'], obj.comments);
         end
         if ~isempty(obj.control)
             if startsWith(class(obj.control), 'types.untyped.')
                 refs = obj.control.export(fid, [fullpath '/control'], refs);
             elseif ~isempty(obj.control)
-                io.writeDataset(fid, [fullpath '/control'], obj.control, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/control'], obj.control, 'forceArray');
             end
         end
         if ~isempty(obj.control_description)
             if startsWith(class(obj.control_description), 'types.untyped.')
                 refs = obj.control_description.export(fid, [fullpath '/control_description'], refs);
             elseif ~isempty(obj.control_description)
-                io.writeDataset(fid, [fullpath '/control_description'], obj.control_description, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/control_description'], obj.control_description, 'forceArray');
             end
         end
         if startsWith(class(obj.data), 'types.untyped.')
             refs = obj.data.export(fid, [fullpath '/data'], refs);
         elseif ~isempty(obj.data)
-            io.writeDataset(fid, [fullpath '/data'], obj.data, 'forceArray');
+            matnwb.io.writeDataset(fid, [fullpath '/data'], obj.data, 'forceArray');
         end
-        if ~isempty(obj.data) && ~isa(obj.data, 'types.untyped.SoftLink') && ~isa(obj.data, 'types.untyped.ExternalLink') && ~isempty(obj.data_continuity)
-            io.writeAttribute(fid, [fullpath '/data/continuity'], obj.data_continuity);
+        if ~isempty(obj.data) && ~isa(obj.data, 'matnwb.types.untyped.SoftLink') && ~isa(obj.data, 'matnwb.types.untyped.ExternalLink') && ~isempty(obj.data_continuity)
+            matnwb.io.writeAttribute(fid, [fullpath '/data/continuity'], obj.data_continuity);
         end
-        if ~isempty(obj.data) && ~isa(obj.data, 'types.untyped.SoftLink') && ~isa(obj.data, 'types.untyped.ExternalLink') && ~isempty(obj.data_conversion)
-            io.writeAttribute(fid, [fullpath '/data/conversion'], obj.data_conversion);
+        if ~isempty(obj.data) && ~isa(obj.data, 'matnwb.types.untyped.SoftLink') && ~isa(obj.data, 'matnwb.types.untyped.ExternalLink') && ~isempty(obj.data_conversion)
+            matnwb.io.writeAttribute(fid, [fullpath '/data/conversion'], obj.data_conversion);
         end
-        if ~isempty(obj.data) && ~isa(obj.data, 'types.untyped.SoftLink') && ~isa(obj.data, 'types.untyped.ExternalLink') && ~isempty(obj.data_offset)
-            io.writeAttribute(fid, [fullpath '/data/offset'], obj.data_offset);
+        if ~isempty(obj.data) && ~isa(obj.data, 'matnwb.types.untyped.SoftLink') && ~isa(obj.data, 'matnwb.types.untyped.ExternalLink') && ~isempty(obj.data_offset)
+            matnwb.io.writeAttribute(fid, [fullpath '/data/offset'], obj.data_offset);
         end
-        if ~isempty(obj.data) && ~isa(obj.data, 'types.untyped.SoftLink') && ~isa(obj.data, 'types.untyped.ExternalLink') && ~isempty(obj.data_resolution)
-            io.writeAttribute(fid, [fullpath '/data/resolution'], obj.data_resolution);
+        if ~isempty(obj.data) && ~isa(obj.data, 'matnwb.types.untyped.SoftLink') && ~isa(obj.data, 'matnwb.types.untyped.ExternalLink') && ~isempty(obj.data_resolution)
+            matnwb.io.writeAttribute(fid, [fullpath '/data/resolution'], obj.data_resolution);
         end
-        if ~isempty(obj.data) && ~isa(obj.data, 'types.untyped.SoftLink') && ~isa(obj.data, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/data/unit'], obj.data_unit);
+        if ~isempty(obj.data) && ~isa(obj.data, 'matnwb.types.untyped.SoftLink') && ~isa(obj.data, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/data/unit'], obj.data_unit);
         end
         if ~isempty(obj.description)
-            io.writeAttribute(fid, [fullpath '/description'], obj.description);
+            matnwb.io.writeAttribute(fid, [fullpath '/description'], obj.description);
         end
         if ~isempty(obj.starting_time)
             if startsWith(class(obj.starting_time), 'types.untyped.')
                 refs = obj.starting_time.export(fid, [fullpath '/starting_time'], refs);
             elseif ~isempty(obj.starting_time)
-                io.writeDataset(fid, [fullpath '/starting_time'], obj.starting_time);
+                matnwb.io.writeDataset(fid, [fullpath '/starting_time'], obj.starting_time);
             end
         end
-        if ~isempty(obj.starting_time) && ~isa(obj.starting_time, 'types.untyped.SoftLink') && ~isa(obj.starting_time, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/starting_time/rate'], obj.starting_time_rate);
+        if ~isempty(obj.starting_time) && ~isa(obj.starting_time, 'matnwb.types.untyped.SoftLink') && ~isa(obj.starting_time, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/starting_time/rate'], obj.starting_time_rate);
         end
-        if ~isempty(obj.starting_time) && ~isa(obj.starting_time, 'types.untyped.SoftLink') && ~isa(obj.starting_time, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/starting_time/unit'], obj.starting_time_unit);
+        if ~isempty(obj.starting_time) && ~isa(obj.starting_time, 'matnwb.types.untyped.SoftLink') && ~isa(obj.starting_time, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/starting_time/unit'], obj.starting_time_unit);
         end
         if ~isempty(obj.timestamps)
             if startsWith(class(obj.timestamps), 'types.untyped.')
                 refs = obj.timestamps.export(fid, [fullpath '/timestamps'], refs);
             elseif ~isempty(obj.timestamps)
-                io.writeDataset(fid, [fullpath '/timestamps'], obj.timestamps, 'forceArray');
+                matnwb.io.writeDataset(fid, [fullpath '/timestamps'], obj.timestamps, 'forceArray');
             end
         end
-        if ~isempty(obj.timestamps) && ~isa(obj.timestamps, 'types.untyped.SoftLink') && ~isa(obj.timestamps, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/timestamps/interval'], obj.timestamps_interval);
+        if ~isempty(obj.timestamps) && ~isa(obj.timestamps, 'matnwb.types.untyped.SoftLink') && ~isa(obj.timestamps, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/timestamps/interval'], obj.timestamps_interval);
         end
-        if ~isempty(obj.timestamps) && ~isa(obj.timestamps, 'types.untyped.SoftLink') && ~isa(obj.timestamps, 'types.untyped.ExternalLink')
-            io.writeAttribute(fid, [fullpath '/timestamps/unit'], obj.timestamps_unit);
+        if ~isempty(obj.timestamps) && ~isa(obj.timestamps, 'matnwb.types.untyped.SoftLink') && ~isa(obj.timestamps, 'matnwb.types.untyped.ExternalLink')
+            matnwb.io.writeAttribute(fid, [fullpath '/timestamps/unit'], obj.timestamps_unit);
         end
     end
 end

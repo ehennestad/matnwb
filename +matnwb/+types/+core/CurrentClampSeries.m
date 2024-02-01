@@ -1,4 +1,4 @@
-classdef CurrentClampSeries < types.core.PatchClampSeries & types.untyped.GroupClass
+classdef CurrentClampSeries < matnwb.types.core.PatchClampSeries & matnwb.types.untyped.GroupClass
 % CURRENTCLAMPSERIES Voltage data from an intracellular current-clamp recording. A corresponding CurrentClampStimulusSeries (stored separately as a stimulus) is used to store the current injected.
 
 
@@ -13,7 +13,7 @@ methods
     function obj = CurrentClampSeries(varargin)
         % CURRENTCLAMPSERIES Constructor for CurrentClampSeries
         varargin = [{'data_unit' 'volts'} varargin];
-        obj = obj@types.core.PatchClampSeries(varargin{:});
+        obj = obj@matnwb.types.core.PatchClampSeries(varargin{:});
         
         
         p = inputParser;
@@ -25,15 +25,15 @@ methods
         addParameter(p, 'capacitance_compensation',[]);
         addParameter(p, 'data',[]);
         addParameter(p, 'data_unit',[]);
-        misc.parseSkipInvalidName(p, varargin);
+        matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.bias_current = p.Results.bias_current;
         obj.bridge_balance = p.Results.bridge_balance;
         obj.capacitance_compensation = p.Results.capacitance_compensation;
         obj.data = p.Results.data;
         obj.data_unit = p.Results.data_unit;
-        if strcmp(class(obj), 'types.core.CurrentClampSeries')
+        if strcmp(class(obj), 'matnwb.types.core.CurrentClampSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-            types.util.checkUnset(obj, unique(cellStringArguments));
+            matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
     end
     %% SETTERS
@@ -49,8 +49,8 @@ methods
     %% VALIDATORS
     
     function val = validate_bias_current(obj, val)
-        val = types.util.checkDtype('bias_current', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('bias_current', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -64,11 +64,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_bridge_balance(obj, val)
-        val = types.util.checkDtype('bridge_balance', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('bridge_balance', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -82,11 +82,11 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_capacitance_compensation(obj, val)
-        val = types.util.checkDtype('capacitance_compensation', 'single', val);
-        if isa(val, 'types.untyped.DataStub')
+        val = matnwb.types.util.checkDtype('capacitance_compensation', 'single', val);
+        if isa(val, 'matnwb.types.untyped.DataStub')
             if 1 == val.ndims
                 valsz = [val.dims 1];
             else
@@ -100,14 +100,14 @@ methods
             valsz = size(val);
         end
         validshapes = {[1]};
-        types.util.checkDims(valsz, validshapes);
+        matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_data(obj, val)
     
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@types.core.PatchClampSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.PatchClampSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -115,21 +115,21 @@ methods
             if startsWith(class(obj.bias_current), 'types.untyped.')
                 refs = obj.bias_current.export(fid, [fullpath '/bias_current'], refs);
             elseif ~isempty(obj.bias_current)
-                io.writeDataset(fid, [fullpath '/bias_current'], obj.bias_current);
+                matnwb.io.writeDataset(fid, [fullpath '/bias_current'], obj.bias_current);
             end
         end
         if ~isempty(obj.bridge_balance)
             if startsWith(class(obj.bridge_balance), 'types.untyped.')
                 refs = obj.bridge_balance.export(fid, [fullpath '/bridge_balance'], refs);
             elseif ~isempty(obj.bridge_balance)
-                io.writeDataset(fid, [fullpath '/bridge_balance'], obj.bridge_balance);
+                matnwb.io.writeDataset(fid, [fullpath '/bridge_balance'], obj.bridge_balance);
             end
         end
         if ~isempty(obj.capacitance_compensation)
             if startsWith(class(obj.capacitance_compensation), 'types.untyped.')
                 refs = obj.capacitance_compensation.export(fid, [fullpath '/capacitance_compensation'], refs);
             elseif ~isempty(obj.capacitance_compensation)
-                io.writeDataset(fid, [fullpath '/capacitance_compensation'], obj.capacitance_compensation);
+                matnwb.io.writeDataset(fid, [fullpath '/capacitance_compensation'], obj.capacitance_compensation);
             end
         end
     end
