@@ -78,7 +78,7 @@ end
 
 function testObjectCopy(testCase)
 rootDir = matnwb.misc.getMatnwbDir();
-unitTestLocation = fullfile(rootDir, '+tests', '+unit');
+unitTestLocation = fullfile(rootDir, '+matnwb', '+tests', '+unit');
 generateExtension(fullfile(unitTestLocation, 'regionReferenceSchema', 'rrs.namespace.yaml'), 'savedir', '.');
 generateExtension(fullfile(unitTestLocation, 'compoundSchema', 'cs.namespace.yaml'), 'savedir', '.');
 rehash();

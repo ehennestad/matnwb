@@ -42,11 +42,12 @@ function results = nwbtest(varargin)
         parser.addParameter('Verbosity', 1);
         parser.parse(varargin{:});
         
-        ws = pwd;
+        %ws = pwd;
+        ws = matnwb.misc.getMatnwbDir();
         
         nwbClearGenerated(); % clear default files if any.
         pvcell = struct2pvcell(parser.Unmatched);
-        suite = TestSuite.fromPackage('tests', 'IncludingSubpackages', true, pvcell{:});
+        suite = TestSuite.fromPackage('matnwb.tests', 'IncludingSubpackages', true, pvcell{:});
         
         runner = TestRunner.withTextOutput('Verbosity', parser.Results.Verbosity);
         
@@ -56,8 +57,8 @@ function results = nwbtest(varargin)
         coverageFile = fullfile(ws, 'coverage.xml');
         [installDir, ~, ~] = fileparts(mfilename('fullpath'));
         
-        ignoreFolders = {'tutorials', '+contrib', '+util', 'external_packages', '+tests'};
-        ignorePaths = {fullfile('+misc', 'generateDocs.m'), [mfilename '.m'], 'nwbClearGenerated.m'};
+        ignoreFolders = [{'external_packages', 'tutorials', 'resources'}, fullfile('+matnwb', {'+contrib', '+util', '+tests'})];
+        ignorePaths = {fullfile('+matnwb', '+misc', 'generateDocs.m'), [mfilename '.m'], 'nwbClearGenerated.m'};
         mfilePaths = getMfilePaths(installDir, ignoreFolders, ignorePaths);
         if ~verLessThan('matlab', '9.3') && ~isempty(mfilePaths)
             runner.addPlugin(CodeCoveragePlugin.forFile(mfilePaths,...

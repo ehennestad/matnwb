@@ -36,7 +36,7 @@ classdef PyNWBIOTest < matnwb.tests.system.RoundTripTest
         function [status, cmdout] = runPyTest(testCase, testName)
             setenv('PYTHONPATH', fileparts(mfilename('fullpath')));
             
-            envPath = fullfile('+tests', 'env.mat');
+            envPath = fullfile('+matnwb', '+tests', 'env.mat');
             if 2 == exist(envPath, 'file')
                 Env = load(envPath, '-mat', 'pythonDir');
                 

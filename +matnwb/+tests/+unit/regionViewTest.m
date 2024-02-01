@@ -11,7 +11,7 @@ function setup(testCase)
 testCase.applyFixture(matlab.unittest.fixtures.WorkingFolderFixture);
 generateCore('savedir', '.');
 schemaPath = fullfile(matnwb.misc.getMatnwbDir(),...
-    '+tests', '+unit', 'regionReferenceSchema', 'rrs.namespace.yaml');
+    '+matnwb', '+tests', '+unit', 'regionReferenceSchema', 'rrs.namespace.yaml');
 generateExtension(schemaPath, 'savedir', '.');
 rehash();
 end
