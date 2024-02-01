@@ -35,7 +35,7 @@ function nwb = nwbRead(filename, varargin)
     if any(saveDirMask)
         saveDir = varargin{find(saveDirMask, 1, 'last') + 1};
     else
-        saveDir = misc.getMatnwbDir();
+        saveDir = matnwb.misc.getMatnwbDir();
     end
     
     Blacklist = struct(...
@@ -46,13 +46,13 @@ function nwb = nwbRead(filename, varargin)
     
     filename = char(filename);
     specLocation = getEmbeddedSpec(filename);
-    schemaVersion = util.getSchemaVersion(filename);
+    schemaVersion = matnwb.util.getSchemaVersion(filename);
     if ~isempty(specLocation)
         Blacklist.groups{end+1} = specLocation;
     end
 
     % validate supported schema version
-    Schemas = dir(fullfile(misc.getMatnwbDir(), 'nwb-schema'));
+    Schemas = dir(fullfile(matnwb.misc.getMatnwbDir(), 'nwb-schema'));
     supportedSchemas = setdiff({Schemas.name}, {'.', '..'});
     if ~any(strcmp(schemaVersion, supportedSchemas))
         warning('NWB:Read:UnsupportedSchema' ...
@@ -76,7 +76,7 @@ function nwb = nwbRead(filename, varargin)
         rehash();
     end
     
-    nwb = io.parseGroup(filename, h5info(filename), Blacklist);
+    nwb = matnwb.io.parseGroup(filename, h5info(filename), Blacklist);
 end
 
 function specLocation = getEmbeddedSpec(filename)
@@ -105,7 +105,7 @@ function generateSpec(filename, specinfo, varargin)
             'savedir must be paired with the desired save directory.');
         saveDir = varargin{find(saveDirMask, 1, 'last') + 1};
     else
-        saveDir = misc.getMatnwbDir();
+        saveDir = matnwb.misc.getMatnwbDir();
     end
     
     specNames = cell(size(specinfo.Groups));
@@ -136,7 +136,7 @@ function generateSpec(filename, specinfo, varargin)
             H5D.close(did);
         end
         
-        Namespaces = spec.generate(namespaceText, schemaMap);
+        Namespaces = matnwb.spec.generate(namespaceText, schemaMap);
         % Handle embedded namespaces.
         Namespace = Namespaces(strcmp({Namespaces.name}, namespaceName));
         if isempty(Namespace)
@@ -151,7 +151,7 @@ function generateSpec(filename, specinfo, varargin)
             'Namespace %s not found in schema. Perhaps an extension should be generated?', ...
             namespaceName);
         
-        spec.saveCache(Namespace, saveDir);
+        matnwb.spec.saveCache(Namespace, saveDir);
         specNames{iGroup} = Namespace.name;
     end
     H5F.close(fid);
@@ -160,7 +160,7 @@ function generateSpec(filename, specinfo, varargin)
     for iName = 1:length(specNames)
         name = specNames{iName};
         try
-            file.writeNamespace(name, saveDir);
+            matnwb.file.writeNamespace(name, saveDir);
         catch ME
             if strcmp(ME.identifier, 'NWB:Namespace:CacheMissing')
                 missingNames{iName} = name;
@@ -172,5 +172,5 @@ function generateSpec(filename, specinfo, varargin)
     missingNames(cellfun('isempty', missingNames)) = [];
     assert(isempty(missingNames), 'NWB:Namespace:DependencyMissing',...
         'Missing generated caches and dependent caches for the following namespaces:\n%s',...
-        misc.cellPrettyPrint(missingNames));
+        matnwb.misc.cellPrettyPrint(missingNames));
 end

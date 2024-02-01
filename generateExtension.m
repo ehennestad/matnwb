@@ -35,7 +35,7 @@ function generateExtension(varargin)
         saveDirParametersMask = saveDirMask | circshift(saveDirMask, 1);
         sourceList = varargin(~saveDirParametersMask);
     else
-        saveDir = misc.getMatnwbDir();
+        saveDir = matnwb.misc.getMatnwbDir();
         sourceList = varargin;
     end
     
@@ -50,12 +50,12 @@ function generateExtension(varargin)
         namespaceText = fread(fid, '*char') .';
         fclose(fid);
         
-        Namespaces = spec.generate(namespaceText, localpath);
+        Namespaces = matnwb.spec.generate(namespaceText, localpath);
         
         for iNamespace = 1:length(Namespaces)
             Namespace = Namespaces(iNamespace);
-            spec.saveCache(Namespace, saveDir);
-            file.writeNamespace(Namespace.name, saveDir);
+            matnwb.spec.saveCache(Namespace, saveDir);
+            matnwb.file.writeNamespace(Namespace.name, saveDir);
             rehash();
         end
     end

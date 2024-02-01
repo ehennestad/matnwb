@@ -1,6 +1,6 @@
 function nwbClearGenerated()
     %% NWBCLEARGENERATED clears generated class files.
-    nwbDir = misc.getMatnwbDir();
+    nwbDir = matnwb.misc.getMatnwbDir();
     typesPath = fullfile(nwbDir, '+types');
     listing = dir(typesPath);
     moduleNames = setdiff({listing.name}, {'+untyped', '+util', '.', '..'});

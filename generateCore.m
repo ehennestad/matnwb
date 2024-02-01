@@ -38,7 +38,7 @@ function generateCore(varargin)
         version = latestVersion;
     end
     
-    schemaPath = fullfile(misc.getMatnwbDir(), 'nwb-schema', version);
+    schemaPath = fullfile(matnwb.misc.getMatnwbDir(), 'nwb-schema', version);
     corePath = fullfile(schemaPath, 'core', 'nwb.namespace.yaml');
     commonPath = fullfile(schemaPath,...
         'hdmf-common-schema', ...

@@ -1,4 +1,4 @@
-classdef NwbFile < types.core.NWBFile
+classdef NwbFile < matnwb.types.core.NWBFile
     % NWBFILE Root object representing data read from an NWB file.
     %
     % Requires that core and extension NWB types have been generated
@@ -13,17 +13,17 @@ classdef NwbFile < types.core.NWBFile
 
     methods
         function obj = NwbFile(varargin)
-            obj = obj@types.core.NWBFile(varargin{:});
+            obj = obj@matnwb.types.core.NWBFile(varargin{:});
             if strcmp(class(obj), 'NwbFile')
                 cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
-                types.util.checkUnset(obj, unique(cellStringArguments));
+                matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
             end
         end
 
         function export(obj, filename)
             %add to file create date
             
-            if isa(obj.file_create_date, 'types.untyped.DataStub')
+            if isa(obj.file_create_date, 'matnwb.types.untyped.DataStub')
                 obj.file_create_date = obj.file_create_date.load();
             end
 
@@ -63,7 +63,7 @@ classdef NwbFile < types.core.NWBFile
 
             try
                 obj.embedSpecifications(output_file_id);
-                refs = export@types.core.NWBFile(obj, output_file_id, '/', {});
+                refs = export@matnwb.types.core.NWBFile(obj, output_file_id, '/', {});
                 obj.resolveReferences(output_file_id, refs);
                 H5F.close(output_file_id);
             catch ME
@@ -82,7 +82,7 @@ classdef NwbFile < types.core.NWBFile
             end
             o = cell(size(path));
             for i = 1:numel(path)
-                o{i} = io.resolvePath(obj, path{i});
+                o{i} = matnwb.io.resolvePath(obj, path{i});
             end
             if isscalar(o)
                 o = o{1};
@@ -124,7 +124,7 @@ classdef NwbFile < types.core.NWBFile
                         ' NwbFile or if any of the above paths are incorrect.'];
                     unresolvedRefs = strjoin(references, newline);
                     error('NWB:NwbFile:UnresolvedReferences',...
-                        errorFormat, file.addSpaces(unresolvedRefs, 4));
+                        errorFormat, matnwb.file.addSpaces(unresolvedRefs, 4));
                 end
 
                 references(resolved) = [];
@@ -138,16 +138,16 @@ classdef NwbFile < types.core.NWBFile
                 H5A.close(attrId);
             catch
                 specLocation = '/specifications';
-                io.writeGroup(fid, specLocation);
-                specView = types.untyped.ObjectView(specLocation);
-                io.writeAttribute(fid, '/.specloc', specView);
+                matnwb.io.writeGroup(fid, specLocation);
+                specView = matnwb.types.untyped.ObjectView(specLocation);
+                matnwb.io.writeAttribute(fid, '/.specloc', specView);
             end
 
-            JsonData = schemes.exportJson();
+            JsonData = matnwb.schemes.exportJson();
             for iJson = 1:length(JsonData)
                 JsonDatum = JsonData(iJson);
                 schemaNamespaceLocation = strjoin({specLocation, JsonDatum.name}, '/');
-                namespaceExists = io.writeGroup(fid, schemaNamespaceLocation);
+                namespaceExists = matnwb.io.writeGroup(fid, schemaNamespaceLocation);
                 if namespaceExists
                     namespaceGroupId = H5G.open(fid, schemaNamespaceLocation);
                     names = getVersionNames(namespaceGroupId);
@@ -159,13 +159,13 @@ classdef NwbFile < types.core.NWBFile
                 end
                 schemaLocation =...
                     strjoin({schemaNamespaceLocation, JsonDatum.version}, '/');
-                io.writeGroup(fid, schemaLocation);
+                matnwb.io.writeGroup(fid, schemaLocation);
                 Json = JsonDatum.json;
                 schemeNames = keys(Json);
                 for iScheme = 1:length(schemeNames)
                     name = schemeNames{iScheme};
                     path = [schemaLocation '/' name];
-                    io.writeDataset(fid, path, Json(name));
+                    matnwb.io.writeDataset(fid, path, Json(name));
                 end
             end
         end
@@ -210,13 +210,13 @@ function pathToObjectMap = searchProperties(...
         'Optional keywords for searchFor must be char arrays.');
     shouldSearchSuperClasses = any(strcmpi(varargin, 'includeSubClasses'));
 
-    if isa(obj, 'types.untyped.MetaClass')
+    if isa(obj, 'matnwb.types.untyped.MetaClass')
         propertyNames = properties(obj);
         getProperty = @(x, prop) x.(prop);
-    elseif isa(obj, 'types.untyped.Set')
+    elseif isa(obj, 'matnwb.types.untyped.Set')
         propertyNames = obj.keys();
         getProperty = @(x, prop) x.get(prop);
-    elseif isa(obj, 'types.untyped.Anon')
+    elseif isa(obj, 'matnwb.types.untyped.Anon')
         propertyNames = {obj.name};
         getProperty = @(x, prop) x.value;
     else
@@ -237,9 +237,9 @@ function pathToObjectMap = searchProperties(...
             pathToObjectMap(fullPath) = propValue;
         end
 
-        if isa(propValue, 'types.untyped.GroupClass')...
-                || isa(propValue, 'types.untyped.Set')...
-                || isa(propValue, 'types.untyped.Anon')
+        if isa(propValue, 'matnwb.types.untyped.GroupClass')...
+                || isa(propValue, 'matnwb.types.untyped.Set')...
+                || isa(propValue, 'matnwb.types.untyped.Anon')
             % recursible (even if there is a match!)
             searchProperties(pathToObjectMap, propValue, fullPath, typename, varargin{:});
         end
