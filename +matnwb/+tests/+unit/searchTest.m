@@ -19,7 +19,7 @@ testCase.assertEmpty(nwb.searchFor('matnwb.types.core.TimeSeries'));
 
 nwb.acquisition.set('ts1', matnwb.types.core.TimeSeries());
 testCase.assertNotEmpty(nwb.searchFor('matnwb.types.core.TimeSeries'));
-testCase.assertNotEmpty(nwb.searchFor('types.core.timeseries'));
+testCase.assertNotEmpty(nwb.searchFor('matnwb.types.core.timeseries'));
 nwb.acquisition.set('pc1', matnwb.types.core.PatchClampSeries());
 
 % default search does NOT include subclasses

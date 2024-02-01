@@ -6,7 +6,7 @@ try
     fnLoc = dbstack('-completenames');
     fnLoc = fnLoc(1).file;
     [fnDir,~,~] = fileparts(fnLoc);
-    [matnwbDir,~,~] = fileparts(fnDir);
+    [matnwbDir,~,~] = fileparts(fileparts(fnDir));
     
     if 7 ~= exist(matnwbDir, 'dir')
         warning('NWB:GetMatnwbDir:NotFound',...

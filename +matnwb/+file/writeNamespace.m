@@ -2,7 +2,7 @@ function writeNamespace(namespaceName, saveDir)
 %check/load dependency namespaces
 Namespace = matnwb.schemes.loadNamespace(namespaceName, saveDir);
 
-classFileDir = fullfile(saveDir, '+types', ['+' matnwb.misc.str2validName(Namespace.name)]);
+classFileDir = fullfile(saveDir, '+matnwb', '+types', ['+' matnwb.misc.str2validName(Namespace.name)]);
 
 if 7 ~= exist(classFileDir, 'dir')
     mkdir(classFileDir);
