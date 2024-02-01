@@ -1,4 +1,4 @@
-classdef CorrectedImageStack < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef CorrectedImageStack < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % CORRECTEDIMAGESTACK Reuslts from motion correction of an image stack.
 
 
@@ -15,7 +15,7 @@ end
 methods
     function obj = CorrectedImageStack(varargin)
         % CORRECTEDIMAGESTACK Constructor for CorrectedImageStack
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -47,17 +47,17 @@ methods
     %% VALIDATORS
     
     function val = validate_corrected(obj, val)
-        val = matnwb.types.util.checkDtype('corrected', 'matnwb.matnwb.types.core.ImageSeries', val);
+        val = matnwb.types.util.checkDtype('corrected', 'matnwb.types.core.ImageSeries', val);
     end
     function val = validate_original(obj, val)
-        val = matnwb.types.util.checkDtype('original', 'matnwb.matnwb.types.core.ImageSeries', val);
+        val = matnwb.types.util.checkDtype('original', 'matnwb.types.core.ImageSeries', val);
     end
     function val = validate_xy_translation(obj, val)
         val = matnwb.types.util.checkDtype('xy_translation', 'matnwb.types.core.TimeSeries', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

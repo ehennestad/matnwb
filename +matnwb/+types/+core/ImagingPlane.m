@@ -367,20 +367,20 @@ methods
             return;
         end
         if ~isempty(obj.description)
-            if startsWith(class(obj.description), 'types.untyped.')
+            if startsWith(class(obj.description), 'matnwb.types.untyped.')
                 refs = obj.description.export(fid, [fullpath '/description'], refs);
             elseif ~isempty(obj.description)
                 matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
             end
         end
         refs = obj.device.export(fid, [fullpath '/device'], refs);
-        if startsWith(class(obj.excitation_lambda), 'types.untyped.')
+        if startsWith(class(obj.excitation_lambda), 'matnwb.types.untyped.')
             refs = obj.excitation_lambda.export(fid, [fullpath '/excitation_lambda'], refs);
         elseif ~isempty(obj.excitation_lambda)
             matnwb.io.writeDataset(fid, [fullpath '/excitation_lambda'], obj.excitation_lambda);
         end
         if ~isempty(obj.grid_spacing)
-            if startsWith(class(obj.grid_spacing), 'types.untyped.')
+            if startsWith(class(obj.grid_spacing), 'matnwb.types.untyped.')
                 refs = obj.grid_spacing.export(fid, [fullpath '/grid_spacing'], refs);
             elseif ~isempty(obj.grid_spacing)
                 matnwb.io.writeDataset(fid, [fullpath '/grid_spacing'], obj.grid_spacing, 'forceArray');
@@ -390,24 +390,24 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/grid_spacing/unit'], obj.grid_spacing_unit);
         end
         if ~isempty(obj.imaging_rate)
-            if startsWith(class(obj.imaging_rate), 'types.untyped.')
+            if startsWith(class(obj.imaging_rate), 'matnwb.types.untyped.')
                 refs = obj.imaging_rate.export(fid, [fullpath '/imaging_rate'], refs);
             elseif ~isempty(obj.imaging_rate)
                 matnwb.io.writeDataset(fid, [fullpath '/imaging_rate'], obj.imaging_rate);
             end
         end
-        if startsWith(class(obj.indicator), 'types.untyped.')
+        if startsWith(class(obj.indicator), 'matnwb.types.untyped.')
             refs = obj.indicator.export(fid, [fullpath '/indicator'], refs);
         elseif ~isempty(obj.indicator)
             matnwb.io.writeDataset(fid, [fullpath '/indicator'], obj.indicator);
         end
-        if startsWith(class(obj.location), 'types.untyped.')
+        if startsWith(class(obj.location), 'matnwb.types.untyped.')
             refs = obj.location.export(fid, [fullpath '/location'], refs);
         elseif ~isempty(obj.location)
             matnwb.io.writeDataset(fid, [fullpath '/location'], obj.location);
         end
         if ~isempty(obj.manifold)
-            if startsWith(class(obj.manifold), 'types.untyped.')
+            if startsWith(class(obj.manifold), 'matnwb.types.untyped.')
                 refs = obj.manifold.export(fid, [fullpath '/manifold'], refs);
             elseif ~isempty(obj.manifold)
                 matnwb.io.writeDataset(fid, [fullpath '/manifold'], obj.manifold, 'forceArray');
@@ -421,7 +421,7 @@ methods
         end
         refs = obj.opticalchannel.export(fid, fullpath, refs);
         if ~isempty(obj.origin_coords)
-            if startsWith(class(obj.origin_coords), 'types.untyped.')
+            if startsWith(class(obj.origin_coords), 'matnwb.types.untyped.')
                 refs = obj.origin_coords.export(fid, [fullpath '/origin_coords'], refs);
             elseif ~isempty(obj.origin_coords)
                 matnwb.io.writeDataset(fid, [fullpath '/origin_coords'], obj.origin_coords, 'forceArray');
@@ -431,7 +431,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/origin_coords/unit'], obj.origin_coords_unit);
         end
         if ~isempty(obj.reference_frame)
-            if startsWith(class(obj.reference_frame), 'types.untyped.')
+            if startsWith(class(obj.reference_frame), 'matnwb.types.untyped.')
                 refs = obj.reference_frame.export(fid, [fullpath '/reference_frame'], refs);
             elseif ~isempty(obj.reference_frame)
                 matnwb.io.writeDataset(fid, [fullpath '/reference_frame'], obj.reference_frame);

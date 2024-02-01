@@ -34,7 +34,7 @@ methods
         obj.external_file = p.Results.external_file;
         obj.external_file_starting_frame = p.Results.external_file_starting_frame;
         obj.format = p.Results.format;
-        if strcmp(class(obj), 'matnwb.matnwb.types.core.ImageSeries')
+        if strcmp(class(obj), 'matnwb.types.core.ImageSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
             matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
@@ -160,14 +160,14 @@ methods
             refs = obj.device.export(fid, [fullpath '/device'], refs);
         end
         if ~isempty(obj.dimension)
-            if startsWith(class(obj.dimension), 'types.untyped.')
+            if startsWith(class(obj.dimension), 'matnwb.types.untyped.')
                 refs = obj.dimension.export(fid, [fullpath '/dimension'], refs);
             elseif ~isempty(obj.dimension)
                 matnwb.io.writeDataset(fid, [fullpath '/dimension'], obj.dimension, 'forceArray');
             end
         end
         if ~isempty(obj.external_file)
-            if startsWith(class(obj.external_file), 'types.untyped.')
+            if startsWith(class(obj.external_file), 'matnwb.types.untyped.')
                 refs = obj.external_file.export(fid, [fullpath '/external_file'], refs);
             elseif ~isempty(obj.external_file)
                 matnwb.io.writeDataset(fid, [fullpath '/external_file'], obj.external_file, 'forceArray');
@@ -177,7 +177,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/external_file/starting_frame'], obj.external_file_starting_frame, 'forceArray');
         end
         if ~isempty(obj.format)
-            if startsWith(class(obj.format), 'types.untyped.')
+            if startsWith(class(obj.format), 'matnwb.types.untyped.')
                 refs = obj.format.export(fid, [fullpath '/format'], refs);
             elseif ~isempty(obj.format)
                 matnwb.io.writeDataset(fid, [fullpath '/format'], obj.format);

@@ -324,7 +324,7 @@ methods
     %% VALIDATORS
     
     function val = validate_acquisition(obj, val)
-        constrained = {'matnwb.types.hdmf_common.DynamicTable', 'matnwb.matnwb.types.core.NWBDataInterface'};
+        constrained = {'matnwb.types.hdmf_common.DynamicTable', 'matnwb.types.core.NWBDataInterface'};
         matnwb.types.util.checkSet('acquisition', struct(), constrained, val);
     end
     function val = validate_analysis(obj, val)
@@ -810,7 +810,7 @@ methods
         matnwb.types.util.checkSet('stimulus_presentation', namedprops, constrained, val);
     end
     function val = validate_stimulus_templates(obj, val)
-        constrained = {'matnwb.matnwb.types.core.Images', 'matnwb.types.core.TimeSeries'};
+        constrained = {'matnwb.types.core.Images', 'matnwb.types.core.TimeSeries'};
         matnwb.types.util.checkSet('stimulus_templates', struct(), constrained, val);
     end
     function val = validate_timestamps_reference_time(obj, val)
@@ -843,7 +843,7 @@ methods
         fullpath = '';
         refs = obj.acquisition.export(fid, [fullpath '/acquisition'], refs);
         refs = obj.analysis.export(fid, [fullpath '/analysis'], refs);
-        if startsWith(class(obj.file_create_date), 'types.untyped.')
+        if startsWith(class(obj.file_create_date), 'matnwb.types.untyped.')
             refs = obj.file_create_date.export(fid, [fullpath '/file_create_date'], refs);
         elseif ~isempty(obj.file_create_date)
             matnwb.io.writeDataset(fid, [fullpath '/file_create_date'], obj.file_create_date, 'forceChunking', 'forceArray');
@@ -851,7 +851,7 @@ methods
         refs = obj.general.export(fid, [fullpath '/general'], refs);
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_data_collection)
-            if startsWith(class(obj.general_data_collection), 'types.untyped.')
+            if startsWith(class(obj.general_data_collection), 'matnwb.types.untyped.')
                 refs = obj.general_data_collection.export(fid, [fullpath '/general/data_collection'], refs);
             elseif ~isempty(obj.general_data_collection)
                 matnwb.io.writeDataset(fid, [fullpath '/general/data_collection'], obj.general_data_collection);
@@ -863,7 +863,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_experiment_description)
-            if startsWith(class(obj.general_experiment_description), 'types.untyped.')
+            if startsWith(class(obj.general_experiment_description), 'matnwb.types.untyped.')
                 refs = obj.general_experiment_description.export(fid, [fullpath '/general/experiment_description'], refs);
             elseif ~isempty(obj.general_experiment_description)
                 matnwb.io.writeDataset(fid, [fullpath '/general/experiment_description'], obj.general_experiment_description);
@@ -871,7 +871,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_experimenter)
-            if startsWith(class(obj.general_experimenter), 'types.untyped.')
+            if startsWith(class(obj.general_experimenter), 'matnwb.types.untyped.')
                 refs = obj.general_experimenter.export(fid, [fullpath '/general/experimenter'], refs);
             elseif ~isempty(obj.general_experimenter)
                 matnwb.io.writeDataset(fid, [fullpath '/general/experimenter'], obj.general_experimenter, 'forceArray');
@@ -887,7 +887,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_institution)
-            if startsWith(class(obj.general_institution), 'types.untyped.')
+            if startsWith(class(obj.general_institution), 'matnwb.types.untyped.')
                 refs = obj.general_institution.export(fid, [fullpath '/general/institution'], refs);
             elseif ~isempty(obj.general_institution)
                 matnwb.io.writeDataset(fid, [fullpath '/general/institution'], obj.general_institution);
@@ -903,7 +903,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general/intracellular_ephys']);
         if ~isempty(obj.general_intracellular_ephys_filtering)
-            if startsWith(class(obj.general_intracellular_ephys_filtering), 'types.untyped.')
+            if startsWith(class(obj.general_intracellular_ephys_filtering), 'matnwb.types.untyped.')
                 refs = obj.general_intracellular_ephys_filtering.export(fid, [fullpath '/general/intracellular_ephys/filtering'], refs);
             elseif ~isempty(obj.general_intracellular_ephys_filtering)
                 matnwb.io.writeDataset(fid, [fullpath '/general/intracellular_ephys/filtering'], obj.general_intracellular_ephys_filtering);
@@ -931,7 +931,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_keywords)
-            if startsWith(class(obj.general_keywords), 'types.untyped.')
+            if startsWith(class(obj.general_keywords), 'matnwb.types.untyped.')
                 refs = obj.general_keywords.export(fid, [fullpath '/general/keywords'], refs);
             elseif ~isempty(obj.general_keywords)
                 matnwb.io.writeDataset(fid, [fullpath '/general/keywords'], obj.general_keywords, 'forceArray');
@@ -939,7 +939,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_lab)
-            if startsWith(class(obj.general_lab), 'types.untyped.')
+            if startsWith(class(obj.general_lab), 'matnwb.types.untyped.')
                 refs = obj.general_lab.export(fid, [fullpath '/general/lab'], refs);
             elseif ~isempty(obj.general_lab)
                 matnwb.io.writeDataset(fid, [fullpath '/general/lab'], obj.general_lab);
@@ -947,7 +947,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_notes)
-            if startsWith(class(obj.general_notes), 'types.untyped.')
+            if startsWith(class(obj.general_notes), 'matnwb.types.untyped.')
                 refs = obj.general_notes.export(fid, [fullpath '/general/notes'], refs);
             elseif ~isempty(obj.general_notes)
                 matnwb.io.writeDataset(fid, [fullpath '/general/notes'], obj.general_notes);
@@ -963,7 +963,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_pharmacology)
-            if startsWith(class(obj.general_pharmacology), 'types.untyped.')
+            if startsWith(class(obj.general_pharmacology), 'matnwb.types.untyped.')
                 refs = obj.general_pharmacology.export(fid, [fullpath '/general/pharmacology'], refs);
             elseif ~isempty(obj.general_pharmacology)
                 matnwb.io.writeDataset(fid, [fullpath '/general/pharmacology'], obj.general_pharmacology);
@@ -971,7 +971,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_protocol)
-            if startsWith(class(obj.general_protocol), 'types.untyped.')
+            if startsWith(class(obj.general_protocol), 'matnwb.types.untyped.')
                 refs = obj.general_protocol.export(fid, [fullpath '/general/protocol'], refs);
             elseif ~isempty(obj.general_protocol)
                 matnwb.io.writeDataset(fid, [fullpath '/general/protocol'], obj.general_protocol);
@@ -979,7 +979,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_related_publications)
-            if startsWith(class(obj.general_related_publications), 'types.untyped.')
+            if startsWith(class(obj.general_related_publications), 'matnwb.types.untyped.')
                 refs = obj.general_related_publications.export(fid, [fullpath '/general/related_publications'], refs);
             elseif ~isempty(obj.general_related_publications)
                 matnwb.io.writeDataset(fid, [fullpath '/general/related_publications'], obj.general_related_publications, 'forceArray');
@@ -987,7 +987,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_session_id)
-            if startsWith(class(obj.general_session_id), 'types.untyped.')
+            if startsWith(class(obj.general_session_id), 'matnwb.types.untyped.')
                 refs = obj.general_session_id.export(fid, [fullpath '/general/session_id'], refs);
             elseif ~isempty(obj.general_session_id)
                 matnwb.io.writeDataset(fid, [fullpath '/general/session_id'], obj.general_session_id);
@@ -995,7 +995,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_slices)
-            if startsWith(class(obj.general_slices), 'types.untyped.')
+            if startsWith(class(obj.general_slices), 'matnwb.types.untyped.')
                 refs = obj.general_slices.export(fid, [fullpath '/general/slices'], refs);
             elseif ~isempty(obj.general_slices)
                 matnwb.io.writeDataset(fid, [fullpath '/general/slices'], obj.general_slices);
@@ -1003,7 +1003,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_source_script)
-            if startsWith(class(obj.general_source_script), 'types.untyped.')
+            if startsWith(class(obj.general_source_script), 'matnwb.types.untyped.')
                 refs = obj.general_source_script.export(fid, [fullpath '/general/source_script'], refs);
             elseif ~isempty(obj.general_source_script)
                 matnwb.io.writeDataset(fid, [fullpath '/general/source_script'], obj.general_source_script);
@@ -1014,7 +1014,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_stimulus)
-            if startsWith(class(obj.general_stimulus), 'types.untyped.')
+            if startsWith(class(obj.general_stimulus), 'matnwb.types.untyped.')
                 refs = obj.general_stimulus.export(fid, [fullpath '/general/stimulus'], refs);
             elseif ~isempty(obj.general_stimulus)
                 matnwb.io.writeDataset(fid, [fullpath '/general/stimulus'], obj.general_stimulus);
@@ -1026,7 +1026,7 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_surgery)
-            if startsWith(class(obj.general_surgery), 'types.untyped.')
+            if startsWith(class(obj.general_surgery), 'matnwb.types.untyped.')
                 refs = obj.general_surgery.export(fid, [fullpath '/general/surgery'], refs);
             elseif ~isempty(obj.general_surgery)
                 matnwb.io.writeDataset(fid, [fullpath '/general/surgery'], obj.general_surgery);
@@ -1034,13 +1034,13 @@ methods
         end
         matnwb.io.writeGroup(fid, [fullpath '/general']);
         if ~isempty(obj.general_virus)
-            if startsWith(class(obj.general_virus), 'types.untyped.')
+            if startsWith(class(obj.general_virus), 'matnwb.types.untyped.')
                 refs = obj.general_virus.export(fid, [fullpath '/general/virus'], refs);
             elseif ~isempty(obj.general_virus)
                 matnwb.io.writeDataset(fid, [fullpath '/general/virus'], obj.general_virus);
             end
         end
-        if startsWith(class(obj.identifier), 'types.untyped.')
+        if startsWith(class(obj.identifier), 'matnwb.types.untyped.')
             refs = obj.identifier.export(fid, [fullpath '/identifier'], refs);
         elseif ~isempty(obj.identifier)
             matnwb.io.writeDataset(fid, [fullpath '/identifier'], obj.identifier);
@@ -1065,12 +1065,12 @@ methods
         if ~isempty(obj.scratch)
             refs = obj.scratch.export(fid, [fullpath '/scratch'], refs);
         end
-        if startsWith(class(obj.session_description), 'types.untyped.')
+        if startsWith(class(obj.session_description), 'matnwb.types.untyped.')
             refs = obj.session_description.export(fid, [fullpath '/session_description'], refs);
         elseif ~isempty(obj.session_description)
             matnwb.io.writeDataset(fid, [fullpath '/session_description'], obj.session_description);
         end
-        if startsWith(class(obj.session_start_time), 'types.untyped.')
+        if startsWith(class(obj.session_start_time), 'matnwb.types.untyped.')
             refs = obj.session_start_time.export(fid, [fullpath '/session_start_time'], refs);
         elseif ~isempty(obj.session_start_time)
             matnwb.io.writeDataset(fid, [fullpath '/session_start_time'], obj.session_start_time);
@@ -1079,7 +1079,7 @@ methods
         refs = obj.stimulus_presentation.export(fid, [fullpath '/stimulus/presentation'], refs);
         matnwb.io.writeGroup(fid, [fullpath '/stimulus']);
         refs = obj.stimulus_templates.export(fid, [fullpath '/stimulus/templates'], refs);
-        if startsWith(class(obj.timestamps_reference_time), 'types.untyped.')
+        if startsWith(class(obj.timestamps_reference_time), 'matnwb.types.untyped.')
             refs = obj.timestamps_reference_time.export(fid, [fullpath '/timestamps_reference_time'], refs);
         elseif ~isempty(obj.timestamps_reference_time)
             matnwb.io.writeDataset(fid, [fullpath '/timestamps_reference_time'], obj.timestamps_reference_time);

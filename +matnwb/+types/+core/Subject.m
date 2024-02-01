@@ -273,7 +273,7 @@ methods
             return;
         end
         if ~isempty(obj.age)
-            if startsWith(class(obj.age), 'types.untyped.')
+            if startsWith(class(obj.age), 'matnwb.types.untyped.')
                 refs = obj.age.export(fid, [fullpath '/age'], refs);
             elseif ~isempty(obj.age)
                 matnwb.io.writeDataset(fid, [fullpath '/age'], obj.age);
@@ -283,56 +283,56 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/age/reference'], obj.age_reference);
         end
         if ~isempty(obj.date_of_birth)
-            if startsWith(class(obj.date_of_birth), 'types.untyped.')
+            if startsWith(class(obj.date_of_birth), 'matnwb.types.untyped.')
                 refs = obj.date_of_birth.export(fid, [fullpath '/date_of_birth'], refs);
             elseif ~isempty(obj.date_of_birth)
                 matnwb.io.writeDataset(fid, [fullpath '/date_of_birth'], obj.date_of_birth);
             end
         end
         if ~isempty(obj.description)
-            if startsWith(class(obj.description), 'types.untyped.')
+            if startsWith(class(obj.description), 'matnwb.types.untyped.')
                 refs = obj.description.export(fid, [fullpath '/description'], refs);
             elseif ~isempty(obj.description)
                 matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
             end
         end
         if ~isempty(obj.genotype)
-            if startsWith(class(obj.genotype), 'types.untyped.')
+            if startsWith(class(obj.genotype), 'matnwb.types.untyped.')
                 refs = obj.genotype.export(fid, [fullpath '/genotype'], refs);
             elseif ~isempty(obj.genotype)
                 matnwb.io.writeDataset(fid, [fullpath '/genotype'], obj.genotype);
             end
         end
         if ~isempty(obj.sex)
-            if startsWith(class(obj.sex), 'types.untyped.')
+            if startsWith(class(obj.sex), 'matnwb.types.untyped.')
                 refs = obj.sex.export(fid, [fullpath '/sex'], refs);
             elseif ~isempty(obj.sex)
                 matnwb.io.writeDataset(fid, [fullpath '/sex'], obj.sex);
             end
         end
         if ~isempty(obj.species)
-            if startsWith(class(obj.species), 'types.untyped.')
+            if startsWith(class(obj.species), 'matnwb.types.untyped.')
                 refs = obj.species.export(fid, [fullpath '/species'], refs);
             elseif ~isempty(obj.species)
                 matnwb.io.writeDataset(fid, [fullpath '/species'], obj.species);
             end
         end
         if ~isempty(obj.strain)
-            if startsWith(class(obj.strain), 'types.untyped.')
+            if startsWith(class(obj.strain), 'matnwb.types.untyped.')
                 refs = obj.strain.export(fid, [fullpath '/strain'], refs);
             elseif ~isempty(obj.strain)
                 matnwb.io.writeDataset(fid, [fullpath '/strain'], obj.strain);
             end
         end
         if ~isempty(obj.subject_id)
-            if startsWith(class(obj.subject_id), 'types.untyped.')
+            if startsWith(class(obj.subject_id), 'matnwb.types.untyped.')
                 refs = obj.subject_id.export(fid, [fullpath '/subject_id'], refs);
             elseif ~isempty(obj.subject_id)
                 matnwb.io.writeDataset(fid, [fullpath '/subject_id'], obj.subject_id);
             end
         end
         if ~isempty(obj.weight)
-            if startsWith(class(obj.weight), 'types.untyped.')
+            if startsWith(class(obj.weight), 'matnwb.types.untyped.')
                 refs = obj.weight.export(fid, [fullpath '/weight'], refs);
             elseif ~isempty(obj.weight)
                 matnwb.io.writeDataset(fid, [fullpath '/weight'], obj.weight);

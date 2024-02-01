@@ -84,7 +84,7 @@ methods
     end
     function val = validate_reference_images(obj, val)
         namedprops = struct();
-        constrained = {'matnwb.matnwb.types.core.ImageSeries'};
+        constrained = {'matnwb.types.core.ImageSeries'};
         matnwb.types.util.checkSet('reference_images', namedprops, constrained, val);
     end
     function val = validate_voxel_mask(obj, val)

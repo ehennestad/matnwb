@@ -1,4 +1,4 @@
-classdef Clustering < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef Clustering < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % CLUSTERING DEPRECATED Clustered spike data, whether from automatic clustering tools (e.g., klustakwik) or as a result of manual sorting.
 
 
@@ -13,7 +13,7 @@ end
 methods
     function obj = Clustering(varargin)
         % CLUSTERING Constructor for Clustering
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -123,26 +123,26 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        if startsWith(class(obj.description), 'types.untyped.')
+        if startsWith(class(obj.description), 'matnwb.types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
             matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
         end
-        if startsWith(class(obj.num), 'types.untyped.')
+        if startsWith(class(obj.num), 'matnwb.types.untyped.')
             refs = obj.num.export(fid, [fullpath '/num'], refs);
         elseif ~isempty(obj.num)
             matnwb.io.writeDataset(fid, [fullpath '/num'], obj.num, 'forceArray');
         end
-        if startsWith(class(obj.peak_over_rms), 'types.untyped.')
+        if startsWith(class(obj.peak_over_rms), 'matnwb.types.untyped.')
             refs = obj.peak_over_rms.export(fid, [fullpath '/peak_over_rms'], refs);
         elseif ~isempty(obj.peak_over_rms)
             matnwb.io.writeDataset(fid, [fullpath '/peak_over_rms'], obj.peak_over_rms, 'forceArray');
         end
-        if startsWith(class(obj.times), 'types.untyped.')
+        if startsWith(class(obj.times), 'matnwb.types.untyped.')
             refs = obj.times.export(fid, [fullpath '/times'], refs);
         elseif ~isempty(obj.times)
             matnwb.io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');

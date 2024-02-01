@@ -1,4 +1,4 @@
-classdef MotionCorrection < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef MotionCorrection < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % MOTIONCORRECTION An image stack where all frames are shifted (registered) to a common coordinate system, to account for movement and drift between frames. Note: each frame at each point in time is assumed to be 2-D (has only x & y dimensions).
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = MotionCorrection(varargin)
         % MOTIONCORRECTION Constructor for MotionCorrection
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.correctedimagestack, ivarargin] = matnwb.types.util.parseConstrained(obj,'correctedimagestack', 'matnwb.types.core.CorrectedImageStack', varargin{:});
         varargin(ivarargin) = [];
         
@@ -37,7 +37,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

@@ -1,4 +1,4 @@
-classdef ClusterWaveforms < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef ClusterWaveforms < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % CLUSTERWAVEFORMS DEPRECATED The mean waveform shape, including standard deviation, of the different clusters. Ideally, the waveform analysis should be performed on data that is only high-pass filtered. This is a separate module because it is expected to require updating. For example, IMEC probes may require different storage requirements to store/display mean waveforms, requiring a new interface or an extension of this one.
 
 
@@ -16,7 +16,7 @@ end
 methods
     function obj = ClusterWaveforms(varargin)
         % CLUSTERWAVEFORMS Constructor for ClusterWaveforms
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -111,22 +111,22 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         refs = obj.clustering_interface.export(fid, [fullpath '/clustering_interface'], refs);
-        if startsWith(class(obj.waveform_filtering), 'types.untyped.')
+        if startsWith(class(obj.waveform_filtering), 'matnwb.types.untyped.')
             refs = obj.waveform_filtering.export(fid, [fullpath '/waveform_filtering'], refs);
         elseif ~isempty(obj.waveform_filtering)
             matnwb.io.writeDataset(fid, [fullpath '/waveform_filtering'], obj.waveform_filtering);
         end
-        if startsWith(class(obj.waveform_mean), 'types.untyped.')
+        if startsWith(class(obj.waveform_mean), 'matnwb.types.untyped.')
             refs = obj.waveform_mean.export(fid, [fullpath '/waveform_mean'], refs);
         elseif ~isempty(obj.waveform_mean)
             matnwb.io.writeDataset(fid, [fullpath '/waveform_mean'], obj.waveform_mean, 'forceArray');
         end
-        if startsWith(class(obj.waveform_sd), 'types.untyped.')
+        if startsWith(class(obj.waveform_sd), 'matnwb.types.untyped.')
             refs = obj.waveform_sd.export(fid, [fullpath '/waveform_sd'], refs);
         elseif ~isempty(obj.waveform_sd)
             matnwb.io.writeDataset(fid, [fullpath '/waveform_sd'], obj.waveform_sd, 'forceArray');

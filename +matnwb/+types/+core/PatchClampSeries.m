@@ -154,7 +154,7 @@ methods
         end
         refs = obj.electrode.export(fid, [fullpath '/electrode'], refs);
         if ~isempty(obj.gain)
-            if startsWith(class(obj.gain), 'types.untyped.')
+            if startsWith(class(obj.gain), 'matnwb.types.untyped.')
                 refs = obj.gain.export(fid, [fullpath '/gain'], refs);
             elseif ~isempty(obj.gain)
                 matnwb.io.writeDataset(fid, [fullpath '/gain'], obj.gain);

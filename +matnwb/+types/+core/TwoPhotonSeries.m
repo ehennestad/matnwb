@@ -1,4 +1,4 @@
-classdef TwoPhotonSeries < matnwb.matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
+classdef TwoPhotonSeries < matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
 % TWOPHOTONSERIES Image stack recorded over time from 2-photon microscope.
 
 
@@ -13,7 +13,7 @@ end
 methods
     function obj = TwoPhotonSeries(varargin)
         % TWOPHOTONSERIES Constructor for TwoPhotonSeries
-        obj = obj@matnwb.matnwb.types.core.ImageSeries(varargin{:});
+        obj = obj@matnwb.types.core.ImageSeries(varargin{:});
         
         
         p = inputParser;
@@ -108,12 +108,12 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if ~isempty(obj.field_of_view)
-            if startsWith(class(obj.field_of_view), 'types.untyped.')
+            if startsWith(class(obj.field_of_view), 'matnwb.types.untyped.')
                 refs = obj.field_of_view.export(fid, [fullpath '/field_of_view'], refs);
             elseif ~isempty(obj.field_of_view)
                 matnwb.io.writeDataset(fid, [fullpath '/field_of_view'], obj.field_of_view, 'forceArray');

@@ -94,7 +94,7 @@ methods
         matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_electrodes(obj, val)
-        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_filtering(obj, val)
         val = matnwb.types.util.checkDtype('filtering', 'char', val);
@@ -121,7 +121,7 @@ methods
             return;
         end
         if ~isempty(obj.channel_conversion)
-            if startsWith(class(obj.channel_conversion), 'types.untyped.')
+            if startsWith(class(obj.channel_conversion), 'matnwb.types.untyped.')
                 refs = obj.channel_conversion.export(fid, [fullpath '/channel_conversion'], refs);
             elseif ~isempty(obj.channel_conversion)
                 matnwb.io.writeDataset(fid, [fullpath '/channel_conversion'], obj.channel_conversion, 'forceArray');

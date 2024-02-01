@@ -24,7 +24,7 @@ methods
         obj.data = p.Results.data;
         obj.description = p.Results.description;
         obj.table = p.Results.table;
-        if strcmp(class(obj), 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion')
+        if strcmp(class(obj), 'matnwb.types.hdmf_common.DynamicTableRegion')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
             matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end

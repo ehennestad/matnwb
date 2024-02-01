@@ -1,4 +1,4 @@
-classdef OpticalSeries < matnwb.matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
+classdef OpticalSeries < matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
 % OPTICALSERIES Image data that is presented or recorded. A stimulus template movie will be stored only as an image. When the image is presented as stimulus, additional data is required, such as field of view (e.g., how much of the visual field the image covers, or how what is the area of the target being imaged). If the OpticalSeries represents acquired imaging data, orientation is also important.
 
 
@@ -12,7 +12,7 @@ end
 methods
     function obj = OpticalSeries(varargin)
         % OPTICALSERIES Constructor for OpticalSeries
-        obj = obj@matnwb.matnwb.types.core.ImageSeries(varargin{:});
+        obj = obj@matnwb.types.core.ImageSeries(varargin{:});
         
         
         p = inputParser;
@@ -119,26 +119,26 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
         if ~isempty(obj.distance)
-            if startsWith(class(obj.distance), 'types.untyped.')
+            if startsWith(class(obj.distance), 'matnwb.types.untyped.')
                 refs = obj.distance.export(fid, [fullpath '/distance'], refs);
             elseif ~isempty(obj.distance)
                 matnwb.io.writeDataset(fid, [fullpath '/distance'], obj.distance);
             end
         end
         if ~isempty(obj.field_of_view)
-            if startsWith(class(obj.field_of_view), 'types.untyped.')
+            if startsWith(class(obj.field_of_view), 'matnwb.types.untyped.')
                 refs = obj.field_of_view.export(fid, [fullpath '/field_of_view'], refs);
             elseif ~isempty(obj.field_of_view)
                 matnwb.io.writeDataset(fid, [fullpath '/field_of_view'], obj.field_of_view, 'forceArray');
             end
         end
         if ~isempty(obj.orientation)
-            if startsWith(class(obj.orientation), 'types.untyped.')
+            if startsWith(class(obj.orientation), 'matnwb.types.untyped.')
                 refs = obj.orientation.export(fid, [fullpath '/orientation'], refs);
             elseif ~isempty(obj.orientation)
                 matnwb.io.writeDataset(fid, [fullpath '/orientation'], obj.orientation);

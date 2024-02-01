@@ -1,4 +1,4 @@
-classdef DfOverF < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef DfOverF < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % DFOVERF dF/F information about a region of interest (ROI). Storage hierarchy of dF/F should be the same as for segmentation (i.e., same names for ROIs and for image planes).
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = DfOverF(varargin)
         % DFOVERF Constructor for DfOverF
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.roiresponseseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'roiresponseseries', 'matnwb.types.core.RoiResponseSeries', varargin{:});
         varargin(ivarargin) = [];
         
@@ -37,7 +37,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

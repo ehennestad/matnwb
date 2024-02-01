@@ -104,7 +104,7 @@ methods
         val = matnwb.types.util.checkDtype('electrode_group', 'matnwb.types.hdmf_common.VectorData', val);
     end
     function val = validate_electrodes(obj, val)
-        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_electrodes_index(obj, val)
         val = matnwb.types.util.checkDtype('electrodes_index', 'matnwb.types.hdmf_common.VectorIndex', val);

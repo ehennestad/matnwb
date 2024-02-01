@@ -115,17 +115,17 @@ methods
         if any(strcmp(refs, fullpath))
             return;
         end
-        if startsWith(class(obj.data), 'types.untyped.')
+        if startsWith(class(obj.data), 'matnwb.types.untyped.')
             refs = obj.data.export(fid, [fullpath '/data'], refs);
         elseif ~isempty(obj.data)
             matnwb.io.writeDataset(fid, [fullpath '/data'], obj.data, 'forceArray');
         end
-        if startsWith(class(obj.indices), 'types.untyped.')
+        if startsWith(class(obj.indices), 'matnwb.types.untyped.')
             refs = obj.indices.export(fid, [fullpath '/indices'], refs);
         elseif ~isempty(obj.indices)
             matnwb.io.writeDataset(fid, [fullpath '/indices'], obj.indices, 'forceArray');
         end
-        if startsWith(class(obj.indptr), 'types.untyped.')
+        if startsWith(class(obj.indptr), 'matnwb.types.untyped.')
             refs = obj.indptr.export(fid, [fullpath '/indptr'], refs);
         elseif ~isempty(obj.indptr)
             matnwb.io.writeDataset(fid, [fullpath '/indptr'], obj.indptr, 'forceArray');

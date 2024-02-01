@@ -80,7 +80,7 @@ methods
         val = matnwb.types.util.checkDtype('tags_index', 'matnwb.types.hdmf_common.VectorIndex', val);
     end
     function val = validate_timeseries(obj, val)
-        val = matnwb.types.util.checkDtype('timeseries', 'matnwb.matnwb.types.core.TimeSeriesReferenceVectorData', val);
+        val = matnwb.types.util.checkDtype('timeseries', 'matnwb.types.core.TimeSeriesReferenceVectorData', val);
     end
     function val = validate_timeseries_index(obj, val)
         val = matnwb.types.util.checkDtype('timeseries_index', 'matnwb.types.hdmf_common.VectorIndex', val);

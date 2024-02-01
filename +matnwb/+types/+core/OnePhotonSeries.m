@@ -1,4 +1,4 @@
-classdef OnePhotonSeries < matnwb.matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
+classdef OnePhotonSeries < matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
 % ONEPHOTONSERIES Image stack recorded over time from 1-photon microscope.
 
 
@@ -16,7 +16,7 @@ end
 methods
     function obj = OnePhotonSeries(varargin)
         % ONEPHOTONSERIES Constructor for OnePhotonSeries
-        obj = obj@matnwb.matnwb.types.core.ImageSeries(varargin{:});
+        obj = obj@matnwb.types.core.ImageSeries(varargin{:});
         
         
         p = inputParser;
@@ -180,7 +180,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

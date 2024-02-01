@@ -115,7 +115,7 @@ methods
         matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_source_channels(obj, val)
-        val = matnwb.types.util.checkDtype('source_channels', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('source_channels', 'matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_source_timeseries(obj, val)
         val = matnwb.types.util.checkDtype('source_timeseries', 'matnwb.types.core.TimeSeries', val);
@@ -127,7 +127,7 @@ methods
             return;
         end
         refs = obj.bands.export(fid, [fullpath '/bands'], refs);
-        if startsWith(class(obj.metric), 'types.untyped.')
+        if startsWith(class(obj.metric), 'matnwb.types.untyped.')
             refs = obj.metric.export(fid, [fullpath '/metric'], refs);
         elseif ~isempty(obj.metric)
             matnwb.io.writeDataset(fid, [fullpath '/metric'], obj.metric);

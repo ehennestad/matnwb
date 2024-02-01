@@ -126,7 +126,7 @@ methods
         refs = obj.device.export(fid, [fullpath '/device'], refs);
         matnwb.io.writeAttribute(fid, [fullpath '/location'], obj.location);
         if ~isempty(obj.position)
-            if startsWith(class(obj.position), 'types.untyped.')
+            if startsWith(class(obj.position), 'matnwb.types.untyped.')
                 refs = obj.position.export(fid, [fullpath '/position'], refs);
             elseif ~isempty(obj.position)
                 matnwb.io.writeCompound(fid, [fullpath '/position'], obj.position);

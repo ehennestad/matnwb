@@ -1,4 +1,4 @@
-classdef ImageMaskSeries < matnwb.matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
+classdef ImageMaskSeries < matnwb.types.core.ImageSeries & matnwb.types.untyped.GroupClass
 % IMAGEMASKSERIES An alpha mask that is applied to a presented visual stimulus. The 'data' array contains an array of mask values that are applied to the displayed image. Mask values are stored as RGBA. Mask can vary with time. The timestamps array indicates the starting time of a mask, and that mask pattern continues until it's explicitly changed.
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = ImageMaskSeries(varargin)
         % IMAGEMASKSERIES Constructor for ImageMaskSeries
-        obj = obj@matnwb.matnwb.types.core.ImageSeries(varargin{:});
+        obj = obj@matnwb.types.core.ImageSeries(varargin{:});
         
         
         p = inputParser;
@@ -20,7 +20,7 @@ methods
         addParameter(p, 'masked_imageseries',[]);
         matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.masked_imageseries = p.Results.masked_imageseries;
-        if strcmp(class(obj), 'matnwb.matnwb.types.core.ImageMaskSeries')
+        if strcmp(class(obj), 'matnwb.types.core.ImageMaskSeries')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
             matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
@@ -32,11 +32,11 @@ methods
     %% VALIDATORS
     
     function val = validate_masked_imageseries(obj, val)
-        val = matnwb.types.util.checkDtype('masked_imageseries', 'matnwb.matnwb.types.core.ImageSeries', val);
+        val = matnwb.types.util.checkDtype('masked_imageseries', 'matnwb.types.core.ImageSeries', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.ImageSeries(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

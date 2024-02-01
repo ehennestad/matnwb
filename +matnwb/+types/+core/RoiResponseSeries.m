@@ -52,7 +52,7 @@ methods
         matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_rois(obj, val)
-        val = matnwb.types.util.checkDtype('rois', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('rois', 'matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)

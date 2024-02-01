@@ -1,4 +1,4 @@
-classdef BehavioralEpochs < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef BehavioralEpochs < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % BEHAVIORALEPOCHS TimeSeries for storing behavioral epochs.  The objective of this and the other two Behavioral interfaces (e.g. BehavioralEvents and BehavioralTimeSeries) is to provide generic hooks for software tools/scripts. This allows a tool/script to take the output one specific interface (e.g., UnitTimes) and plot that data relative to another data modality (e.g., behavioral events) without having to define all possible modalities in advance. Declaring one of these interfaces means that one or more TimeSeries of the specified type is published. These TimeSeries should reside in a group having the same name as the interface. For example, if a BehavioralTimeSeries interface is declared, the module will have one or more TimeSeries defined in the module sub-group 'BehavioralTimeSeries'. BehavioralEpochs should use IntervalSeries. BehavioralEvents is used for irregular events. BehavioralTimeSeries is for continuous data.
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = BehavioralEpochs(varargin)
         % BEHAVIORALEPOCHS Constructor for BehavioralEpochs
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.intervalseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'intervalseries', 'matnwb.types.core.IntervalSeries', varargin{:});
         varargin(ivarargin) = [];
         
@@ -37,7 +37,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

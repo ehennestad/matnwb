@@ -112,21 +112,21 @@ methods
             return;
         end
         if ~isempty(obj.bias_current)
-            if startsWith(class(obj.bias_current), 'types.untyped.')
+            if startsWith(class(obj.bias_current), 'matnwb.types.untyped.')
                 refs = obj.bias_current.export(fid, [fullpath '/bias_current'], refs);
             elseif ~isempty(obj.bias_current)
                 matnwb.io.writeDataset(fid, [fullpath '/bias_current'], obj.bias_current);
             end
         end
         if ~isempty(obj.bridge_balance)
-            if startsWith(class(obj.bridge_balance), 'types.untyped.')
+            if startsWith(class(obj.bridge_balance), 'matnwb.types.untyped.')
                 refs = obj.bridge_balance.export(fid, [fullpath '/bridge_balance'], refs);
             elseif ~isempty(obj.bridge_balance)
                 matnwb.io.writeDataset(fid, [fullpath '/bridge_balance'], obj.bridge_balance);
             end
         end
         if ~isempty(obj.capacitance_compensation)
-            if startsWith(class(obj.capacitance_compensation), 'types.untyped.')
+            if startsWith(class(obj.capacitance_compensation), 'matnwb.types.untyped.')
                 refs = obj.capacitance_compensation.export(fid, [fullpath '/capacitance_compensation'], refs);
             elseif ~isempty(obj.capacitance_compensation)
                 matnwb.io.writeDataset(fid, [fullpath '/capacitance_compensation'], obj.capacitance_compensation);

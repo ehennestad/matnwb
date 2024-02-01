@@ -50,7 +50,7 @@ methods
     %% VALIDATORS
     
     function val = validate_electrodes(obj, val)
-        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.core.IntracellularElectrodesTable', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.types.core.IntracellularElectrodesTable', val);
     end
     function val = validate_responses(obj, val)
         val = matnwb.types.util.checkDtype('responses', 'matnwb.types.core.IntracellularResponsesTable', val);

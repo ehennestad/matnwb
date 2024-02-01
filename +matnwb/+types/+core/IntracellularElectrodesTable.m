@@ -23,11 +23,11 @@ methods
         matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.electrode = p.Results.electrode;
-        if strcmp(class(obj), 'matnwb.matnwb.types.core.IntracellularElectrodesTable')
+        if strcmp(class(obj), 'matnwb.types.core.IntracellularElectrodesTable')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
             matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
-        if strcmp(class(obj), 'matnwb.matnwb.types.core.IntracellularElectrodesTable')
+        if strcmp(class(obj), 'matnwb.types.core.IntracellularElectrodesTable')
             matnwb.types.util.dynamictable.checkConfig(obj);
         end
     end

@@ -38,7 +38,7 @@ methods
     %% VALIDATORS
     
     function val = validate_stimulus(obj, val)
-        val = matnwb.types.util.checkDtype('stimulus', 'matnwb.matnwb.types.core.TimeSeriesReferenceVectorData', val);
+        val = matnwb.types.util.checkDtype('stimulus', 'matnwb.types.core.TimeSeriesReferenceVectorData', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)

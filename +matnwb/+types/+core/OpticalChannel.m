@@ -79,12 +79,12 @@ methods
         if any(strcmp(refs, fullpath))
             return;
         end
-        if startsWith(class(obj.description), 'types.untyped.')
+        if startsWith(class(obj.description), 'matnwb.types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
             matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
         end
-        if startsWith(class(obj.emission_lambda), 'types.untyped.')
+        if startsWith(class(obj.emission_lambda), 'matnwb.types.untyped.')
             refs = obj.emission_lambda.export(fid, [fullpath '/emission_lambda'], refs);
         elseif ~isempty(obj.emission_lambda)
             matnwb.io.writeDataset(fid, [fullpath '/emission_lambda'], obj.emission_lambda);

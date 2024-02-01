@@ -1,4 +1,4 @@
-classdef Images < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef Images < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % IMAGES A collection of images with an optional way to specify the order of the images using the "order_of_images" dataset. An order must be specified if the images are referenced by index, e.g., from an IndexSeries.
 
 
@@ -15,7 +15,7 @@ end
 methods
     function obj = Images(varargin)
         % IMAGES Constructor for Images
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.image, ivarargin] = matnwb.types.util.parseConstrained(obj,'image', 'matnwb.types.core.Image', varargin{:});
         varargin(ivarargin) = [];
         
@@ -28,7 +28,7 @@ methods
         matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.description = p.Results.description;
         obj.order_of_images = p.Results.order_of_images;
-        if strcmp(class(obj), 'matnwb.matnwb.types.core.Images')
+        if strcmp(class(obj), 'matnwb.types.core.Images')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
             matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end
@@ -68,11 +68,11 @@ methods
         matnwb.types.util.checkSet('image', struct(), constrained, val);
     end
     function val = validate_order_of_images(obj, val)
-        val = matnwb.types.util.checkDtype('order_of_images', 'matnwb.matnwb.types.core.ImageReferences', val);
+        val = matnwb.types.util.checkDtype('order_of_images', 'matnwb.types.core.ImageReferences', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

@@ -16,7 +16,7 @@ methods
         addParameter(p, 'data',[]);
         matnwb.misc.parseSkipInvalidName(p, varargin);
         obj.data = p.Results.data;
-        if strcmp(class(obj), 'matnwb.matnwb.types.core.ImageReferences')
+        if strcmp(class(obj), 'matnwb.types.core.ImageReferences')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
             matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end

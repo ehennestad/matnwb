@@ -1,4 +1,4 @@
-classdef EyeTracking < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef EyeTracking < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % EYETRACKING Eye-tracking data, representing direction of gaze.
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = EyeTracking(varargin)
         % EYETRACKING Constructor for EyeTracking
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.spatialseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'spatialseries', 'matnwb.types.core.SpatialSeries', varargin{:});
         varargin(ivarargin) = [];
         
@@ -37,7 +37,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

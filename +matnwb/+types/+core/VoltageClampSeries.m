@@ -232,7 +232,7 @@ methods
             return;
         end
         if ~isempty(obj.capacitance_fast)
-            if startsWith(class(obj.capacitance_fast), 'types.untyped.')
+            if startsWith(class(obj.capacitance_fast), 'matnwb.types.untyped.')
                 refs = obj.capacitance_fast.export(fid, [fullpath '/capacitance_fast'], refs);
             elseif ~isempty(obj.capacitance_fast)
                 matnwb.io.writeDataset(fid, [fullpath '/capacitance_fast'], obj.capacitance_fast);
@@ -242,7 +242,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/capacitance_fast/unit'], obj.capacitance_fast_unit);
         end
         if ~isempty(obj.capacitance_slow)
-            if startsWith(class(obj.capacitance_slow), 'types.untyped.')
+            if startsWith(class(obj.capacitance_slow), 'matnwb.types.untyped.')
                 refs = obj.capacitance_slow.export(fid, [fullpath '/capacitance_slow'], refs);
             elseif ~isempty(obj.capacitance_slow)
                 matnwb.io.writeDataset(fid, [fullpath '/capacitance_slow'], obj.capacitance_slow);
@@ -252,7 +252,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/capacitance_slow/unit'], obj.capacitance_slow_unit);
         end
         if ~isempty(obj.resistance_comp_bandwidth)
-            if startsWith(class(obj.resistance_comp_bandwidth), 'types.untyped.')
+            if startsWith(class(obj.resistance_comp_bandwidth), 'matnwb.types.untyped.')
                 refs = obj.resistance_comp_bandwidth.export(fid, [fullpath '/resistance_comp_bandwidth'], refs);
             elseif ~isempty(obj.resistance_comp_bandwidth)
                 matnwb.io.writeDataset(fid, [fullpath '/resistance_comp_bandwidth'], obj.resistance_comp_bandwidth);
@@ -262,7 +262,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/resistance_comp_bandwidth/unit'], obj.resistance_comp_bandwidth_unit);
         end
         if ~isempty(obj.resistance_comp_correction)
-            if startsWith(class(obj.resistance_comp_correction), 'types.untyped.')
+            if startsWith(class(obj.resistance_comp_correction), 'matnwb.types.untyped.')
                 refs = obj.resistance_comp_correction.export(fid, [fullpath '/resistance_comp_correction'], refs);
             elseif ~isempty(obj.resistance_comp_correction)
                 matnwb.io.writeDataset(fid, [fullpath '/resistance_comp_correction'], obj.resistance_comp_correction);
@@ -272,7 +272,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/resistance_comp_correction/unit'], obj.resistance_comp_correction_unit);
         end
         if ~isempty(obj.resistance_comp_prediction)
-            if startsWith(class(obj.resistance_comp_prediction), 'types.untyped.')
+            if startsWith(class(obj.resistance_comp_prediction), 'matnwb.types.untyped.')
                 refs = obj.resistance_comp_prediction.export(fid, [fullpath '/resistance_comp_prediction'], refs);
             elseif ~isempty(obj.resistance_comp_prediction)
                 matnwb.io.writeDataset(fid, [fullpath '/resistance_comp_prediction'], obj.resistance_comp_prediction);
@@ -282,7 +282,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/resistance_comp_prediction/unit'], obj.resistance_comp_prediction_unit);
         end
         if ~isempty(obj.whole_cell_capacitance_comp)
-            if startsWith(class(obj.whole_cell_capacitance_comp), 'types.untyped.')
+            if startsWith(class(obj.whole_cell_capacitance_comp), 'matnwb.types.untyped.')
                 refs = obj.whole_cell_capacitance_comp.export(fid, [fullpath '/whole_cell_capacitance_comp'], refs);
             elseif ~isempty(obj.whole_cell_capacitance_comp)
                 matnwb.io.writeDataset(fid, [fullpath '/whole_cell_capacitance_comp'], obj.whole_cell_capacitance_comp);
@@ -292,7 +292,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/whole_cell_capacitance_comp/unit'], obj.whole_cell_capacitance_comp_unit);
         end
         if ~isempty(obj.whole_cell_series_resistance_comp)
-            if startsWith(class(obj.whole_cell_series_resistance_comp), 'types.untyped.')
+            if startsWith(class(obj.whole_cell_series_resistance_comp), 'matnwb.types.untyped.')
                 refs = obj.whole_cell_series_resistance_comp.export(fid, [fullpath '/whole_cell_series_resistance_comp'], refs);
             elseif ~isempty(obj.whole_cell_series_resistance_comp)
                 matnwb.io.writeDataset(fid, [fullpath '/whole_cell_series_resistance_comp'], obj.whole_cell_series_resistance_comp);

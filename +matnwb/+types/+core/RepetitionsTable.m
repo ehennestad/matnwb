@@ -41,7 +41,7 @@ methods
     %% VALIDATORS
     
     function val = validate_sequential_recordings(obj, val)
-        val = matnwb.types.util.checkDtype('sequential_recordings', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('sequential_recordings', 'matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_sequential_recordings_index(obj, val)
         val = matnwb.types.util.checkDtype('sequential_recordings_index', 'matnwb.types.hdmf_common.VectorIndex', val);

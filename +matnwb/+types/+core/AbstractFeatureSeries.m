@@ -124,13 +124,13 @@ methods
             return;
         end
         if ~isempty(obj.feature_units)
-            if startsWith(class(obj.feature_units), 'types.untyped.')
+            if startsWith(class(obj.feature_units), 'matnwb.types.untyped.')
                 refs = obj.feature_units.export(fid, [fullpath '/feature_units'], refs);
             elseif ~isempty(obj.feature_units)
                 matnwb.io.writeDataset(fid, [fullpath '/feature_units'], obj.feature_units, 'forceArray');
             end
         end
-        if startsWith(class(obj.features), 'types.untyped.')
+        if startsWith(class(obj.features), 'matnwb.types.untyped.')
             refs = obj.features.export(fid, [fullpath '/features'], refs);
         elseif ~isempty(obj.features)
             matnwb.io.writeDataset(fid, [fullpath '/features'], obj.features, 'forceArray');

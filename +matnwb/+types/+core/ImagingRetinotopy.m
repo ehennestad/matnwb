@@ -1,4 +1,4 @@
-classdef ImagingRetinotopy < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef ImagingRetinotopy < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % IMAGINGRETINOTOPY Intrinsic signal optical imaging or widefield imaging for measuring retinotopy. Stores orthogonal maps (e.g., altitude/azimuth; radius/theta) of responses to specific stimuli and a combined polarity map from which to identify visual areas. This group does not store the raw responses imaged during retinotopic mapping or the stimuli presented, but rather the resulting phase and power maps after applying a Fourier transform on the averaged responses. Note: for data consistency, all images and arrays are stored in the format [row][column] and [row, col], which equates to [y][x]. Field of view and dimension arrays may appear backward (i.e., y before x).
 
 
@@ -43,7 +43,7 @@ end
 methods
     function obj = ImagingRetinotopy(varargin)
         % IMAGINGRETINOTOPY Constructor for ImagingRetinotopy
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -774,11 +774,11 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        if startsWith(class(obj.axis_1_phase_map), 'types.untyped.')
+        if startsWith(class(obj.axis_1_phase_map), 'matnwb.types.untyped.')
             refs = obj.axis_1_phase_map.export(fid, [fullpath '/axis_1_phase_map'], refs);
         elseif ~isempty(obj.axis_1_phase_map)
             matnwb.io.writeDataset(fid, [fullpath '/axis_1_phase_map'], obj.axis_1_phase_map, 'forceArray');
@@ -793,7 +793,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/axis_1_phase_map/unit'], obj.axis_1_phase_map_unit);
         end
         if ~isempty(obj.axis_1_power_map)
-            if startsWith(class(obj.axis_1_power_map), 'types.untyped.')
+            if startsWith(class(obj.axis_1_power_map), 'matnwb.types.untyped.')
                 refs = obj.axis_1_power_map.export(fid, [fullpath '/axis_1_power_map'], refs);
             elseif ~isempty(obj.axis_1_power_map)
                 matnwb.io.writeDataset(fid, [fullpath '/axis_1_power_map'], obj.axis_1_power_map, 'forceArray');
@@ -808,7 +808,7 @@ methods
         if ~isempty(obj.axis_1_power_map) && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_1_power_map, 'matnwb.types.untyped.ExternalLink')
             matnwb.io.writeAttribute(fid, [fullpath '/axis_1_power_map/unit'], obj.axis_1_power_map_unit);
         end
-        if startsWith(class(obj.axis_2_phase_map), 'types.untyped.')
+        if startsWith(class(obj.axis_2_phase_map), 'matnwb.types.untyped.')
             refs = obj.axis_2_phase_map.export(fid, [fullpath '/axis_2_phase_map'], refs);
         elseif ~isempty(obj.axis_2_phase_map)
             matnwb.io.writeDataset(fid, [fullpath '/axis_2_phase_map'], obj.axis_2_phase_map, 'forceArray');
@@ -823,7 +823,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/axis_2_phase_map/unit'], obj.axis_2_phase_map_unit);
         end
         if ~isempty(obj.axis_2_power_map)
-            if startsWith(class(obj.axis_2_power_map), 'types.untyped.')
+            if startsWith(class(obj.axis_2_power_map), 'matnwb.types.untyped.')
                 refs = obj.axis_2_power_map.export(fid, [fullpath '/axis_2_power_map'], refs);
             elseif ~isempty(obj.axis_2_power_map)
                 matnwb.io.writeDataset(fid, [fullpath '/axis_2_power_map'], obj.axis_2_power_map, 'forceArray');
@@ -838,13 +838,13 @@ methods
         if ~isempty(obj.axis_2_power_map) && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.axis_2_power_map, 'matnwb.types.untyped.ExternalLink')
             matnwb.io.writeAttribute(fid, [fullpath '/axis_2_power_map/unit'], obj.axis_2_power_map_unit);
         end
-        if startsWith(class(obj.axis_descriptions), 'types.untyped.')
+        if startsWith(class(obj.axis_descriptions), 'matnwb.types.untyped.')
             refs = obj.axis_descriptions.export(fid, [fullpath '/axis_descriptions'], refs);
         elseif ~isempty(obj.axis_descriptions)
             matnwb.io.writeDataset(fid, [fullpath '/axis_descriptions'], obj.axis_descriptions, 'forceArray');
         end
         if ~isempty(obj.focal_depth_image)
-            if startsWith(class(obj.focal_depth_image), 'types.untyped.')
+            if startsWith(class(obj.focal_depth_image), 'matnwb.types.untyped.')
                 refs = obj.focal_depth_image.export(fid, [fullpath '/focal_depth_image'], refs);
             elseif ~isempty(obj.focal_depth_image)
                 matnwb.io.writeDataset(fid, [fullpath '/focal_depth_image'], obj.focal_depth_image, 'forceArray');
@@ -866,7 +866,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/focal_depth_image/format'], obj.focal_depth_image_format);
         end
         if ~isempty(obj.sign_map)
-            if startsWith(class(obj.sign_map), 'types.untyped.')
+            if startsWith(class(obj.sign_map), 'matnwb.types.untyped.')
                 refs = obj.sign_map.export(fid, [fullpath '/sign_map'], refs);
             elseif ~isempty(obj.sign_map)
                 matnwb.io.writeDataset(fid, [fullpath '/sign_map'], obj.sign_map, 'forceArray');
@@ -878,7 +878,7 @@ methods
         if ~isempty(obj.sign_map) && ~isa(obj.sign_map, 'matnwb.types.untyped.SoftLink') && ~isa(obj.sign_map, 'matnwb.types.untyped.ExternalLink')
             matnwb.io.writeAttribute(fid, [fullpath '/sign_map/field_of_view'], obj.sign_map_field_of_view, 'forceArray');
         end
-        if startsWith(class(obj.vasculature_image), 'types.untyped.')
+        if startsWith(class(obj.vasculature_image), 'matnwb.types.untyped.')
             refs = obj.vasculature_image.export(fid, [fullpath '/vasculature_image'], refs);
         elseif ~isempty(obj.vasculature_image)
             matnwb.io.writeDataset(fid, [fullpath '/vasculature_image'], obj.vasculature_image, 'forceArray');

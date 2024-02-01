@@ -1,4 +1,4 @@
-classdef Fluorescence < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef Fluorescence < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % FLUORESCENCE Fluorescence information about a region of interest (ROI). Storage hierarchy of fluorescence should be the same as for segmentation (ie, same names for ROIs and for image planes).
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = Fluorescence(varargin)
         % FLUORESCENCE Constructor for Fluorescence
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.roiresponseseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'roiresponseseries', 'matnwb.types.core.RoiResponseSeries', varargin{:});
         varargin(ivarargin) = [];
         
@@ -37,7 +37,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

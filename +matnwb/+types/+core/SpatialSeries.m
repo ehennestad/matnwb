@@ -97,7 +97,7 @@ methods
             return;
         end
         if ~isempty(obj.reference_frame)
-            if startsWith(class(obj.reference_frame), 'types.untyped.')
+            if startsWith(class(obj.reference_frame), 'matnwb.types.untyped.')
                 refs = obj.reference_frame.export(fid, [fullpath '/reference_frame'], refs);
             elseif ~isempty(obj.reference_frame)
                 matnwb.io.writeDataset(fid, [fullpath '/reference_frame'], obj.reference_frame);

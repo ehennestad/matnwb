@@ -121,10 +121,10 @@ methods
         matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_indexed_images(obj, val)
-        val = matnwb.types.util.checkDtype('indexed_images', 'matnwb.matnwb.types.core.Images', val);
+        val = matnwb.types.util.checkDtype('indexed_images', 'matnwb.types.core.Images', val);
     end
     function val = validate_indexed_timeseries(obj, val)
-        val = matnwb.types.util.checkDtype('indexed_timeseries', 'matnwb.matnwb.types.core.ImageSeries', val);
+        val = matnwb.types.util.checkDtype('indexed_timeseries', 'matnwb.types.core.ImageSeries', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)

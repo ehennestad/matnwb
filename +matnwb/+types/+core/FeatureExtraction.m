@@ -1,4 +1,4 @@
-classdef FeatureExtraction < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef FeatureExtraction < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % FEATUREEXTRACTION Features, such as PC1 and PC2, that are extracted from signals stored in a SpikeEventSeries or other source.
 
 
@@ -13,7 +13,7 @@ end
 methods
     function obj = FeatureExtraction(varargin)
         % FEATUREEXTRACTION Constructor for FeatureExtraction
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -68,7 +68,7 @@ methods
         matnwb.types.util.checkDims(valsz, validshapes);
     end
     function val = validate_electrodes(obj, val)
-        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('electrodes', 'matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_features(obj, val)
         val = matnwb.types.util.checkDtype('features', 'single', val);
@@ -108,22 +108,22 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        if startsWith(class(obj.description), 'types.untyped.')
+        if startsWith(class(obj.description), 'matnwb.types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
             matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description, 'forceArray');
         end
         refs = obj.electrodes.export(fid, [fullpath '/electrodes'], refs);
-        if startsWith(class(obj.features), 'types.untyped.')
+        if startsWith(class(obj.features), 'matnwb.types.untyped.')
             refs = obj.features.export(fid, [fullpath '/features'], refs);
         elseif ~isempty(obj.features)
             matnwb.io.writeDataset(fid, [fullpath '/features'], obj.features, 'forceArray');
         end
-        if startsWith(class(obj.times), 'types.untyped.')
+        if startsWith(class(obj.times), 'matnwb.types.untyped.')
             refs = obj.times.export(fid, [fullpath '/times'], refs);
         elseif ~isempty(obj.times)
             matnwb.io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');

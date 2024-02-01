@@ -15,7 +15,7 @@ methods
         obj = obj@matnwb.types.core.NWBContainer(varargin{:});
         [obj.dynamictable, ivarargin] = matnwb.types.util.parseConstrained(obj,'dynamictable', 'matnwb.types.hdmf_common.DynamicTable', varargin{:});
         varargin(ivarargin) = [];
-        [obj.nwbdatainterface, ivarargin] = matnwb.types.util.parseConstrained(obj,'nwbdatainterface', 'matnwb.matnwb.types.core.NWBDataInterface', varargin{:});
+        [obj.nwbdatainterface, ivarargin] = matnwb.types.util.parseConstrained(obj,'nwbdatainterface', 'matnwb.types.core.NWBDataInterface', varargin{:});
         varargin(ivarargin) = [];
         
         p = inputParser;
@@ -67,7 +67,7 @@ methods
     end
     function val = validate_nwbdatainterface(obj, val)
         namedprops = struct();
-        constrained = {'matnwb.matnwb.types.core.NWBDataInterface'};
+        constrained = {'matnwb.types.core.NWBDataInterface'};
         matnwb.types.util.checkSet('nwbdatainterface', namedprops, constrained, val);
     end
     %% EXPORT

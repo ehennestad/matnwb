@@ -7,7 +7,7 @@ methods
     function obj = NWBDataInterface(varargin)
         % NWBDATAINTERFACE Constructor for NWBDataInterface
         obj = obj@matnwb.types.core.NWBContainer(varargin{:});
-        if strcmp(class(obj), 'matnwb.matnwb.types.core.NWBDataInterface')
+        if strcmp(class(obj), 'matnwb.types.core.NWBDataInterface')
             cellStringArguments = convertContainedStringsToChars(varargin(1:2:end));
             matnwb.types.util.checkUnset(obj, unique(cellStringArguments));
         end

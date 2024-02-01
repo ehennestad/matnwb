@@ -236,55 +236,55 @@ methods
             return;
         end
         if ~isempty(obj.cell_id)
-            if startsWith(class(obj.cell_id), 'types.untyped.')
+            if startsWith(class(obj.cell_id), 'matnwb.types.untyped.')
                 refs = obj.cell_id.export(fid, [fullpath '/cell_id'], refs);
             elseif ~isempty(obj.cell_id)
                 matnwb.io.writeDataset(fid, [fullpath '/cell_id'], obj.cell_id);
             end
         end
-        if startsWith(class(obj.description), 'types.untyped.')
+        if startsWith(class(obj.description), 'matnwb.types.untyped.')
             refs = obj.description.export(fid, [fullpath '/description'], refs);
         elseif ~isempty(obj.description)
             matnwb.io.writeDataset(fid, [fullpath '/description'], obj.description);
         end
         refs = obj.device.export(fid, [fullpath '/device'], refs);
         if ~isempty(obj.filtering)
-            if startsWith(class(obj.filtering), 'types.untyped.')
+            if startsWith(class(obj.filtering), 'matnwb.types.untyped.')
                 refs = obj.filtering.export(fid, [fullpath '/filtering'], refs);
             elseif ~isempty(obj.filtering)
                 matnwb.io.writeDataset(fid, [fullpath '/filtering'], obj.filtering);
             end
         end
         if ~isempty(obj.initial_access_resistance)
-            if startsWith(class(obj.initial_access_resistance), 'types.untyped.')
+            if startsWith(class(obj.initial_access_resistance), 'matnwb.types.untyped.')
                 refs = obj.initial_access_resistance.export(fid, [fullpath '/initial_access_resistance'], refs);
             elseif ~isempty(obj.initial_access_resistance)
                 matnwb.io.writeDataset(fid, [fullpath '/initial_access_resistance'], obj.initial_access_resistance);
             end
         end
         if ~isempty(obj.location)
-            if startsWith(class(obj.location), 'types.untyped.')
+            if startsWith(class(obj.location), 'matnwb.types.untyped.')
                 refs = obj.location.export(fid, [fullpath '/location'], refs);
             elseif ~isempty(obj.location)
                 matnwb.io.writeDataset(fid, [fullpath '/location'], obj.location);
             end
         end
         if ~isempty(obj.resistance)
-            if startsWith(class(obj.resistance), 'types.untyped.')
+            if startsWith(class(obj.resistance), 'matnwb.types.untyped.')
                 refs = obj.resistance.export(fid, [fullpath '/resistance'], refs);
             elseif ~isempty(obj.resistance)
                 matnwb.io.writeDataset(fid, [fullpath '/resistance'], obj.resistance);
             end
         end
         if ~isempty(obj.seal)
-            if startsWith(class(obj.seal), 'types.untyped.')
+            if startsWith(class(obj.seal), 'matnwb.types.untyped.')
                 refs = obj.seal.export(fid, [fullpath '/seal'], refs);
             elseif ~isempty(obj.seal)
                 matnwb.io.writeDataset(fid, [fullpath '/seal'], obj.seal);
             end
         end
         if ~isempty(obj.slice)
-            if startsWith(class(obj.slice), 'types.untyped.')
+            if startsWith(class(obj.slice), 'matnwb.types.untyped.')
                 refs = obj.slice.export(fid, [fullpath '/slice'], refs);
             elseif ~isempty(obj.slice)
                 matnwb.io.writeDataset(fid, [fullpath '/slice'], obj.slice);

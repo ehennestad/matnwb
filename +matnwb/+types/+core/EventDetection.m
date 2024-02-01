@@ -1,4 +1,4 @@
-classdef EventDetection < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef EventDetection < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % EVENTDETECTION Detected spike events from voltage trace(s).
 
 
@@ -21,7 +21,7 @@ methods
     function obj = EventDetection(varargin)
         % EVENTDETECTION Constructor for EventDetection
         varargin = [{'times_unit' 'seconds'} varargin];
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -118,22 +118,22 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
-        if startsWith(class(obj.detection_method), 'types.untyped.')
+        if startsWith(class(obj.detection_method), 'matnwb.types.untyped.')
             refs = obj.detection_method.export(fid, [fullpath '/detection_method'], refs);
         elseif ~isempty(obj.detection_method)
             matnwb.io.writeDataset(fid, [fullpath '/detection_method'], obj.detection_method);
         end
         refs = obj.source_electricalseries.export(fid, [fullpath '/source_electricalseries'], refs);
-        if startsWith(class(obj.source_idx), 'types.untyped.')
+        if startsWith(class(obj.source_idx), 'matnwb.types.untyped.')
             refs = obj.source_idx.export(fid, [fullpath '/source_idx'], refs);
         elseif ~isempty(obj.source_idx)
             matnwb.io.writeDataset(fid, [fullpath '/source_idx'], obj.source_idx, 'forceArray');
         end
-        if startsWith(class(obj.times), 'types.untyped.')
+        if startsWith(class(obj.times), 'matnwb.types.untyped.')
             refs = obj.times.export(fid, [fullpath '/times'], refs);
         elseif ~isempty(obj.times)
             matnwb.io.writeDataset(fid, [fullpath '/times'], obj.times, 'forceArray');

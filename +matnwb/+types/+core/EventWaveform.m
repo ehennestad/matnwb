@@ -1,4 +1,4 @@
-classdef EventWaveform < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef EventWaveform < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % EVENTWAVEFORM Represents either the waveforms of detected events, as extracted from a raw data trace in /acquisition, or the event waveforms that were stored during experiment acquisition.
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = EventWaveform(varargin)
         % EVENTWAVEFORM Constructor for EventWaveform
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.spikeeventseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'spikeeventseries', 'matnwb.types.core.SpikeEventSeries', varargin{:});
         varargin(ivarargin) = [];
         
@@ -37,7 +37,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end

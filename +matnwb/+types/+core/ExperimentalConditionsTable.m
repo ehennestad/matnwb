@@ -41,7 +41,7 @@ methods
     %% VALIDATORS
     
     function val = validate_repetitions(obj, val)
-        val = matnwb.types.util.checkDtype('repetitions', 'matnwb.matnwb.types.hdmf_common.DynamicTableRegion', val);
+        val = matnwb.types.util.checkDtype('repetitions', 'matnwb.types.hdmf_common.DynamicTableRegion', val);
     end
     function val = validate_repetitions_index(obj, val)
         val = matnwb.types.util.checkDtype('repetitions_index', 'matnwb.types.hdmf_common.VectorIndex', val);

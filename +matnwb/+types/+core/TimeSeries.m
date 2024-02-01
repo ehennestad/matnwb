@@ -1,4 +1,4 @@
-classdef TimeSeries < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef TimeSeries < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % TIMESERIES General purpose time series.
 
 
@@ -32,7 +32,7 @@ methods
     function obj = TimeSeries(varargin)
         % TIMESERIES Constructor for TimeSeries
         varargin = [{'comments' 'no comments' 'data_conversion' matnwb.types.util.correctType(1, 'single') 'data_offset' matnwb.types.util.correctType(0, 'single') 'data_resolution' matnwb.types.util.correctType(-1, 'single') 'description' 'no description' 'starting_time_unit' 'seconds' 'timestamps_interval' matnwb.types.util.correctType(1, 'int32') 'timestamps_unit' 'seconds'} varargin];
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         
         
         p = inputParser;
@@ -340,7 +340,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
@@ -348,20 +348,20 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/comments'], obj.comments);
         end
         if ~isempty(obj.control)
-            if startsWith(class(obj.control), 'types.untyped.')
+            if startsWith(class(obj.control), 'matnwb.types.untyped.')
                 refs = obj.control.export(fid, [fullpath '/control'], refs);
             elseif ~isempty(obj.control)
                 matnwb.io.writeDataset(fid, [fullpath '/control'], obj.control, 'forceArray');
             end
         end
         if ~isempty(obj.control_description)
-            if startsWith(class(obj.control_description), 'types.untyped.')
+            if startsWith(class(obj.control_description), 'matnwb.types.untyped.')
                 refs = obj.control_description.export(fid, [fullpath '/control_description'], refs);
             elseif ~isempty(obj.control_description)
                 matnwb.io.writeDataset(fid, [fullpath '/control_description'], obj.control_description, 'forceArray');
             end
         end
-        if startsWith(class(obj.data), 'types.untyped.')
+        if startsWith(class(obj.data), 'matnwb.types.untyped.')
             refs = obj.data.export(fid, [fullpath '/data'], refs);
         elseif ~isempty(obj.data)
             matnwb.io.writeDataset(fid, [fullpath '/data'], obj.data, 'forceArray');
@@ -385,7 +385,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/description'], obj.description);
         end
         if ~isempty(obj.starting_time)
-            if startsWith(class(obj.starting_time), 'types.untyped.')
+            if startsWith(class(obj.starting_time), 'matnwb.types.untyped.')
                 refs = obj.starting_time.export(fid, [fullpath '/starting_time'], refs);
             elseif ~isempty(obj.starting_time)
                 matnwb.io.writeDataset(fid, [fullpath '/starting_time'], obj.starting_time);
@@ -398,7 +398,7 @@ methods
             matnwb.io.writeAttribute(fid, [fullpath '/starting_time/unit'], obj.starting_time_unit);
         end
         if ~isempty(obj.timestamps)
-            if startsWith(class(obj.timestamps), 'types.untyped.')
+            if startsWith(class(obj.timestamps), 'matnwb.types.untyped.')
                 refs = obj.timestamps.export(fid, [fullpath '/timestamps'], refs);
             elseif ~isempty(obj.timestamps)
                 matnwb.io.writeDataset(fid, [fullpath '/timestamps'], obj.timestamps, 'forceArray');

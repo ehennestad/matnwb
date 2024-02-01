@@ -38,7 +38,7 @@ methods
     %% VALIDATORS
     
     function val = validate_response(obj, val)
-        val = matnwb.types.util.checkDtype('response', 'matnwb.matnwb.types.core.TimeSeriesReferenceVectorData', val);
+        val = matnwb.types.util.checkDtype('response', 'matnwb.types.core.TimeSeriesReferenceVectorData', val);
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)

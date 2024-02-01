@@ -1,4 +1,4 @@
-classdef BehavioralEvents < matnwb.matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
+classdef BehavioralEvents < matnwb.types.core.NWBDataInterface & matnwb.types.untyped.GroupClass
 % BEHAVIORALEVENTS TimeSeries for storing behavioral events. See description of <a href="#BehavioralEpochs">BehavioralEpochs</a> for more details.
 
 
@@ -10,7 +10,7 @@ end
 methods
     function obj = BehavioralEvents(varargin)
         % BEHAVIORALEVENTS Constructor for BehavioralEvents
-        obj = obj@matnwb.matnwb.types.core.NWBDataInterface(varargin{:});
+        obj = obj@matnwb.types.core.NWBDataInterface(varargin{:});
         [obj.timeseries, ivarargin] = matnwb.types.util.parseConstrained(obj,'timeseries', 'matnwb.types.core.TimeSeries', varargin{:});
         varargin(ivarargin) = [];
         
@@ -37,7 +37,7 @@ methods
     end
     %% EXPORT
     function refs = export(obj, fid, fullpath, refs)
-        refs = export@matnwb.matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
+        refs = export@matnwb.types.core.NWBDataInterface(obj, fid, fullpath, refs);
         if any(strcmp(refs, fullpath))
             return;
         end
