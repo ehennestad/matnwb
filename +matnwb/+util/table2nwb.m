@@ -1,7 +1,7 @@
 function nwbtable = table2nwb(T, description)
 %TABLE2NWB converts from a MATLAB table to an NWB DynamicTable
 %   NWBTABLE = TABLE2NWB(T) converts table T into a
-%   types.core.DynamicTable
+%   matnwb.types.core.DynamicTable
 %
 %   NWBTABLE = TABLE2NWB(T, DESCRIPTION) includes the DESCRIPTION in the 
 %   DynamicTable 
