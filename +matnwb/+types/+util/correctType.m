@@ -106,8 +106,8 @@ function nearestType = findNearestType(val, type)
     isTypeUnsigned = ~isTypeFloat && startsWith(type, 'u');
     isValueTypeUnsigned = ~isfloat(val) && startsWith(class(val), 'u');
     
-    valueTypeBitSize = 8 * matnwb.matnwb.io.getMatTypeSize(class(val));
-    preferredTypeBitSize = 8 * matnwb.matnwb.io.getMatTypeSize(type);
+    valueTypeBitSize = 8 * matnwb.io.getMatTypeSize(class(val));
+    preferredTypeBitSize = 8 * matnwb.io.getMatTypeSize(type);
     idealTypeBitSize = max(valueTypeBitSize, preferredTypeBitSize);
     
     % In certain classes of conversion, simply scaling upwards in size resolves
