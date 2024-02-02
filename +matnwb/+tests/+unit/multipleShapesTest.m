@@ -17,13 +17,13 @@ rehash();
 end
 
 function testMultipleShapesDataset(testCase)
-msd = types.mss.MultiShapeDataset('data', rand(3, 1));
+msd = matnwb.types.mss.MultiShapeDataset('data', rand(3, 1));
 msd.data = rand(1, 5, 7);
 roundabout(testCase, msd);
 end
 
 function testNullShapeDataset(testCase)
-nsd = types.mss.NullShapeDataset;
+nsd = matnwb.types.mss.NullShapeDataset;
 randiMax = intmax('int8') - 1;
 for i=1:100
     %test validation
@@ -33,7 +33,7 @@ roundabout(testCase, nsd);
 end
 
 function testMultipleNullShapesDataset(testCase)
-mnsd = types.mss.MultiNullShapeDataset;
+mnsd = matnwb.types.mss.MultiNullShapeDataset;
 randiMax = intmax('int8');
 for i=1:100
     if rand() > 0.5
@@ -46,7 +46,7 @@ roundabout(testCase, mnsd);
 end
 
 function testInheritedDtypeDataset(testCase)
-nid = types.mss.NarrowInheritedDataset;
+nid = matnwb.types.mss.NarrowInheritedDataset;
 nid.data = 'Inherited Dtype Dataset';
 roundabout(testCase, nid);
 end
@@ -56,7 +56,7 @@ function roundabout(testCase, dataset)
 nwb = NwbFile('identifier', 'MSS', 'session_description', 'test',...
     'session_start_time', '2017-04-15T12:00:00.000000-08:00',...
     'timestamps_reference_time', '2017-04-15T12:00:00.000000-08:00');
-wrapper = types.mss.MultiShapeWrapper('shaped_data', dataset);
+wrapper = matnwb.types.mss.MultiShapeWrapper('shaped_data', dataset);
 nwb.acquisition.set('wrapper', wrapper);
 filename = 'multipleShapesTest.nwb';
 nwbExport(nwb, filename);

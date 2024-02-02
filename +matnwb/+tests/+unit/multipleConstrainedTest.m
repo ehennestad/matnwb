@@ -17,10 +17,10 @@ function setup(testCase)
 end
 
 function testRoundabout(testCase)
-    MultiSet = types.mcs.MultiSetContainer();
-    MultiSet.something.set('A', types.mcs.ArbitraryTypeA());
-    MultiSet.something.set('B', types.mcs.ArbitraryTypeB());
-    MultiSet.something.set('Data', types.mcs.DatasetType());
+    MultiSet = matnwb.types.mcs.MultiSetContainer();
+    MultiSet.something.set('A', matnwb.types.mcs.ArbitraryTypeA());
+    MultiSet.something.set('B', matnwb.types.mcs.ArbitraryTypeB());
+    MultiSet.something.set('Data', matnwb.types.mcs.DatasetType());
     nwbExpected = NwbFile(...
         'identifier', 'MCS', ...
         'session_description', 'multiple constrained schema testing', ...
