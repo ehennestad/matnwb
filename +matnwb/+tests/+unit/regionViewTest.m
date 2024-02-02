@@ -22,7 +22,7 @@ nwb = NwbFile(...
     'session_description', 'region ref test',...
     'session_start_time', datetime());
 
-rcContainer = types.rrs.RefContainer('data', types.rrs.RefData('data', rand(10, 10, 10, 10, 10)));
+rcContainer = matnwb.types.rrs.RefContainer('data', matnwb.types.rrs.RefData('data', rand(10, 10, 10, 10, 10)));
 nwb.acquisition.set('refdata', rcContainer);
 
 for i = 1:100
