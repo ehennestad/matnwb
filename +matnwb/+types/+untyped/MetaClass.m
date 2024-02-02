@@ -78,8 +78,8 @@ classdef MetaClass < handle
                 neuroTypePath = [fullpath '/neurodata_type'];
                 uuidPath = [fullpath '/object_id'];
                 dotparts = split(class(obj), '.');
-                namespace = strrep(dotparts{2}, '_', '-');
-                classtype = dotparts{3};
+                namespace = strrep(dotparts{3}, '_', '-');
+                classtype = dotparts{4};
                 matnwb.io.writeAttribute(fid, namespacePath, namespace);
                 matnwb.io.writeAttribute(fid, neuroTypePath, classtype);
                 matnwb.io.writeAttribute(fid, uuidPath, uuid);
