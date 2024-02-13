@@ -1,6 +1,6 @@
 function nwbExport(nwb, filenames)
     %NWBEXPORT Writes an NWB file.
-    %  nwbRead(nwb,filename) Writes the nwb object to a file at filename.
+    %  nwbExport(nwb,filename) Writes the nwb object to a file at filename.
     %
     %  Example:
     %    % Generate Matlab code for the NWB objects from the core schema.
