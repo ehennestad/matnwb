@@ -37,8 +37,8 @@
    the current working directory.  This is for allowing cross-referencing
    classes between multiple namespaces.
 
-   Output files are generated placed in a '+types' subdirectory in the
-   current working directory.
+   Output files are generated placed in a '+matnwb/+types' subdirectory in 
+   the current working directory.
    
    Example:
       generateCore('schema\core\nwb.namespace.yaml');
@@ -70,7 +70,7 @@ This function is called by:
 0009 <span class="comment">%   the current working directory.  This is for allowing cross-referencing</span>
 0010 <span class="comment">%   classes between multiple namespaces.</span>
 0011 <span class="comment">%</span>
-0012 <span class="comment">%   Output files are generated placed in a '+types' subdirectory in the</span>
+0012 <span class="comment">%   Output files are generated placed in a '+matnwb/+types' subdirectory in the</span>
 0013 <span class="comment">%   current working directory.</span>
 0014 <span class="comment">%</span>
 0015 <span class="comment">%   Example:</span>
@@ -90,7 +90,7 @@ This function is called by:
 0029 namespace_map = schema.read(fread(fid, <span class="string">'*char'</span>) .');
 0030 fclose(fid);
 0031 
-0032 spec.generate(namespace_map, localpath);
+0032 matnwb.spec.generate(namespace_map, localpath);
 0033 <span class="keyword">end</span></pre></div>
 <hr><address>Generated on Fri 09-Aug-2019 14:27:49 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
 </body>

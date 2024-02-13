@@ -98,7 +98,7 @@ This function is called by:
 0038         <span class="keyword">end</span>
 0039         blacklist = <span class="string">''</span>;
 0040     <span class="keyword">end</span>
-0041     nwb = io.parseGroup(filename, info, blacklist);
+0041     nwb = matnwb.io.parseGroup(filename, info, blacklist);
 0042     <span class="keyword">return</span>;
 0043 <span class="keyword">elseif</span> isstring(filename)
 0044     validateattributes(filename, {<span class="string">'string'</span>}, {<span class="string">'nonempty'</span>});
@@ -115,7 +115,7 @@ This function is called by:
 0055         fnm = filename{i};
 0056     <span class="keyword">end</span>
 0057     info = h5info(fnm);
-0058     nwb(i) = io.parseGroup(fnm, info);
+0058     nwb(i) = matnwb.io.parseGroup(fnm, info);
 0059 <span class="keyword">end</span>
 0060 <span class="keyword">end</span>
 0061 
@@ -148,7 +148,7 @@ This function is called by:
 0088         H5D.close(did);
 0089     <span class="keyword">end</span>
 0090     
-0091     spec.generate(namespace_map, schema_map);
+0091     matnwb.spec.generate(namespace_map, schema_map);
 0092 <span class="keyword">end</span>
 0093 <span class="keyword">end</span></pre></div>
 <hr><address>Generated on Fri 09-Aug-2019 14:27:49 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
