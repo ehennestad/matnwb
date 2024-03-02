@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>NWB File Conversion Tutorial</title>
 <meta name="generator" content="MATLAB 23.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2024-02-24">
+<meta name="DC.date" content="2024-03-02">
 <meta name="DC.source" content="convertTrials.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -108,7 +108,10 @@ last updated: May 27, 2021</pre>
 <a href="#26">Raw Acquisition Data</a>
 </li>
 <li>
-<a href="#27">Export</a>
+<a href="#27">Add timeseries to trials_epoch</a>
+</li>
+<li>
+<a href="#28">Export</a>
 </li>
 </ul>
 </div>
@@ -189,13 +192,7 @@ nwb.general_experimenter = strjoin(meta.experimenters, <span class="string">', '
 </pre>
 <pre class="codeoutput">Processing Meta Data from `data/metadata/meta_data_ANM255201_20141124.mat`
 </pre>
-<pre class="codeoutput error">Error using load
-Unable to find file or directory 'data/metadata/meta_data_ANM255201_20141124.mat'.
-
-Error in convertTrials (line 95)
-loaded = load(metadata_loc, 'meta_data');
-</pre>
-<pre class="codeinput">nwb.general_subject = types.core.Subject(<span class="keyword">...</span>
+<pre class="codeinput">nwb.general_subject = matnwb.types.core.Subject(<span class="keyword">...</span>
     <span class="string">'species'</span>, meta.species{1}, <span class="keyword">...</span>
     <span class="string">'subject_id'</span>, meta.animalID{1}(1,:), <span class="keyword">...</span><span class="comment"> %weird case with duplicate Animal ID</span>
     <span class="string">'sex'</span>, meta.sex, <span class="keyword">...</span>
@@ -243,14 +240,14 @@ nwb.general_data_collection = formatStruct(meta.extracellular,<span class="keywo
 probetype = meta.extracellular.probeType{1};
 probeSource = meta.extracellular.probeSource{1};
 deviceName = [probetype <span class="string">' ('</span> probeSource <span class="string">')'</span>];
-nwb.general_devices.set(deviceName, types.core.Device());
+nwb.general_devices.set(deviceName, matnwb.types.core.Device());
 
 <span class="keyword">if</span> isreachr
     laserName = <span class="string">'laser-594nm (Cobolt Inc., Cobolt Mambo 100)'</span>;
 <span class="keyword">else</span>
     laserName = <span class="string">'laser-473nm (Laser Quantum, Gem 473)'</span>;
 <span class="keyword">end</span>
-nwb.general_devices.set(laserName, types.core.Device());
+nwb.general_devices.set(laserName, matnwb.types.core.Device());
 </pre>
 <pre class="codeinput">structDesc = {<span class="string">'recordingCoordinates'</span>;<span class="string">'recordingMarker'</span>;<span class="string">'recordingType'</span>;<span class="string">'penetrationN'</span>;<span class="keyword">...</span>
     <span class="string">'groundCoordinates'</span>};
@@ -258,7 +255,7 @@ nwb.general_devices.set(laserName, types.core.Device());
     structDesc{end+1} = <span class="string">'referenceCoordinates'</span>;
 <span class="keyword">end</span>
 recordingLocation = meta.extracellular.recordingLocation{1};
-egroup = types.core.ElectrodeGroup(<span class="keyword">...</span>
+egroup = matnwb.types.core.ElectrodeGroup(<span class="keyword">...</span>
     <span class="string">'description'</span>, formatStruct(meta.extracellular, structDesc),<span class="keyword">...</span>
     <span class="string">'location'</span>, recordingLocation,<span class="keyword">...</span>
     <span class="string">'device'</span>, matnwb.types.untyped.SoftLink([<span class="string">'/general/devices/'</span> deviceName]));
@@ -270,19 +267,19 @@ nwb.general_extracellular_ephys.set(deviceName, egroup);
 <span class="comment">% constructor.</span>
 dtColNames = {<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>, <span class="string">'imp'</span>, <span class="string">'location'</span>, <span class="string">'filtering'</span>,<span class="string">'group'</span>,<span class="keyword">...</span>
     <span class="string">'group_name'</span>};
-dynTable = types.hdmf_common.DynamicTable(<span class="keyword">...</span>
+dynTable = matnwb.types.hdmf_common.DynamicTable(<span class="keyword">...</span>
     <span class="string">'colnames'</span>, dtColNames,<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'Electrodes'</span>,<span class="keyword">...</span>
-    <span class="string">'x'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'x coordinate of the channel location in the brain (+x is posterior).'</span>),<span class="keyword">...</span>
-    <span class="string">'y'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'y coordinate of the channel location in the brain (+y is inferior).'</span>),<span class="keyword">...</span>
-    <span class="string">'z'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'z coordinate of the channel location in the brain (+z is right).'</span>),<span class="keyword">...</span>
-    <span class="string">'imp'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Impedance of the channel.'</span>),<span class="keyword">...</span>
-    <span class="string">'location'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, [<span class="string">'Location of the electrode (channel). '</span><span class="keyword">...</span>
+    <span class="string">'x'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'x coordinate of the channel location in the brain (+x is posterior).'</span>),<span class="keyword">...</span>
+    <span class="string">'y'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'y coordinate of the channel location in the brain (+y is inferior).'</span>),<span class="keyword">...</span>
+    <span class="string">'z'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'z coordinate of the channel location in the brain (+z is right).'</span>),<span class="keyword">...</span>
+    <span class="string">'imp'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Impedance of the channel.'</span>),<span class="keyword">...</span>
+    <span class="string">'location'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, [<span class="string">'Location of the electrode (channel). '</span><span class="keyword">...</span>
     <span class="string">'Specify the area, layer, comments on estimation of area/layer, stereotaxic coordinates if '</span><span class="keyword">...</span>
     <span class="string">'in vivo, etc. Use standard atlas names for anatomical regions when possible.'</span>]),<span class="keyword">...</span>
-    <span class="string">'filtering'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Description of hardware filtering.'</span>),<span class="keyword">...</span>
-    <span class="string">'group'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Reference to the ElectrodeGroup this electrode is a part of.'</span>),<span class="keyword">...</span>
-    <span class="string">'group_name'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Name of the ElectrodeGroup this electrode is a part of.'</span>));
+    <span class="string">'filtering'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Description of hardware filtering.'</span>),<span class="keyword">...</span>
+    <span class="string">'group'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Reference to the ElectrodeGroup this electrode is a part of.'</span>),<span class="keyword">...</span>
+    <span class="string">'group_name'</span>, matnwb.types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Name of the ElectrodeGroup this electrode is a part of.'</span>));
 
 <span class="comment">%raw HDF5 path to the above electrode group. Referenced by</span>
 <span class="comment">% the general/extracellular_ephys Dynamic Table</span>
@@ -308,7 +305,7 @@ eGroupReference = matnwb.types.untyped.ObjectView(egroupPath);
 <pre class="codeinput">
 <span class="comment">% general/optogenetics/photostim</span>
 nwb.general_optogenetics.set(<span class="string">'photostim'</span>, <span class="keyword">...</span>
-    types.core.OptogeneticStimulusSite(<span class="keyword">...</span>
+    matnwb.types.core.OptogeneticStimulusSite(<span class="keyword">...</span>
     <span class="string">'excitation_lambda'</span>, meta.photostim.photostimWavelength{1}, <span class="keyword">...</span>
     <span class="string">'location'</span>, meta.photostim.photostimLocation{1}, <span class="keyword">...</span>
     <span class="string">'device'</span>, matnwb.types.untyped.SoftLink([<span class="string">'/general/devices/'</span> laserName]), <span class="keyword">...</span>
@@ -329,16 +326,18 @@ data = loaded.obj;
 <span class="comment">% Trial timeseries will be a compound type under intervals/trials.</span>
 trial_timeseries = cell(size(data.trialIds));
 </pre>
+<pre class="codeoutput">Processing Data Structure `data/data_structure_files/data_structure_ANM255201_20141124.mat`
+</pre>
 <p>NWB comes with default support for trial-based data. These must be <b>TimeIntervals</b> that are placed in the <tt>intervals</tt> property. Note that <tt>trials</tt> is a special keyword that is required for PyNWB compatibility.</p>
 <pre class="codeinput">ephus = data.timeSeriesArrayHash.value{1};
 ephusUnit = data.timeUnitNames{data.timeUnitIds(ephus.timeUnit)};
 
 <span class="comment">% lick direction and timestamps trace</span>
 tsIdx = strcmp(ephus.idStr, <span class="string">'lick_trace'</span>);
-bts = types.core.BehavioralTimeSeries();
+bts = matnwb.types.core.BehavioralTimeSeries();
 
 bts.timeseries.set(<span class="string">'lick_trace_ts'</span>, <span class="keyword">...</span>
-    types.core.TimeSeries(<span class="keyword">...</span>
+    matnwb.types.core.TimeSeries(<span class="keyword">...</span>
     <span class="string">'data'</span>, ephus.valueMatrix(:,tsIdx),<span class="keyword">...</span>
     <span class="string">'data_unit'</span>, ephusUnit,<span class="keyword">...</span>
     <span class="string">'description'</span>, ephus.idStrDetailed{tsIdx}, <span class="keyword">...</span>
@@ -349,7 +348,7 @@ bts_ref = matnwb.types.untyped.ObjectView(<span class="string">'/acquisition/lic
 
 <span class="comment">% acousto-optic modulator input trace</span>
 tsIdx = strcmp(ephus.idStr, <span class="string">'aom_input_trace'</span>);
-ts = types.core.TimeSeries(<span class="keyword">...</span>
+ts = matnwb.types.core.TimeSeries(<span class="keyword">...</span>
     <span class="string">'data'</span>, ephus.valueMatrix(:,tsIdx), <span class="keyword">...</span>
     <span class="string">'data_unit'</span>, <span class="string">'Volts'</span>, <span class="keyword">...</span>
     <span class="string">'description'</span>, ephus.idStrDetailed{tsIdx}, <span class="keyword">...</span>
@@ -360,7 +359,7 @@ ts_ref = matnwb.types.untyped.ObjectView(<span class="string">'/stimulus/present
 
 <span class="comment">% laser power</span>
 tsIdx = strcmp(ephus.idStr, <span class="string">'laser_power'</span>);
-ots = types.core.OptogeneticSeries(<span class="keyword">...</span>
+ots = matnwb.types.core.OptogeneticSeries(<span class="keyword">...</span>
     <span class="string">'data'</span>, ephus.valueMatrix(:,tsIdx), <span class="keyword">...</span>
     <span class="string">'data_unit'</span>, <span class="string">'mW'</span>, <span class="keyword">...</span>
     <span class="string">'description'</span>, ephus.idStrDetailed{tsIdx}, <span class="keyword">...</span>
@@ -388,46 +387,49 @@ ots_ref = matnwb.types.untyped.ObjectView(<span class="string">'/stimulus/presen
 <p>
 <b>VectorIndex</b> objects index into a larger <b>VectorData</b> column. The object that is being referenced is indicated by the <tt>target</tt> property, which uses an ObjectView. Each element in the VectorIndex marks the <b>last</b> element in the corresponding vector data object for the VectorIndex row. Thus, the starting index for this row would be the previous index + 1. Note that these indices must be 0-indexed for compatibility with pynwb. You can see this in effect with the <tt>timeseries</tt> property which is indexed by the <tt>timeseries_index</tt> property.</p>
 <p>Though TimeIntervals is a subclass of the DynamicTable type, we opt for populating the Dynamic Table data by column instead of using `addRow` here because of how the data is formatted. DynamicTable is flexible enough to accomodate both styles of data conversion.</p>
-<pre class="codeinput">trials_epoch = types.core.TimeIntervals(<span class="keyword">...</span>
-    <span class="string">'start_time'</span>, types.hdmf_common.VectorData(<span class="string">'data'</span>, data.trialStartTimes,<span class="keyword">...</span>
-        <span class="string">'description'</span>, <span class="string">'Start time of epoch, in seconds.'</span>),<span class="keyword">...</span>
-    <span class="string">'colnames'</span>, [data.trialTypeStr; data.trialPropertiesHash.keyNames .';<span class="keyword">...</span>
-        {<span class="string">'start_time'</span>; <span class="string">'stop_time'</span>; <span class="string">'acquisition'</span>; <span class="string">'timeseries'</span>}],<span class="keyword">...</span>
+<pre class="codeinput">trials_epoch = matnwb.types.core.TimeIntervals(<span class="keyword">...</span>
+    <span class="string">'colnames'</span>, {<span class="string">'start_time'</span>}, <span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'trial data and properties'</span>, <span class="keyword">...</span>
-    <span class="string">'id'</span>, types.hdmf_common.ElementIdentifiers(<span class="string">'data'</span>, data.trialIds),<span class="keyword">...</span>
-    <span class="string">'timeseries'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Index into timeseries Data'</span>),<span class="keyword">...</span>
-    <span class="string">'timeseries_index'</span>, types.hdmf_common.VectorIndex(<span class="keyword">...</span>
-    <span class="string">'description'</span>, <span class="string">'Index into Timeseries VectorData'</span>,<span class="keyword">...</span>
-    <span class="string">'target'</span>, matnwb.types.untyped.ObjectView(<span class="string">'/intervals/trials/timeseries'</span>)));
+    <span class="string">'start_time'</span>, matnwb.types.hdmf_common.VectorData( <span class="keyword">...</span>
+        <span class="string">'data'</span>, data.trialStartTimes, <span class="keyword">...</span>
+        <span class="string">'description'</span>, <span class="string">'Start time of epoch, in seconds.'</span>), <span class="keyword">...</span>
+    <span class="string">'id'</span>, matnwb.types.hdmf_common.ElementIdentifiers( <span class="keyword">...</span>
+        <span class="string">'data'</span>, data.trialIds));
 
+<span class="comment">% Add columns for the trial types</span>
 <span class="keyword">for</span> i=1:length(data.trialTypeStr)
-    trials_epoch.vectordata.set(data.trialTypeStr{i}, <span class="keyword">...</span>
-        types.hdmf_common.VectorData(<span class="string">'data'</span>, data.trialTypeMat(i,:),<span class="keyword">...</span>
-            <span class="string">'description'</span>, data.trialTypeStr{i}));
+    columnName = data.trialTypeStr{i};
+    columnData = matnwb.types.hdmf_common.VectorData(<span class="keyword">...</span>
+        <span class="string">'data'</span>, data.trialTypeMat(i,:)', <span class="keyword">...</span><span class="comment"> % transpose for column vector</span>
+        <span class="string">'description'</span>, data.trialTypeStr{i});
+    trials_epoch.addColumn( columnName, columnData )
 <span class="keyword">end</span>
 
+<span class="comment">% Add columns for the trial properties</span>
 <span class="keyword">for</span> i=1:length(data.trialPropertiesHash.keyNames)
+    columnName = data.trialPropertiesHash.keyNames{i};
     descr = data.trialPropertiesHash.descr{i};
     <span class="keyword">if</span> iscellstr(descr)
         descr = strjoin(descr, newline);
     <span class="keyword">end</span>
-    trials_epoch.vectordata.set(data.trialPropertiesHash.keyNames{i}, <span class="keyword">...</span>
-        types.hdmf_common.VectorData(<span class="keyword">...</span>
-        <span class="string">'data'</span>, data.trialPropertiesHash.value{i}, <span class="keyword">...</span>
-        <span class="string">'description'</span>, descr));
+    columnData = matnwb.types.hdmf_common.VectorData(<span class="keyword">...</span>
+        <span class="string">'data'</span>, data.trialPropertiesHash.value{i},<span class="keyword">...</span>
+        <span class="string">'description'</span>, data.trialTypeStr{i});
+    trials_epoch.addColumn( columnName, columnData )
 <span class="keyword">end</span>
+
 nwb.intervals_trials = trials_epoch;
 </pre>
 <p>Ephus spike data is separated into units which directly maps to the NWB property of the same name. Each such unit contains a group of analysed waveforms and spike times, all linked to a different subset of trials IDs.</p>
 <p>The waveforms are placed in the <tt>analysis</tt> Set and are paired with their unit name ('unitx' where 'x' is some unit ID).</p>
 <p>Trial IDs, wherever they are used, are placed in a relevent <tt>control</tt> property in the data object and will indicate what data is associated with what trial as defined in <tt>trials</tt>'s <tt>id</tt> column.</p>
-<pre class="codeinput">nwb.units = types.core.Units(<span class="string">'colnames'</span>,<span class="keyword">...</span>
+<pre class="codeinput">nwb.units = matnwb.types.core.Units(<span class="string">'colnames'</span>,<span class="keyword">...</span>
     {<span class="string">'spike_times'</span>, <span class="string">'trials'</span>, <span class="string">'waveforms'</span>},<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'Analysed Spike Events'</span>);
 esHash = data.eventSeriesHash;
 ids = regexp(esHash.keyNames, <span class="string">'^unit(\d+)$'</span>, <span class="string">'once'</span>, <span class="string">'tokens'</span>);
 ids = str2double([ids{:}]);
-nwb.units.spike_times = types.hdmf_common.VectorData(<span class="keyword">...</span>
+nwb.units.spike_times = matnwb.types.hdmf_common.VectorData(<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'timestamps of spikes'</span>);
 
 <span class="keyword">for</span> i=1:length(ids)
@@ -441,14 +443,14 @@ nwb.units.spike_times = types.hdmf_common.VectorData(<span class="keyword">...</
     channel = esData.channel(good_trials_mask);
 
     <span class="comment">% add waveform data to "unitx" and associate with "waveform" column as ObjectView.</span>
-    ses = types.core.SpikeEventSeries(<span class="keyword">...</span>
+    ses = matnwb.types.core.SpikeEventSeries(<span class="keyword">...</span>
         <span class="string">'control'</span>, ids(i),<span class="keyword">...</span>
         <span class="string">'control_description'</span>, <span class="string">'Units Table ID'</span>,<span class="keyword">...</span>
         <span class="string">'data'</span>, waveforms .', <span class="keyword">...</span>
         <span class="string">'description'</span>, esHash.descr{i}, <span class="keyword">...</span>
         <span class="string">'timestamps'</span>, eventTimes, <span class="keyword">...</span>
         <span class="string">'timestamps_unit'</span>, data.timeUnitNames{data.timeUnitIds(esData.timeUnit)},<span class="keyword">...</span>
-        <span class="string">'electrodes'</span>, types.hdmf_common.DynamicTableRegion(<span class="keyword">...</span>
+        <span class="string">'electrodes'</span>, matnwb.types.hdmf_common.DynamicTableRegion(<span class="keyword">...</span>
             <span class="string">'description'</span>, <span class="string">'Electrodes involved with these spike events'</span>,<span class="keyword">...</span>
             <span class="string">'table'</span>, matnwb.types.untyped.ObjectView(<span class="string">'/general/extracellular_ephys/electrodes'</span>),<span class="keyword">...</span>
             <span class="string">'data'</span>, channel - 1));
@@ -459,8 +461,7 @@ nwb.units.spike_times = types.hdmf_common.VectorData(<span class="keyword">...</
     <span class="keyword">end</span>
     nwb.analysis.set(ses_name, ses);
     nwb.units.addRow(<span class="keyword">...</span>
-        <span class="string">'id'</span>, ids(i), <span class="string">'trials'</span>, eventTrials,<span class="string">'spike_times'</span>, eventTimes, <span class="string">'waveforms'</span>, ses_ref,<span class="keyword">...</span>
-        <span class="string">'tablepath'</span>, <span class="string">'/units'</span>);
+        <span class="string">'id'</span>, ids(i), <span class="string">'trials'</span>, eventTrials,<span class="string">'spike_times'</span>, eventTimes, <span class="string">'waveforms'</span>, ses_ref);
 
     <span class="comment">%add this timeseries into the trials table as well.</span>
     [s_trials, ~, trials_to_data] = unique(eventTrials);
@@ -487,13 +488,13 @@ rawfiles = dir(untarLoc);
 rawfiles = fullfile(untarLoc, {rawfiles(~[rawfiles.isdir]).name});
 
 nrows = length(nwb.general_extracellular_ephys_electrodes.id.data);
-tablereg = types.hdmf_common.DynamicTableRegion(<span class="keyword">...</span>
+tablereg = matnwb.types.hdmf_common.DynamicTableRegion(<span class="keyword">...</span>
     <span class="string">'description'</span>,<span class="string">'Relevent Electrodes for this Electrical Series'</span>,<span class="keyword">...</span>
     <span class="string">'table'</span>,matnwb.types.untyped.ObjectView(<span class="string">'/general/extracellular_ephys/electrodes'</span>),<span class="keyword">...</span>
     <span class="string">'data'</span>,(1:nrows) - 1);
 objrefs = cell(size(rawfiles));
-trials_idx = nwb.intervals_trials;
-endTimestamps = trials_idx.start_time.data;
+
+endTimestamps = trials_epoch.start_time.data;
 <span class="keyword">for</span> i=1:length(rawfiles)
     tnumstr = regexp(rawfiles{i}, <span class="string">'_trial_(\d+)\.mat$'</span>, <span class="string">'tokens'</span>, <span class="string">'once'</span>);
     tnumstr = tnumstr{1};
@@ -504,7 +505,7 @@ endTimestamps = trials_idx.start_time.data;
         <span class="keyword">continue</span>; <span class="comment">% sometimes there are extra trials without an associated start time.</span>
     <span class="keyword">end</span>
 
-    es = types.core.ElectricalSeries(<span class="keyword">...</span>
+    es = matnwb.types.core.ElectricalSeries(<span class="keyword">...</span>
         <span class="string">'data'</span>, rawdata.ch_MUA,<span class="keyword">...</span>
         <span class="string">'description'</span>, [<span class="string">'Raw Voltage Acquisition for trial '</span> tnumstr],<span class="keyword">...</span>
         <span class="string">'electrodes'</span>, tablereg,<span class="keyword">...</span>
@@ -520,27 +521,43 @@ endTimestamps = trials_idx.start_time.data;
 <span class="comment">%to the data</span>
 emptyrefs = cellfun(<span class="string">'isempty'</span>, objrefs);
 objrefs(emptyrefs) = {matnwb.types.untyped.ObjectView(<span class="string">''</span>)};
-trials_idx.vectordata.set(<span class="string">'acquisition'</span>, types.hdmf_common.VectorData(<span class="keyword">...</span>
+
+trials_epoch.addColumn(<span class="string">'acquisition'</span>, matnwb.types.hdmf_common.VectorData(<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'soft link to acquisition data for this trial'</span>,<span class="keyword">...</span>
-    <span class="string">'data'</span>, [objrefs{:}]));
-trials_idx.stop_time = types.hdmf_common.VectorData(<span class="keyword">...</span>
-    <span class="string">'data'</span>, endTimestamps,<span class="keyword">...</span>
+    <span class="string">'data'</span>, [objrefs{:}]'));
+
+trials_epoch.stop_time = matnwb.types.hdmf_common.VectorData(<span class="keyword">...</span>
+    <span class="string">'data'</span>, endTimestamps',<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'the end time of each trial'</span>);
+trials_epoch.colnames{end+1} = <span class="string">'stop_time'</span>;
 </pre>
-<h2 id="27">Export</h2>
+<pre class="codeoutput">Processing Raw Acquisition Data from `data/RawVoltageTraces/ANM255201_20141124.tar` (will take a while)
+</pre>
+<h2 id="27">Add timeseries to trials_epoch</h2>
 <pre class="codeinput">
 <span class="comment">%first, we'll format and store |trial_timeseries| into |intervals_trials|.</span>
 <span class="comment">% note that |timeseries_index| data is 0-indexed.</span>
 ts_len = cellfun(<span class="string">'size'</span>, trial_timeseries, 1);
-is_len_nonzero = ts_len &gt; 0;
-ts_len_nonzero = ts_len(is_len_nonzero);
-nwb.intervals_trials.timeseries_index.data = cumsum(ts_len_nonzero);
+nwb.intervals_trials.timeseries_index = types.hdmf_common.VectorIndex(<span class="keyword">...</span>
+        <span class="string">'description'</span>, <span class="string">'Index into Timeseries VectorData'</span>, <span class="keyword">...</span>
+        <span class="string">'data'</span>, cumsum(ts_len)', <span class="keyword">...</span>
+        <span class="string">'target'</span>, types.untyped.ObjectView(<span class="string">'/intervals/trials/timeseries'</span>) );
+
 <span class="comment">% intervals/trials/timeseries is a compound type so we use cell2table to</span>
 <span class="comment">% convert this 2-d cell array into a compatible table.</span>
-nwb.intervals_trials.timeseries.data = cell2table(vertcat(trial_timeseries{is_len_nonzero}),<span class="keyword">...</span>
+is_len_nonzero = ts_len &gt; 0;
+trial_timeseries_table = cell2table(vertcat(trial_timeseries{is_len_nonzero}),<span class="keyword">...</span>
     <span class="string">'VariableNames'</span>, {<span class="string">'timeseries'</span>, <span class="string">'idx_start'</span>, <span class="string">'count'</span>});
+trial_timeseries_table = movevars(trial_timeseries_table, <span class="string">'timeseries'</span>, <span class="string">'After'</span>, <span class="string">'count'</span>);
 
-outDest = fullfile(outloc, [identifier <span class="string">'.nwb'</span>]);
+interval_trials_timeseries = types.core.TimeSeriesReferenceVectorData(<span class="keyword">...</span>
+    <span class="string">'description'</span>, <span class="string">'Index into TimeSeries data'</span>, <span class="keyword">...</span>
+    <span class="string">'data'</span>, trial_timeseries_table);
+nwb.intervals_trials.timeseries = interval_trials_timeseries;
+nwb.intervals_trials.colnames{end+1} = <span class="string">'timeseries'</span>;
+</pre>
+<h2 id="28">Export</h2>
+<pre class="codeinput">outDest = fullfile(outloc, [identifier <span class="string">'.nwb'</span>]);
 <span class="keyword">if</span> 2 == exist(outDest, <span class="string">'file'</span>)
     delete(outDest);
 <span class="keyword">end</span>
@@ -665,7 +682,7 @@ nwb.timestamps_reference_time = nwb.session_start_time;
 nwb.general_experimenter = strjoin(meta.experimenters, ', ');
 
 %%
-nwb.general_subject = types.core.Subject(...
+nwb.general_subject = matnwb.types.core.Subject(...
     'species', meta.species{1}, ...
     'subject_id', meta.animalID{1}(1,:), ... %weird case with duplicate Animal ID
     'sex', meta.sex, ...
@@ -717,14 +734,14 @@ nwb.general_data_collection = formatStruct(meta.extracellular,...
 probetype = meta.extracellular.probeType{1};
 probeSource = meta.extracellular.probeSource{1};
 deviceName = [probetype ' (' probeSource ')'];
-nwb.general_devices.set(deviceName, types.core.Device());
+nwb.general_devices.set(deviceName, matnwb.types.core.Device());
 
 if isreachr
     laserName = 'laser-594nm (Cobolt Inc., Cobolt Mambo 100)';
 else
     laserName = 'laser-473nm (Laser Quantum, Gem 473)';
 end
-nwb.general_devices.set(laserName, types.core.Device());
+nwb.general_devices.set(laserName, matnwb.types.core.Device());
 
 %%
 structDesc = {'recordingCoordinates';'recordingMarker';'recordingType';'penetrationN';...
@@ -733,7 +750,7 @@ if ~isempty(meta.extracellular.referenceCoordinates)
     structDesc{end+1} = 'referenceCoordinates';
 end
 recordingLocation = meta.extracellular.recordingLocation{1};
-egroup = types.core.ElectrodeGroup(...
+egroup = matnwb.types.core.ElectrodeGroup(...
     'description', formatStruct(meta.extracellular, structDesc),...
     'location', recordingLocation,...
     'device', matnwb.types.untyped.SoftLink(['/general/devices/' deviceName]));
@@ -749,19 +766,19 @@ nwb.general_extracellular_ephys.set(deviceName, egroup);
 % constructor.
 dtColNames = {'x', 'y', 'z', 'imp', 'location', 'filtering','group',...
     'group_name'};
-dynTable = types.hdmf_common.DynamicTable(...
+dynTable = matnwb.types.hdmf_common.DynamicTable(...
     'colnames', dtColNames,...
     'description', 'Electrodes',...
-    'x', types.hdmf_common.VectorData('description', 'x coordinate of the channel location in the brain (+x is posterior).'),...
-    'y', types.hdmf_common.VectorData('description', 'y coordinate of the channel location in the brain (+y is inferior).'),...
-    'z', types.hdmf_common.VectorData('description', 'z coordinate of the channel location in the brain (+z is right).'),...
-    'imp', types.hdmf_common.VectorData('description', 'Impedance of the channel.'),...
-    'location', types.hdmf_common.VectorData('description', ['Location of the electrode (channel). '...
+    'x', matnwb.types.hdmf_common.VectorData('description', 'x coordinate of the channel location in the brain (+x is posterior).'),...
+    'y', matnwb.types.hdmf_common.VectorData('description', 'y coordinate of the channel location in the brain (+y is inferior).'),...
+    'z', matnwb.types.hdmf_common.VectorData('description', 'z coordinate of the channel location in the brain (+z is right).'),...
+    'imp', matnwb.types.hdmf_common.VectorData('description', 'Impedance of the channel.'),...
+    'location', matnwb.types.hdmf_common.VectorData('description', ['Location of the electrode (channel). '...
     'Specify the area, layer, comments on estimation of area/layer, stereotaxic coordinates if '...
     'in vivo, etc. Use standard atlas names for anatomical regions when possible.']),...
-    'filtering', types.hdmf_common.VectorData('description', 'Description of hardware filtering.'),...
-    'group', types.hdmf_common.VectorData('description', 'Reference to the ElectrodeGroup this electrode is a part of.'),...
-    'group_name', types.hdmf_common.VectorData('description', 'Name of the ElectrodeGroup this electrode is a part of.'));
+    'filtering', matnwb.types.hdmf_common.VectorData('description', 'Description of hardware filtering.'),...
+    'group', matnwb.types.hdmf_common.VectorData('description', 'Reference to the ElectrodeGroup this electrode is a part of.'),...
+    'group_name', matnwb.types.hdmf_common.VectorData('description', 'Name of the ElectrodeGroup this electrode is a part of.'));
 
 %raw HDF5 path to the above electrode group. Referenced by
 % the general/extracellular_ephys Dynamic Table
@@ -799,7 +816,7 @@ nwb.general_extracellular_ephys_electrodes = dynTable;
 
 % general/optogenetics/photostim
 nwb.general_optogenetics.set('photostim', ...
-    types.core.OptogeneticStimulusSite(...
+    matnwb.types.core.OptogeneticStimulusSite(...
     'excitation_lambda', meta.photostim.photostimWavelength{1}, ...
     'location', meta.photostim.photostimLocation{1}, ...
     'device', matnwb.types.untyped.SoftLink(['/general/devices/' laserName]), ...
@@ -836,10 +853,10 @@ ephusUnit = data.timeUnitNames{data.timeUnitIds(ephus.timeUnit)};
 
 % lick direction and timestamps trace
 tsIdx = strcmp(ephus.idStr, 'lick_trace');
-bts = types.core.BehavioralTimeSeries();
+bts = matnwb.types.core.BehavioralTimeSeries();
 
 bts.timeseries.set('lick_trace_ts', ...
-    types.core.TimeSeries(...
+    matnwb.types.core.TimeSeries(...
     'data', ephus.valueMatrix(:,tsIdx),...
     'data_unit', ephusUnit,...
     'description', ephus.idStrDetailed{tsIdx}, ...
@@ -850,7 +867,7 @@ bts_ref = matnwb.types.untyped.ObjectView('/acquisition/lick_trace/lick_trace_ts
 
 % acousto-optic modulator input trace
 tsIdx = strcmp(ephus.idStr, 'aom_input_trace');
-ts = types.core.TimeSeries(...
+ts = matnwb.types.core.TimeSeries(...
     'data', ephus.valueMatrix(:,tsIdx), ...
     'data_unit', 'Volts', ...
     'description', ephus.idStrDetailed{tsIdx}, ...
@@ -861,7 +878,7 @@ ts_ref = matnwb.types.untyped.ObjectView('/stimulus/presentation/aom_input_trace
 
 % laser power
 tsIdx = strcmp(ephus.idStr, 'laser_power');
-ots = types.core.OptogeneticSeries(...
+ots = matnwb.types.core.OptogeneticSeries(...
     'data', ephus.valueMatrix(:,tsIdx), ...
     'data_unit', 'mW', ...
     'description', ephus.idStrDetailed{tsIdx}, ...
@@ -904,34 +921,37 @@ end
 % populating the Dynamic Table data by column instead of using `addRow`
 % here because of how the data is formatted. DynamicTable is flexible
 % enough to accomodate both styles of data conversion.
-trials_epoch = types.core.TimeIntervals(...
-    'start_time', types.hdmf_common.VectorData('data', data.trialStartTimes,...
-        'description', 'Start time of epoch, in seconds.'),...
-    'colnames', [data.trialTypeStr; data.trialPropertiesHash.keyNames .';...
-        {'start_time'; 'stop_time'; 'acquisition'; 'timeseries'}],...
+trials_epoch = matnwb.types.core.TimeIntervals(...
+    'colnames', {'start_time'}, ...
     'description', 'trial data and properties', ...
-    'id', types.hdmf_common.ElementIdentifiers('data', data.trialIds),...
-    'timeseries', types.hdmf_common.VectorData('description', 'Index into timeseries Data'),...
-    'timeseries_index', types.hdmf_common.VectorIndex(...
-    'description', 'Index into Timeseries VectorData',...
-    'target', matnwb.types.untyped.ObjectView('/intervals/trials/timeseries')));
+    'start_time', matnwb.types.hdmf_common.VectorData( ...
+        'data', data.trialStartTimes, ...
+        'description', 'Start time of epoch, in seconds.'), ...
+    'id', matnwb.types.hdmf_common.ElementIdentifiers( ...
+        'data', data.trialIds));
 
+% Add columns for the trial types
 for i=1:length(data.trialTypeStr)
-    trials_epoch.vectordata.set(data.trialTypeStr{i}, ...
-        types.hdmf_common.VectorData('data', data.trialTypeMat(i,:),...
-            'description', data.trialTypeStr{i}));
+    columnName = data.trialTypeStr{i};
+    columnData = matnwb.types.hdmf_common.VectorData(...
+        'data', data.trialTypeMat(i,:)', ... % transpose for column vector 
+        'description', data.trialTypeStr{i});
+    trials_epoch.addColumn( columnName, columnData )
 end
 
+% Add columns for the trial properties
 for i=1:length(data.trialPropertiesHash.keyNames)
+    columnName = data.trialPropertiesHash.keyNames{i};
     descr = data.trialPropertiesHash.descr{i};
     if iscellstr(descr)
         descr = strjoin(descr, newline);
     end
-    trials_epoch.vectordata.set(data.trialPropertiesHash.keyNames{i}, ...
-        types.hdmf_common.VectorData(...
-        'data', data.trialPropertiesHash.value{i}, ...
-        'description', descr));
+    columnData = matnwb.types.hdmf_common.VectorData(...
+        'data', data.trialPropertiesHash.value{i},...
+        'description', data.trialTypeStr{i});
+    trials_epoch.addColumn( columnName, columnData )
 end
+
 nwb.intervals_trials = trials_epoch;
 
 %%
@@ -948,13 +968,13 @@ nwb.intervals_trials = trials_epoch;
 % data object and will indicate what data is associated with what trial as
 % defined in |trials|'s |id| column.
 
-nwb.units = types.core.Units('colnames',...
+nwb.units = matnwb.types.core.Units('colnames',...
     {'spike_times', 'trials', 'waveforms'},...
     'description', 'Analysed Spike Events');
 esHash = data.eventSeriesHash;
 ids = regexp(esHash.keyNames, '^unit(\d+)$', 'once', 'tokens');
 ids = str2double([ids{:}]);
-nwb.units.spike_times = types.hdmf_common.VectorData(...
+nwb.units.spike_times = matnwb.types.hdmf_common.VectorData(...
     'description', 'timestamps of spikes');
 
 for i=1:length(ids)
@@ -968,14 +988,14 @@ for i=1:length(ids)
     channel = esData.channel(good_trials_mask);
     
     % add waveform data to "unitx" and associate with "waveform" column as ObjectView.
-    ses = types.core.SpikeEventSeries(...
+    ses = matnwb.types.core.SpikeEventSeries(...
         'control', ids(i),...
         'control_description', 'Units Table ID',...
         'data', waveforms .', ...
         'description', esHash.descr{i}, ...
         'timestamps', eventTimes, ...
         'timestamps_unit', data.timeUnitNames{data.timeUnitIds(esData.timeUnit)},...
-        'electrodes', types.hdmf_common.DynamicTableRegion(...
+        'electrodes', matnwb.types.hdmf_common.DynamicTableRegion(...
             'description', 'Electrodes involved with these spike events',...
             'table', matnwb.types.untyped.ObjectView('/general/extracellular_ephys/electrodes'),...
             'data', channel - 1));
@@ -986,8 +1006,7 @@ for i=1:length(ids)
     end
     nwb.analysis.set(ses_name, ses);
     nwb.units.addRow(...
-        'id', ids(i), 'trials', eventTrials,'spike_times', eventTimes, 'waveforms', ses_ref,...
-        'tablepath', '/units');
+        'id', ids(i), 'trials', eventTrials,'spike_times', eventTimes, 'waveforms', ses_ref);
     
     %add this timeseries into the trials table as well.
     [s_trials, ~, trials_to_data] = unique(eventTrials);
@@ -1020,13 +1039,13 @@ rawfiles = dir(untarLoc);
 rawfiles = fullfile(untarLoc, {rawfiles(~[rawfiles.isdir]).name});
 
 nrows = length(nwb.general_extracellular_ephys_electrodes.id.data);
-tablereg = types.hdmf_common.DynamicTableRegion(...
+tablereg = matnwb.types.hdmf_common.DynamicTableRegion(...
     'description','Relevent Electrodes for this Electrical Series',...
     'table',matnwb.types.untyped.ObjectView('/general/extracellular_ephys/electrodes'),...
     'data',(1:nrows) - 1);
 objrefs = cell(size(rawfiles));
-trials_idx = nwb.intervals_trials;
-endTimestamps = trials_idx.start_time.data;
+
+endTimestamps = trials_epoch.start_time.data;
 for i=1:length(rawfiles)
     tnumstr = regexp(rawfiles{i}, '_trial_(\d+)\.mat$', 'tokens', 'once');
     tnumstr = tnumstr{1};
@@ -1037,7 +1056,7 @@ for i=1:length(rawfiles)
         continue; % sometimes there are extra trials without an associated start time.
     end
     
-    es = types.core.ElectricalSeries(...
+    es = matnwb.types.core.ElectricalSeries(...
         'data', rawdata.ch_MUA,...
         'description', ['Raw Voltage Acquisition for trial ' tnumstr],...
         'electrodes', tablereg,...
@@ -1053,26 +1072,39 @@ end
 %to the data
 emptyrefs = cellfun('isempty', objrefs);
 objrefs(emptyrefs) = {matnwb.types.untyped.ObjectView('')};
-trials_idx.vectordata.set('acquisition', types.hdmf_common.VectorData(...
+
+trials_epoch.addColumn('acquisition', matnwb.types.hdmf_common.VectorData(...
     'description', 'soft link to acquisition data for this trial',...
-    'data', [objrefs{:}]));
-trials_idx.stop_time = types.hdmf_common.VectorData(...
-    'data', endTimestamps,...
+    'data', [objrefs{:}]'));
+
+trials_epoch.stop_time = matnwb.types.hdmf_common.VectorData(...
+    'data', endTimestamps',...
     'description', 'the end time of each trial');
+trials_epoch.colnames{end+1} = 'stop_time';
 
-%% Export
-
+%% Add timeseries to trials_epoch
 %first, we'll format and store |trial_timeseries| into |intervals_trials|.
 % note that |timeseries_index| data is 0-indexed.
 ts_len = cellfun('size', trial_timeseries, 1);
-is_len_nonzero = ts_len > 0;
-ts_len_nonzero = ts_len(is_len_nonzero);
-nwb.intervals_trials.timeseries_index.data = cumsum(ts_len_nonzero);
+nwb.intervals_trials.timeseries_index = types.hdmf_common.VectorIndex(...
+        'description', 'Index into Timeseries VectorData', ...
+        'data', cumsum(ts_len)', ...
+        'target', types.untyped.ObjectView('/intervals/trials/timeseries') );
+
 % intervals/trials/timeseries is a compound type so we use cell2table to
 % convert this 2-d cell array into a compatible table.
-nwb.intervals_trials.timeseries.data = cell2table(vertcat(trial_timeseries{is_len_nonzero}),...
+is_len_nonzero = ts_len > 0;
+trial_timeseries_table = cell2table(vertcat(trial_timeseries{is_len_nonzero}),...
     'VariableNames', {'timeseries', 'idx_start', 'count'});
+trial_timeseries_table = movevars(trial_timeseries_table, 'timeseries', 'After', 'count');
 
+interval_trials_timeseries = types.core.TimeSeriesReferenceVectorData(...
+    'description', 'Index into TimeSeries data', ...
+    'data', trial_timeseries_table);
+nwb.intervals_trials.timeseries = interval_trials_timeseries;
+nwb.intervals_trials.colnames{end+1} = 'timeseries';
+
+%% Export
 outDest = fullfile(outloc, [identifier '.nwb']);
 if 2 == exist(outDest, 'file')
     delete(outDest);
