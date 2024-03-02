@@ -51,7 +51,6 @@ function Datetime = detectDatetime(timestamp)
     Datetime.Day = str2double(YmdToken.Day);
     Datetime.Month = str2double(YmdToken.Month);
     Datetime.Year = str2double(YmdToken.Year);
-
     assert(~isnat(Datetime), errorId, sprintf(errorTemplate, 'non-numeric YMD values detected'));
     
     %% HMiS TZ
