@@ -3,7 +3,7 @@ tests = functiontests(localfunctions);
 end
 
 function setupOnce(testCase)
-rootPath = fullfile(fileparts(mfilename('fullpath')), '..', '..');
+rootPath = fullfile(fileparts(mfilename('fullpath')), '..', '..', '..');
 testCase.applyFixture(matlab.unittest.fixtures.PathFixture(rootPath));
 tutorialPath = fullfile(rootPath, 'tutorials');
 addpath(tutorialPath);
@@ -28,7 +28,8 @@ for i = 1:length(testCase.TestData.listing)
         continue;
     end
     try
-        run(listing.name);
+        % Use evalc to prevent flooding command window
+        evalc( 'run(listing.name)' );
     catch ME
         error('NWB:Test:Tutorial', ...
             'Error while running test `%s`. Full error message:\n\n%s', listing.name, getReport(ME));

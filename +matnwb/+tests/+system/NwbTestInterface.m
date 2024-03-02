@@ -7,7 +7,7 @@ classdef NwbTestInterface < matlab.unittest.TestCase
     
     methods (TestClassSetup)
         function setupClass(testCase)
-            rootPath = fullfile(fileparts(mfilename('fullpath')), '..', '..');
+            rootPath = fullfile(fileparts(mfilename('fullpath')), '..', '..', '..');
             testCase.applyFixture(matlab.unittest.fixtures.PathFixture(rootPath));
             testCase.root = rootPath;
         end

@@ -3,7 +3,7 @@ function tests = multipleConstrainedTest()
 end
 
 function setupOnce(testCase)
-    rootPath = fullfile(fileparts(mfilename('fullpath')), '..', '..');
+    rootPath = fullfile(fileparts(mfilename('fullpath')), '..', '..', '..');
     testCase.applyFixture(matlab.unittest.fixtures.PathFixture(rootPath));
 end
 
