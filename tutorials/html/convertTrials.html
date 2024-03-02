@@ -1,12 +1,17 @@
-
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <!--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>NWB File Conversion Tutorial</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-05-27"><meta name="DC.source" content="convertTrials.m"><style type="text/css">
+      -->
+<title>NWB File Conversion Tutorial</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-02-24">
+<meta name="DC.source" content="convertTrials.m">
+<style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,9 +72,49 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>NWB File Conversion Tutorial</h1><!--introduction--><p>How to convert trial-based experimental data to the Neurodata Without Borders file format using MatNWB. This example uses the <a href="https://crcns.org/data-sets/motor-cortex/alm-3">CRCNS ALM-3</a> data set.  Information on how to download the data can be found on the <a href="https://crcns.org/data-sets/motor-cortex/download">CRCNS Download Page</a>.  One should first familiarize themselves with the file format, which can be found on the <a href="https://crcns.org/data-sets/motor-cortex/alm-3/about-alm-3">ALM-3 About Page</a> under the Documentation files.</p><pre>author: Lawrence Niu
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>NWB File Conversion Tutorial</h1>
+<!--introduction-->
+<p>How to convert trial-based experimental data to the Neurodata Without Borders file format using MatNWB. This example uses the <a href="https://crcns.org/data-sets/motor-cortex/alm-3">CRCNS ALM-3</a> data set. Information on how to download the data can be found on the <a href="https://crcns.org/data-sets/motor-cortex/download">CRCNS Download Page</a>. One should first familiarize themselves with the file format, which can be found on the <a href="https://crcns.org/data-sets/motor-cortex/alm-3/about-alm-3">ALM-3 About Page</a> under the Documentation files.</p>
+<pre>author: Lawrence Niu
 contact: lawrence@vidriotech.com
-last updated: May 27, 2021</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Script Configuration</a></li><li><a href="#4">General Information</a></li><li><a href="#7">The ALM-3 File Structure</a></li><li><a href="#8">Metadata</a></li><li><a href="#15">Analysis Data Structure</a></li><li><a href="#16">Hashes</a></li><li><a href="#26">Raw Acquisition Data</a></li><li><a href="#27">Export</a></li></ul></div><h2 id="1">Script Configuration</h2><p>The following details configuration parameters specific to the publishing script, and can be skipped when implementing your own conversion. The parameters can be changed to fit any of the available sessions.</p><pre class="codeinput">animal = <span class="string">'ANM255201'</span>;
+last updated: May 27, 2021</pre>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Script Configuration</a>
+</li>
+<li>
+<a href="#4">General Information</a>
+</li>
+<li>
+<a href="#7">The ALM-3 File Structure</a>
+</li>
+<li>
+<a href="#8">Metadata</a>
+</li>
+<li>
+<a href="#15">Analysis Data Structure</a>
+</li>
+<li>
+<a href="#16">Hashes</a>
+</li>
+<li>
+<a href="#26">Raw Acquisition Data</a>
+</li>
+<li>
+<a href="#27">Export</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Script Configuration</h2>
+<p>The following details configuration parameters specific to the publishing script, and can be skipped when implementing your own conversion. The parameters can be changed to fit any of the available sessions.</p>
+<pre class="codeinput">animal = <span class="string">'ANM255201'</span>;
 session = <span class="string">'20141124'</span>;
 
 identifier = [animal <span class="string">'_'</span> session];
@@ -78,7 +123,9 @@ metadata_loc = fullfile(<span class="string">'data'</span>,<span class="string">
 datastructure_loc = fullfile(<span class="string">'data'</span>,<span class="string">'data_structure_files'</span>,<span class="keyword">...</span>
     [<span class="string">'data_structure_'</span> identifier <span class="string">'.mat'</span>]);
 rawdata_loc = fullfile(<span class="string">'data'</span>, <span class="string">'RawVoltageTraces'</span>, [identifier <span class="string">'.tar'</span>]);
-</pre><p>The animal and session specifier can be changed with the <tt>animal</tt> and <tt>session</tt> variable name respectively.  <tt>metadata_loc</tt>, <tt>datastructure_loc</tt>, and <tt>rawdata_loc</tt> should refer to the metadata .mat file, the data structure .mat file, and the raw .tar file.</p><pre class="codeinput">outloc = <span class="string">'out'</span>;
+</pre>
+<p>The animal and session specifier can be changed with the <tt>animal</tt> and <tt>session</tt> variable name respectively.  <tt>metadata_loc</tt>, <tt>datastructure_loc</tt>, and <tt>rawdata_loc</tt> should refer to the metadata .mat file, the data structure .mat file, and the raw .tar file.</p>
+<pre class="codeinput">outloc = <span class="string">'out'</span>;
 
 <span class="keyword">if</span> 7 ~= exist(outloc, <span class="string">'dir'</span>)
     mkdir(outloc);
@@ -86,7 +133,11 @@ rawdata_loc = fullfile(<span class="string">'data'</span>, <span class="string">
 
 source_file = [mfilename() <span class="string">'.m'</span>];
 [~, source_script, ~] = fileparts(source_file);
-</pre><p>The NWB file will be saved in the output directory indicated by <tt>outdir</tt></p><h2 id="4">General Information</h2><pre class="codeinput">nwb = NwbFile();
+</pre>
+<p>The NWB file will be saved in the output directory indicated by <tt>outdir</tt>
+</p>
+<h2 id="4">General Information</h2>
+<pre class="codeinput">nwb = NwbFile();
 nwb.identifier = identifier;
 nwb.general_source_script = source_script;
 nwb.general_source_script_file_name = source_file;
@@ -112,7 +163,14 @@ nwb.general_surgery = [<span class="string">'Mice were prepared for photoinhibit
     <span class="string">'covering the entire exposed skull, '</span>,<span class="keyword">...</span>
     <span class="string">'followed by a thin layer of clear nail polish (Electron Microscopy Sciences, 72180).'</span>];
 nwb.session_description = sprintf(<span class="string">'Animal `%s` on Session `%s`'</span>, animal, session);
-</pre><p>All properties with the prefix <tt>general</tt> contain context for the entire experiment such as lab, institution, and experimentors.  For session-delimited data from the same experiment, these fields will all be the same.  Note that most of this information was pulled from the publishing paper and not from any of the downloadable data.</p><p>The only required property is the <tt>identifier</tt>, which distinguishes one session from another within an experiment.  In our case, the ALM-3 data uses a combination of session date and animal ID.</p><h2 id="7">The ALM-3 File Structure</h2><p>Each ALM-3 session has three files: a metadata .mat file describing the experiment, a data structures .mat file containing analyzed data, and a raw .tar archive containing multiple raw electrophysiology data separated by trial as .mat files. All files will be merged into a single NWB file.</p><h2 id="8">Metadata</h2><p>ALM-3 Metadata contains information about the reference times, experimental context, methodology, as well as details of the electrophysiology, optophysiology, and behavioral portions of the experiment.  A vast majority of these details are placed in <tt>general</tt> prefixed properties in NWB.</p><pre class="codeinput">fprintf(<span class="string">'Processing Meta Data from `%s`\n'</span>, metadata_loc);
+</pre>
+<p>All properties with the prefix <tt>general</tt> contain context for the entire experiment such as lab, institution, and experimentors. For session-delimited data from the same experiment, these fields will all be the same. Note that most of this information was pulled from the publishing paper and not from any of the downloadable data.</p>
+<p>The only required property is the <tt>identifier</tt>, which distinguishes one session from another within an experiment. In our case, the ALM-3 data uses a combination of session date and animal ID.</p>
+<h2 id="7">The ALM-3 File Structure</h2>
+<p>Each ALM-3 session has three files: a metadata .mat file describing the experiment, a data structures .mat file containing analyzed data, and a raw .tar archive containing multiple raw electrophysiology data separated by trial as .mat files. All files will be merged into a single NWB file.</p>
+<h2 id="8">Metadata</h2>
+<p>ALM-3 Metadata contains information about the reference times, experimental context, methodology, as well as details of the electrophysiology, optophysiology, and behavioral portions of the experiment. A vast majority of these details are placed in <tt>general</tt> prefixed properties in NWB.</p>
+<pre class="codeinput">fprintf(<span class="string">'Processing Meta Data from `%s`\n'</span>, metadata_loc);
 loaded = load(metadata_loc, <span class="string">'meta_data'</span>);
 meta = loaded.meta_data;
 
@@ -128,8 +186,16 @@ nwb.session_start_time = datetime([meta.dateOfExperiment meta.timeOfExperiment],
 nwb.timestamps_reference_time = nwb.session_start_time;
 
 nwb.general_experimenter = strjoin(meta.experimenters, <span class="string">', '</span>);
-</pre><pre class="codeoutput">Processing Meta Data from `data\metadata\meta_data_ANM255201_20141124.mat`
-</pre><pre class="codeinput">nwb.general_subject = types.core.Subject(<span class="keyword">...</span>
+</pre>
+<pre class="codeoutput">Processing Meta Data from `data/metadata/meta_data_ANM255201_20141124.mat`
+</pre>
+<pre class="codeoutput error">Error using load
+Unable to find file or directory 'data/metadata/meta_data_ANM255201_20141124.mat'.
+
+Error in convertTrials (line 95)
+loaded = load(metadata_loc, 'meta_data');
+</pre>
+<pre class="codeinput">nwb.general_subject = types.core.Subject(<span class="keyword">...</span>
     <span class="string">'species'</span>, meta.species{1}, <span class="keyword">...</span>
     <span class="string">'subject_id'</span>, meta.animalID{1}(1,:), <span class="keyword">...</span><span class="comment"> %weird case with duplicate Animal ID</span>
     <span class="string">'sex'</span>, meta.sex, <span class="keyword">...</span>
@@ -137,7 +203,10 @@ nwb.general_experimenter = strjoin(meta.experimenters, <span class="string">', '
     <span class="string">'description'</span>, [<span class="keyword">...</span>
         <span class="string">'Whisker Config: '</span> strjoin(meta.whiskerConfig, <span class="string">', '</span>) newline<span class="keyword">...</span>
         <span class="string">'Animal Source: '</span> strjoin(meta.animalSource, <span class="string">', '</span>)]);
-</pre><p>Ideally, if a raw data field does not correspond directly to a NWB field, one would create their own using a <a href="https://pynwb.readthedocs.io/en/latest/extensions.html">custom NWB extension class</a>. However, since these fields are mostly experimental annotations, we instead pack the extra values into the <tt>description</tt> field as a string.</p><pre class="codeinput"><span class="comment">%The formatStruct function simply prints the field and values given the struct.</span>
+</pre>
+<p>Ideally, if a raw data field does not correspond directly to a NWB field, one would create their own using a <a href="https://pynwb.readthedocs.io/en/latest/extensions.html">custom NWB extension class</a>. However, since these fields are mostly experimental annotations, we instead pack the extra values into the <tt>description</tt> field as a string.</p>
+<pre class="codeinput">
+<span class="comment">%The formatStruct function simply prints the field and values given the struct.</span>
 <span class="comment">%An optional cell array of field names specifies whitelist of fields to print.  This</span>
 <span class="comment">%function is provided with this script in the tutorials directory.</span>
 nwb.general_subject.genotype = formatStruct(<span class="keyword">...</span>
@@ -182,7 +251,8 @@ nwb.general_devices.set(deviceName, types.core.Device());
     laserName = <span class="string">'laser-473nm (Laser Quantum, Gem 473)'</span>;
 <span class="keyword">end</span>
 nwb.general_devices.set(laserName, types.core.Device());
-</pre><pre class="codeinput">structDesc = {<span class="string">'recordingCoordinates'</span>;<span class="string">'recordingMarker'</span>;<span class="string">'recordingType'</span>;<span class="string">'penetrationN'</span>;<span class="keyword">...</span>
+</pre>
+<pre class="codeinput">structDesc = {<span class="string">'recordingCoordinates'</span>;<span class="string">'recordingMarker'</span>;<span class="string">'recordingType'</span>;<span class="string">'penetrationN'</span>;<span class="keyword">...</span>
     <span class="string">'groundCoordinates'</span>};
 <span class="keyword">if</span> ~isempty(meta.extracellular.referenceCoordinates)
     structDesc{end+1} = <span class="string">'referenceCoordinates'</span>;
@@ -191,9 +261,12 @@ recordingLocation = meta.extracellular.recordingLocation{1};
 egroup = types.core.ElectrodeGroup(<span class="keyword">...</span>
     <span class="string">'description'</span>, formatStruct(meta.extracellular, structDesc),<span class="keyword">...</span>
     <span class="string">'location'</span>, recordingLocation,<span class="keyword">...</span>
-    <span class="string">'device'</span>, types.untyped.SoftLink([<span class="string">'/general/devices/'</span> deviceName]));
+    <span class="string">'device'</span>, matnwb.types.untyped.SoftLink([<span class="string">'/general/devices/'</span> deviceName]));
 nwb.general_extracellular_ephys.set(deviceName, egroup);
-</pre><p>The NWB <b>ElectrodeGroup</b> object stores experimental information regarding a group of probes.  Doing so requires a <b>SoftLink</b> to the probe specified under <tt>general_devices</tt>.  SoftLink objects are direct maps to <a href="https://portal.hdfgroup.org/display/HDF5/H5L_CREATE_SOFT">HDF5 Soft Links</a> on export, and thus, require a true HDF5 path.</p><pre class="codeinput"><span class="comment">% you can specify column names and values as key-value arguments in the DynamicTable</span>
+</pre>
+<p>The NWB <b>ElectrodeGroup</b> object stores experimental information regarding a group of probes. Doing so requires a <b>SoftLink</b> to the probe specified under <tt>general_devices</tt>. SoftLink objects are direct maps to <a href="https://portal.hdfgroup.org/display/HDF5/H5L_CREATE_SOFT">HDF5 Soft Links</a> on export, and thus, require a true HDF5 path.</p>
+<pre class="codeinput">
+<span class="comment">% you can specify column names and values as key-value arguments in the DynamicTable</span>
 <span class="comment">% constructor.</span>
 dtColNames = {<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>, <span class="string">'imp'</span>, <span class="string">'location'</span>, <span class="string">'filtering'</span>,<span class="string">'group'</span>,<span class="keyword">...</span>
     <span class="string">'group_name'</span>};
@@ -214,7 +287,7 @@ dynTable = types.hdmf_common.DynamicTable(<span class="keyword">...</span>
 <span class="comment">%raw HDF5 path to the above electrode group. Referenced by</span>
 <span class="comment">% the general/extracellular_ephys Dynamic Table</span>
 egroupPath = [<span class="string">'/general/extracellular_ephys/'</span> deviceName];
-eGroupReference = types.untyped.ObjectView(egroupPath);
+eGroupReference = matnwb.types.untyped.ObjectView(egroupPath);
 <span class="keyword">for</span> i = 1:length(meta.extracellular.siteLocations)
     location = meta.extracellular.siteLocations{i};
     <span class="comment">% add each row in the dynamic table. The `id` column is populated</span>
@@ -227,16 +300,27 @@ eGroupReference = types.untyped.ObjectView(egroupPath);
         <span class="string">'group'</span>, eGroupReference,<span class="keyword">...</span>
         <span class="string">'group_name'</span>, probetype);
 <span class="keyword">end</span>
-</pre><p>The <tt>group</tt> column in the Dynamic Table contains an <b>ObjectView</b> to the previously created <tt>ElectrodeGroup</tt>.  An <tt>ObjectView</tt> can be best thought of as a direct pointer to another typed object.  It also directly maps to a <a href="https://portal.hdfgroup.org/display/HDF5/H5R_CREATE">HDF5 Object Reference</a>, thus the HDF5 path requirement.  <tt>ObjectViews</tt> are slightly different from <tt>SoftLinks</tt> in that they can be stored in datasets (data columns, tables, and <tt>data</tt> fields in <tt>NWBData</tt> objects).</p><pre class="codeinput">nwb.general_extracellular_ephys_electrodes = dynTable;
-</pre><p>The <tt>electrodes</tt> property in <tt>extracellular_ephys</tt> is a special keyword in NWB that must be paired with a <b>Dynamic Table</b>.  These are tables which can have an unbounded number of columns and rows, each as their own dataset.  With the exception of the <tt>id</tt> column, all other columns must be <b>VectorData</b> or <b>VectorIndex</b> objects.  The <tt>id</tt> column, meanwhile, must be an <b>ElementIdentifiers</b> object.  The names of all used columns are specified in the in the <tt>colnames</tt> property as a cell array of strings.</p><pre class="codeinput"><span class="comment">% general/optogenetics/photostim</span>
+</pre>
+<p>The <tt>group</tt> column in the Dynamic Table contains an <b>ObjectView</b> to the previously created <tt>ElectrodeGroup</tt>. An <tt>ObjectView</tt> can be best thought of as a direct pointer to another typed object. It also directly maps to a <a href="https://portal.hdfgroup.org/display/HDF5/H5R_CREATE">HDF5 Object Reference</a>, thus the HDF5 path requirement.  <tt>ObjectViews</tt> are slightly different from <tt>SoftLinks</tt> in that they can be stored in datasets (data columns, tables, and <tt>data</tt> fields in <tt>NWBData</tt> objects).</p>
+<pre class="codeinput">nwb.general_extracellular_ephys_electrodes = dynTable;
+</pre>
+<p>The <tt>electrodes</tt> property in <tt>extracellular_ephys</tt> is a special keyword in NWB that must be paired with a <b>Dynamic Table</b>. These are tables which can have an unbounded number of columns and rows, each as their own dataset. With the exception of the <tt>id</tt> column, all other columns must be <b>VectorData</b> or <b>VectorIndex</b> objects. The <tt>id</tt> column, meanwhile, must be an <b>ElementIdentifiers</b> object. The names of all used columns are specified in the in the <tt>colnames</tt> property as a cell array of strings.</p>
+<pre class="codeinput">
+<span class="comment">% general/optogenetics/photostim</span>
 nwb.general_optogenetics.set(<span class="string">'photostim'</span>, <span class="keyword">...</span>
     types.core.OptogeneticStimulusSite(<span class="keyword">...</span>
     <span class="string">'excitation_lambda'</span>, meta.photostim.photostimWavelength{1}, <span class="keyword">...</span>
     <span class="string">'location'</span>, meta.photostim.photostimLocation{1}, <span class="keyword">...</span>
-    <span class="string">'device'</span>, types.untyped.SoftLink([<span class="string">'/general/devices/'</span> laserName]), <span class="keyword">...</span>
+    <span class="string">'device'</span>, matnwb.types.untyped.SoftLink([<span class="string">'/general/devices/'</span> laserName]), <span class="keyword">...</span>
     <span class="string">'description'</span>, formatStruct(meta.photostim, {<span class="keyword">...</span>
     <span class="string">'stimulationMethod'</span>;<span class="string">'photostimCoordinates'</span>;<span class="string">'identificationMethod'</span>})));
-</pre><h2 id="15">Analysis Data Structure</h2><p>The ALM-3 data structures .mat file contains analyzed spike data, trial-specific parameters, and behavioral analysis data.</p><h2 id="16">Hashes</h2><p>ALM-3 stores its data structures in the form of <b>hashes</b> which are essentially the same as python's dictionaries or MATLAB's maps but where the keys and values are stored under separate struct fields.  Getting a hashed value from a key involves retrieving the array index that the key is in and applying it to the parallel array in the values field.</p><p>You can find more information about hashes and how they're used on the <a href="https://crcns.org/data-sets/motor-cortex/alm-3/about-alm-3">ALM-3 about page</a>.</p><pre class="codeinput">fprintf(<span class="string">'Processing Data Structure `%s`\n'</span>, datastructure_loc);
+</pre>
+<h2 id="15">Analysis Data Structure</h2>
+<p>The ALM-3 data structures .mat file contains analyzed spike data, trial-specific parameters, and behavioral analysis data.</p>
+<h2 id="16">Hashes</h2>
+<p>ALM-3 stores its data structures in the form of <b>hashes</b> which are essentially the same as python's dictionaries or MATLAB's maps but where the keys and values are stored under separate struct fields. Getting a hashed value from a key involves retrieving the array index that the key is in and applying it to the parallel array in the values field.</p>
+<p>You can find more information about hashes and how they're used on the <a href="https://crcns.org/data-sets/motor-cortex/alm-3/about-alm-3">ALM-3 about page</a>.</p>
+<pre class="codeinput">fprintf(<span class="string">'Processing Data Structure `%s`\n'</span>, datastructure_loc);
 loaded = load(datastructure_loc, <span class="string">'obj'</span>);
 data = loaded.obj;
 
@@ -244,8 +328,9 @@ data = loaded.obj;
 <span class="comment">% may not be in trial order.</span>
 <span class="comment">% Trial timeseries will be a compound type under intervals/trials.</span>
 trial_timeseries = cell(size(data.trialIds));
-</pre><pre class="codeoutput">Processing Data Structure `data\data_structure_files\data_structure_ANM255201_20141124.mat`
-</pre><p>NWB comes with default support for trial-based data.  These must be <b>TimeIntervals</b> that are placed in the <tt>intervals</tt> property.  Note that <tt>trials</tt> is a special keyword that is required for PyNWB compatibility.</p><pre class="codeinput">ephus = data.timeSeriesArrayHash.value{1};
+</pre>
+<p>NWB comes with default support for trial-based data. These must be <b>TimeIntervals</b> that are placed in the <tt>intervals</tt> property. Note that <tt>trials</tt> is a special keyword that is required for PyNWB compatibility.</p>
+<pre class="codeinput">ephus = data.timeSeriesArrayHash.value{1};
 ephusUnit = data.timeUnitNames{data.timeUnitIds(ephus.timeUnit)};
 
 <span class="comment">% lick direction and timestamps trace</span>
@@ -260,7 +345,7 @@ bts.timeseries.set(<span class="string">'lick_trace_ts'</span>, <span class="key
     <span class="string">'timestamps'</span>, ephus.time, <span class="keyword">...</span>
     <span class="string">'timestamps_unit'</span>, ephusUnit));
 nwb.acquisition.set(<span class="string">'lick_trace'</span>, bts);
-bts_ref = types.untyped.ObjectView(<span class="string">'/acquisition/lick_trace/lick_trace_ts'</span>);
+bts_ref = matnwb.types.untyped.ObjectView(<span class="string">'/acquisition/lick_trace/lick_trace_ts'</span>);
 
 <span class="comment">% acousto-optic modulator input trace</span>
 tsIdx = strcmp(ephus.idStr, <span class="string">'aom_input_trace'</span>);
@@ -271,7 +356,7 @@ ts = types.core.TimeSeries(<span class="keyword">...</span>
     <span class="string">'timestamps'</span>, ephus.time, <span class="keyword">...</span>
     <span class="string">'timestamps_unit'</span>, ephusUnit);
 nwb.stimulus_presentation.set(<span class="string">'aom_input_trace'</span>, ts);
-ts_ref = types.untyped.ObjectView(<span class="string">'/stimulus/presentation/aom_input_trace'</span>);
+ts_ref = matnwb.types.untyped.ObjectView(<span class="string">'/stimulus/presentation/aom_input_trace'</span>);
 
 <span class="comment">% laser power</span>
 tsIdx = strcmp(ephus.idStr, <span class="string">'laser_power'</span>);
@@ -281,9 +366,9 @@ ots = types.core.OptogeneticSeries(<span class="keyword">...</span>
     <span class="string">'description'</span>, ephus.idStrDetailed{tsIdx}, <span class="keyword">...</span>
     <span class="string">'timestamps'</span>, ephus.time, <span class="keyword">...</span>
     <span class="string">'timestamps_unit'</span>, ephusUnit, <span class="keyword">...</span>
-    <span class="string">'site'</span>, types.untyped.SoftLink(<span class="string">'/general/optogenetics/photostim'</span>));
+    <span class="string">'site'</span>, matnwb.types.untyped.SoftLink(<span class="string">'/general/optogenetics/photostim'</span>));
 nwb.stimulus_presentation.set(<span class="string">'laser_power'</span>, ots);
-ots_ref = types.untyped.ObjectView(<span class="string">'/stimulus/presentation/laser_power'</span>);
+ots_ref = matnwb.types.untyped.ObjectView(<span class="string">'/stimulus/presentation/laser_power'</span>);
 
 <span class="comment">% append trials timeseries references in order</span>
 [ephus_trials, ~, trials_to_data] = unique(ephus.trial);
@@ -298,7 +383,12 @@ ots_ref = types.untyped.ObjectView(<span class="string">'/stimulus/presentation/
         ts_ref  int64(t_start) int64(t_count);<span class="keyword">...</span>
         ots_ref int64(t_start) int64(t_count)};
 <span class="keyword">end</span>
-</pre><p>The <tt>timeseries</tt> property of the <tt>TimeIntervals</tt> object is an example of a <b>compound data type</b>.  These types are essentially tables of data in HDF5 and can be represented by a MATLAB table, an array of structs, or a struct of arrays. Beware: validation of column lengths here is not guaranteed by the type checker until export.</p><p><b>VectorIndex</b> objects index into a larger <b>VectorData</b> column.  The object that is being referenced is indicated by the <tt>target</tt> property, which uses an ObjectView. Each element in the VectorIndex marks the <b>last</b> element in the corresponding vector data object for the VectorIndex row.  Thus, the starting index for this row would be the previous index + 1.  Note that these indices must be 0-indexed for compatibility with pynwb.  You can see this in effect with the <tt>timeseries</tt> property which is indexed by the <tt>timeseries_index</tt> property.</p><p>Though TimeIntervals is a subclass of the DynamicTable type, we opt for populating the Dynamic Table data by column instead of using `addRow` here because of how the data is formatted. DynamicTable is flexible enough to accomodate both styles of data conversion.</p><pre class="codeinput">trials_epoch = types.core.TimeIntervals(<span class="keyword">...</span>
+</pre>
+<p>The <tt>timeseries</tt> property of the <tt>TimeIntervals</tt> object is an example of a <b>compound data type</b>. These types are essentially tables of data in HDF5 and can be represented by a MATLAB table, an array of structs, or a struct of arrays. Beware: validation of column lengths here is not guaranteed by the type checker until export.</p>
+<p>
+<b>VectorIndex</b> objects index into a larger <b>VectorData</b> column. The object that is being referenced is indicated by the <tt>target</tt> property, which uses an ObjectView. Each element in the VectorIndex marks the <b>last</b> element in the corresponding vector data object for the VectorIndex row. Thus, the starting index for this row would be the previous index + 1. Note that these indices must be 0-indexed for compatibility with pynwb. You can see this in effect with the <tt>timeseries</tt> property which is indexed by the <tt>timeseries_index</tt> property.</p>
+<p>Though TimeIntervals is a subclass of the DynamicTable type, we opt for populating the Dynamic Table data by column instead of using `addRow` here because of how the data is formatted. DynamicTable is flexible enough to accomodate both styles of data conversion.</p>
+<pre class="codeinput">trials_epoch = types.core.TimeIntervals(<span class="keyword">...</span>
     <span class="string">'start_time'</span>, types.hdmf_common.VectorData(<span class="string">'data'</span>, data.trialStartTimes,<span class="keyword">...</span>
         <span class="string">'description'</span>, <span class="string">'Start time of epoch, in seconds.'</span>),<span class="keyword">...</span>
     <span class="string">'colnames'</span>, [data.trialTypeStr; data.trialPropertiesHash.keyNames .';<span class="keyword">...</span>
@@ -308,7 +398,7 @@ ots_ref = types.untyped.ObjectView(<span class="string">'/stimulus/presentation/
     <span class="string">'timeseries'</span>, types.hdmf_common.VectorData(<span class="string">'description'</span>, <span class="string">'Index into timeseries Data'</span>),<span class="keyword">...</span>
     <span class="string">'timeseries_index'</span>, types.hdmf_common.VectorIndex(<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'Index into Timeseries VectorData'</span>,<span class="keyword">...</span>
-    <span class="string">'target'</span>, types.untyped.ObjectView(<span class="string">'/intervals/trials/timeseries'</span>)));
+    <span class="string">'target'</span>, matnwb.types.untyped.ObjectView(<span class="string">'/intervals/trials/timeseries'</span>)));
 
 <span class="keyword">for</span> i=1:length(data.trialTypeStr)
     trials_epoch.vectordata.set(data.trialTypeStr{i}, <span class="keyword">...</span>
@@ -327,7 +417,11 @@ ots_ref = types.untyped.ObjectView(<span class="string">'/stimulus/presentation/
         <span class="string">'description'</span>, descr));
 <span class="keyword">end</span>
 nwb.intervals_trials = trials_epoch;
-</pre><p>Ephus spike data is separated into units which directly maps to the NWB property of the same name.  Each such unit contains a group of analysed waveforms and spike times, all linked to a different subset of trials IDs.</p><p>The waveforms are placed in the <tt>analysis</tt> Set and are paired with their unit name ('unitx' where 'x' is some unit ID).</p><p>Trial IDs, wherever they are used, are placed in a relevent <tt>control</tt> property in the data object and will indicate what data is associated with what trial as defined in <tt>trials</tt>'s <tt>id</tt> column.</p><pre class="codeinput">nwb.units = types.core.Units(<span class="string">'colnames'</span>,<span class="keyword">...</span>
+</pre>
+<p>Ephus spike data is separated into units which directly maps to the NWB property of the same name. Each such unit contains a group of analysed waveforms and spike times, all linked to a different subset of trials IDs.</p>
+<p>The waveforms are placed in the <tt>analysis</tt> Set and are paired with their unit name ('unitx' where 'x' is some unit ID).</p>
+<p>Trial IDs, wherever they are used, are placed in a relevent <tt>control</tt> property in the data object and will indicate what data is associated with what trial as defined in <tt>trials</tt>'s <tt>id</tt> column.</p>
+<pre class="codeinput">nwb.units = types.core.Units(<span class="string">'colnames'</span>,<span class="keyword">...</span>
     {<span class="string">'spike_times'</span>, <span class="string">'trials'</span>, <span class="string">'waveforms'</span>},<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'Analysed Spike Events'</span>);
 esHash = data.eventSeriesHash;
@@ -356,10 +450,10 @@ nwb.units.spike_times = types.hdmf_common.VectorData(<span class="keyword">...</
         <span class="string">'timestamps_unit'</span>, data.timeUnitNames{data.timeUnitIds(esData.timeUnit)},<span class="keyword">...</span>
         <span class="string">'electrodes'</span>, types.hdmf_common.DynamicTableRegion(<span class="keyword">...</span>
             <span class="string">'description'</span>, <span class="string">'Electrodes involved with these spike events'</span>,<span class="keyword">...</span>
-            <span class="string">'table'</span>, types.untyped.ObjectView(<span class="string">'/general/extracellular_ephys/electrodes'</span>),<span class="keyword">...</span>
+            <span class="string">'table'</span>, matnwb.types.untyped.ObjectView(<span class="string">'/general/extracellular_ephys/electrodes'</span>),<span class="keyword">...</span>
             <span class="string">'data'</span>, channel - 1));
     ses_name = esHash.keyNames{i};
-    ses_ref = types.untyped.ObjectView([<span class="string">'/analysis/'</span>, ses_name]);
+    ses_ref = matnwb.types.untyped.ObjectView([<span class="string">'/analysis/'</span>, ses_name]);
     <span class="keyword">if</span> ~isempty(esData.cellType)
         ses.comments = [<span class="string">'cellType: '</span> esData.cellType{1}];
     <span class="keyword">end</span>
@@ -379,7 +473,11 @@ nwb.units.spike_times = types.hdmf_common.VectorData(<span class="keyword">...</
         trial_timeseries{trial}(end+1, :) = {ses_ref int64(t_start) int64(t_count)};
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-</pre><p>To better understand how <tt>spike_times_index</tt> and <tt>spike_times</tt> map to each other, refer to <a href="https://neurodatawithoutborders.github.io/matnwb/tutorials/html/ecephys.html#13">this diagram</a> from the Extracellular Electrophysiology Tutorial.</p><h2 id="26">Raw Acquisition Data</h2><p>Each ALM-3 session is associated with a large number of raw voltage data grouped by trial ID. To map this data to NWB, each trial is created as its own <b>ElectricalSeries</b> object under the name 'trial n' where 'n' is the trial ID.  The trials are then linked to the <tt>trials</tt> dynamic table for easy referencing.</p><pre class="codeinput">fprintf(<span class="string">'Processing Raw Acquisition Data from `%s` (will take a while)\n'</span>, rawdata_loc);
+</pre>
+<p>To better understand how <tt>spike_times_index</tt> and <tt>spike_times</tt> map to each other, refer to <a href="https://neurodatawithoutborders.github.io/matnwb/tutorials/html/ecephys.html#13">this diagram</a> from the Extracellular Electrophysiology Tutorial.</p>
+<h2 id="26">Raw Acquisition Data</h2>
+<p>Each ALM-3 session is associated with a large number of raw voltage data grouped by trial ID. To map this data to NWB, each trial is created as its own <b>ElectricalSeries</b> object under the name 'trial n' where 'n' is the trial ID. The trials are then linked to the <tt>trials</tt> dynamic table for easy referencing.</p>
+<pre class="codeinput">fprintf(<span class="string">'Processing Raw Acquisition Data from `%s` (will take a while)\n'</span>, rawdata_loc);
 untarLoc = fullfile(pwd, identifier);
 <span class="keyword">if</span> 7 ~= exist(untarLoc, <span class="string">'dir'</span>)
     untar(rawdata_loc, pwd);
@@ -391,7 +489,7 @@ rawfiles = fullfile(untarLoc, {rawfiles(~[rawfiles.isdir]).name});
 nrows = length(nwb.general_extracellular_ephys_electrodes.id.data);
 tablereg = types.hdmf_common.DynamicTableRegion(<span class="keyword">...</span>
     <span class="string">'description'</span>,<span class="string">'Relevent Electrodes for this Electrical Series'</span>,<span class="keyword">...</span>
-    <span class="string">'table'</span>,types.untyped.ObjectView(<span class="string">'/general/extracellular_ephys/electrodes'</span>),<span class="keyword">...</span>
+    <span class="string">'table'</span>,matnwb.types.untyped.ObjectView(<span class="string">'/general/extracellular_ephys/electrodes'</span>),<span class="keyword">...</span>
     <span class="string">'data'</span>,(1:nrows) - 1);
 objrefs = cell(size(rawfiles));
 trials_idx = nwb.intervals_trials;
@@ -415,21 +513,23 @@ endTimestamps = trials_idx.start_time.data;
     nwb.acquisition.set(tname, es);
 
     endTimestamps(tnum) = endTimestamps(tnum) + rawdata.TimeStamps(end);
-    objrefs{tnum} = types.untyped.ObjectView([<span class="string">'/acquisition/'</span> tname]);
+    objrefs{tnum} = matnwb.types.untyped.ObjectView([<span class="string">'/acquisition/'</span> tname]);
 <span class="keyword">end</span>
 
 <span class="comment">%Link to the raw data by adding the acquisition column with ObjectViews</span>
 <span class="comment">%to the data</span>
 emptyrefs = cellfun(<span class="string">'isempty'</span>, objrefs);
-objrefs(emptyrefs) = {types.untyped.ObjectView(<span class="string">''</span>)};
+objrefs(emptyrefs) = {matnwb.types.untyped.ObjectView(<span class="string">''</span>)};
 trials_idx.vectordata.set(<span class="string">'acquisition'</span>, types.hdmf_common.VectorData(<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'soft link to acquisition data for this trial'</span>,<span class="keyword">...</span>
     <span class="string">'data'</span>, [objrefs{:}]));
 trials_idx.stop_time = types.hdmf_common.VectorData(<span class="keyword">...</span>
     <span class="string">'data'</span>, endTimestamps,<span class="keyword">...</span>
     <span class="string">'description'</span>, <span class="string">'the end time of each trial'</span>);
-</pre><pre class="codeoutput">Processing Raw Acquisition Data from `data\RawVoltageTraces\ANM255201_20141124.tar` (will take a while)
-</pre><h2 id="27">Export</h2><pre class="codeinput"><span class="comment">%first, we'll format and store |trial_timeseries| into |intervals_trials|.</span>
+</pre>
+<h2 id="27">Export</h2>
+<pre class="codeinput">
+<span class="comment">%first, we'll format and store |trial_timeseries| into |intervals_trials|.</span>
 <span class="comment">% note that |timeseries_index| data is 0-indexed.</span>
 ts_len = cellfun(<span class="string">'size'</span>, trial_timeseries, 1);
 is_len_nonzero = ts_len &gt; 0;
@@ -445,7 +545,14 @@ outDest = fullfile(outloc, [identifier <span class="string">'.nwb'</span>]);
     delete(outDest);
 <span class="keyword">end</span>
 nwbExport(nwb, outDest);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
 ##### SOURCE BEGIN #####
 %% NWB File Conversion Tutorial
 % How to convert trial-based experimental data to the Neurodata Without Borders file format using MatNWB.
@@ -629,7 +736,7 @@ recordingLocation = meta.extracellular.recordingLocation{1};
 egroup = types.core.ElectrodeGroup(...
     'description', formatStruct(meta.extracellular, structDesc),...
     'location', recordingLocation,...
-    'device', types.untyped.SoftLink(['/general/devices/' deviceName]));
+    'device', matnwb.types.untyped.SoftLink(['/general/devices/' deviceName]));
 nwb.general_extracellular_ephys.set(deviceName, egroup);
 %%
 % The NWB *ElectrodeGroup* object stores experimental information regarding a group of
@@ -659,7 +766,7 @@ dynTable = types.hdmf_common.DynamicTable(...
 %raw HDF5 path to the above electrode group. Referenced by
 % the general/extracellular_ephys Dynamic Table
 egroupPath = ['/general/extracellular_ephys/' deviceName];
-eGroupReference = types.untyped.ObjectView(egroupPath);
+eGroupReference = matnwb.types.untyped.ObjectView(egroupPath);
 for i = 1:length(meta.extracellular.siteLocations)
     location = meta.extracellular.siteLocations{i};
     % add each row in the dynamic table. The `id` column is populated
@@ -695,7 +802,7 @@ nwb.general_optogenetics.set('photostim', ...
     types.core.OptogeneticStimulusSite(...
     'excitation_lambda', meta.photostim.photostimWavelength{1}, ...
     'location', meta.photostim.photostimLocation{1}, ...
-    'device', types.untyped.SoftLink(['/general/devices/' laserName]), ...
+    'device', matnwb.types.untyped.SoftLink(['/general/devices/' laserName]), ...
     'description', formatStruct(meta.photostim, {...
     'stimulationMethod';'photostimCoordinates';'identificationMethod'})));
 %% Analysis Data Structure
@@ -739,7 +846,7 @@ bts.timeseries.set('lick_trace_ts', ...
     'timestamps', ephus.time, ...
     'timestamps_unit', ephusUnit));
 nwb.acquisition.set('lick_trace', bts);
-bts_ref = types.untyped.ObjectView('/acquisition/lick_trace/lick_trace_ts');
+bts_ref = matnwb.types.untyped.ObjectView('/acquisition/lick_trace/lick_trace_ts');
 
 % acousto-optic modulator input trace
 tsIdx = strcmp(ephus.idStr, 'aom_input_trace');
@@ -750,7 +857,7 @@ ts = types.core.TimeSeries(...
     'timestamps', ephus.time, ...
     'timestamps_unit', ephusUnit);
 nwb.stimulus_presentation.set('aom_input_trace', ts);
-ts_ref = types.untyped.ObjectView('/stimulus/presentation/aom_input_trace');
+ts_ref = matnwb.types.untyped.ObjectView('/stimulus/presentation/aom_input_trace');
 
 % laser power
 tsIdx = strcmp(ephus.idStr, 'laser_power');
@@ -760,9 +867,9 @@ ots = types.core.OptogeneticSeries(...
     'description', ephus.idStrDetailed{tsIdx}, ...
     'timestamps', ephus.time, ...
     'timestamps_unit', ephusUnit, ...
-    'site', types.untyped.SoftLink('/general/optogenetics/photostim'));
+    'site', matnwb.types.untyped.SoftLink('/general/optogenetics/photostim'));
 nwb.stimulus_presentation.set('laser_power', ots);
-ots_ref = types.untyped.ObjectView('/stimulus/presentation/laser_power');
+ots_ref = matnwb.types.untyped.ObjectView('/stimulus/presentation/laser_power');
 
 % append trials timeseries references in order
 [ephus_trials, ~, trials_to_data] = unique(ephus.trial);
@@ -807,7 +914,7 @@ trials_epoch = types.core.TimeIntervals(...
     'timeseries', types.hdmf_common.VectorData('description', 'Index into timeseries Data'),...
     'timeseries_index', types.hdmf_common.VectorIndex(...
     'description', 'Index into Timeseries VectorData',...
-    'target', types.untyped.ObjectView('/intervals/trials/timeseries')));
+    'target', matnwb.types.untyped.ObjectView('/intervals/trials/timeseries')));
 
 for i=1:length(data.trialTypeStr)
     trials_epoch.vectordata.set(data.trialTypeStr{i}, ...
@@ -870,10 +977,10 @@ for i=1:length(ids)
         'timestamps_unit', data.timeUnitNames{data.timeUnitIds(esData.timeUnit)},...
         'electrodes', types.hdmf_common.DynamicTableRegion(...
             'description', 'Electrodes involved with these spike events',...
-            'table', types.untyped.ObjectView('/general/extracellular_ephys/electrodes'),...
+            'table', matnwb.types.untyped.ObjectView('/general/extracellular_ephys/electrodes'),...
             'data', channel - 1));
     ses_name = esHash.keyNames{i};
-    ses_ref = types.untyped.ObjectView(['/analysis/', ses_name]);
+    ses_ref = matnwb.types.untyped.ObjectView(['/analysis/', ses_name]);
     if ~isempty(esData.cellType)
         ses.comments = ['cellType: ' esData.cellType{1}];
     end
@@ -915,7 +1022,7 @@ rawfiles = fullfile(untarLoc, {rawfiles(~[rawfiles.isdir]).name});
 nrows = length(nwb.general_extracellular_ephys_electrodes.id.data);
 tablereg = types.hdmf_common.DynamicTableRegion(...
     'description','Relevent Electrodes for this Electrical Series',...
-    'table',types.untyped.ObjectView('/general/extracellular_ephys/electrodes'),...
+    'table',matnwb.types.untyped.ObjectView('/general/extracellular_ephys/electrodes'),...
     'data',(1:nrows) - 1);
 objrefs = cell(size(rawfiles));
 trials_idx = nwb.intervals_trials;
@@ -939,13 +1046,13 @@ for i=1:length(rawfiles)
     nwb.acquisition.set(tname, es);
     
     endTimestamps(tnum) = endTimestamps(tnum) + rawdata.TimeStamps(end);
-    objrefs{tnum} = types.untyped.ObjectView(['/acquisition/' tname]);
+    objrefs{tnum} = matnwb.types.untyped.ObjectView(['/acquisition/' tname]);
 end
 
 %Link to the raw data by adding the acquisition column with ObjectViews
 %to the data
 emptyrefs = cellfun('isempty', objrefs);
-objrefs(emptyrefs) = {types.untyped.ObjectView('')};
+objrefs(emptyrefs) = {matnwb.types.untyped.ObjectView('')};
 trials_idx.vectordata.set('acquisition', types.hdmf_common.VectorData(...
     'description', 'soft link to acquisition data for this trial',...
     'data', [objrefs{:}]));
@@ -972,4 +1079,6 @@ if 2 == exist(outDest, 'file')
 end
 nwbExport(nwb, outDest);
 ##### SOURCE END #####
---></body></html>
+-->
+</body>
+</html>
