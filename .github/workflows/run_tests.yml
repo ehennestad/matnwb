@@ -12,6 +12,7 @@ on:
   push:
     branches:
       - master
+      - 484-use-nwb-inspector-for-tutorial-files
 
 jobs:
   run_tests:
