@@ -38,7 +38,9 @@ function results = nwbtest(varargin)
     import matlab.unittest.plugins.codecoverage.CoberturaFormat;
     try
 
-        disp(getenv)
+        if isenv("GITHUB_ACTIONS") && getenv("GITHUB_ACTIONS") == true
+            pyenv("ExecutionMode", "OutOfProcess")
+        end
 
         parser = inputParser;
         parser.KeepUnmatched = true;

@@ -86,8 +86,10 @@ classdef TutorialTest <  matlab.unittest.TestCase
             % or not?
             try
                 py.nwbinspector.is_module_installed('nwbinspector');
+                disp("Hurrah!")
             catch
                 testCase.NWBInspectorMode = "CLI";
+                disp("Helvede")
             end
 
             testCase.applyFixture( ResetGeneratedTypesFixture );
