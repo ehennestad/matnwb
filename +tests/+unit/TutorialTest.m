@@ -107,6 +107,7 @@ classdef TutorialTest <  matlab.unittest.TestCase
                     nwbObject = io.read();
                     testCase.verifyNotEmpty(nwbObject, 'The NWB file should not be empty.');
                     io.close()
+                    fprintf('Reading file "%s" with pynwb\n', nwbFilename)
                 catch ME
                     error(ME.message)
                 end
@@ -128,6 +129,7 @@ classdef TutorialTest <  matlab.unittest.TestCase
                 if isempty(results)
                     return
                 end
+                fprintf('Inspected file "%s" with nwb inspector\n', nwbFilename)
 
                 results = testCase.filterNWBInspectorResults(results);
                 % T = struct2table(results); disp(T)
