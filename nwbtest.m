@@ -37,6 +37,9 @@ function results = nwbtest(varargin)
     import matlab.unittest.plugins.CodeCoveragePlugin;
     import matlab.unittest.plugins.codecoverage.CoberturaFormat;
     try
+
+        disp(getenv)
+
         parser = inputParser;
         parser.KeepUnmatched = true;
         parser.addParameter('Verbosity', 1);
