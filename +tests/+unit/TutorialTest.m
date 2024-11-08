@@ -84,6 +84,7 @@ classdef TutorialTest <  matlab.unittest.TestCase
 
             % Todo: More explicitly check if this is run on a github runner
             % or not?
+            pyenv()
             try
                 py.nwbinspector.is_module_installed('nwbinspector');
                 disp("Hurrah!")
