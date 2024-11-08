@@ -137,6 +137,7 @@ classdef TutorialTest <  matlab.unittest.TestCase
                         nwbObject = io.read();
                         testCase.verifyNotEmpty(nwbObject, 'The NWB file should not be empty.');
                         io.close()
+                        disp('hurra')
                     elseif testCase.PyNWBMode == "system"
                         pythonExecutable = tests.util.getPythonPath();
                         cmd = sprintf('"%s" -B -m read_nwbfile_with_pynwb %s',...
