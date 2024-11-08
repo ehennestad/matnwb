@@ -56,7 +56,6 @@ classdef TutorialTest <  matlab.unittest.TestCase
 
             % Get the root path of the matnwb repository
             rootPath = tests.util.getProjectDirectory();
-
             tutorialsFolder = fullfile(rootPath, 'tutorials');
             
             testCase.MatNwbDirectory = rootPath;
@@ -73,7 +72,6 @@ classdef TutorialTest <  matlab.unittest.TestCase
             catch
                 testCase.NWBInspectorMode = "CLI";
             end
-            disp(testCase.NWBInspectorMode)
 
             testCase.applyFixture( ResetGeneratedTypesFixture );
         end
@@ -129,7 +127,7 @@ classdef TutorialTest <  matlab.unittest.TestCase
                 if isempty(results)
                     return
                 end
-                
+
                 results = testCase.filterNWBInspectorResults(results);
                 % T = struct2table(results); disp(T)
 
