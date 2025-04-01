@@ -82,6 +82,7 @@ jobs:
 
       - name: Generate tested with badge
         run: |
+          pip install --upgrade setuptools
           pip install pybadges
           mkdir -p .github/badges/v${{ inputs.version }}
           python -c "
