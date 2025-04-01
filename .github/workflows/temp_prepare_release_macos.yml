@@ -1,6 +1,6 @@
 # Run MATLAB tests across multiple MATLAB versions and create a draft release
 
-name: Prepare release (Win)
+name: Prepare release (Mac)
 on:
   workflow_dispatch:
     inputs:
