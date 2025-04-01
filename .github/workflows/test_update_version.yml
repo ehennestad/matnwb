@@ -30,18 +30,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Tag repository with version tag
-        if: always()
-        run: |
-          git config user.name "${{ github.workflow }} by ${{ github.actor }}"
-          git config user.email "<>"
-
-          # Recreate the tag with a message
-          git tag -a "${{ inputs.version }}" -m "Release ${{ inputs.version }}" 
-
-          # Push the new tag to the remote repository
-          git push origin "${{ inputs.version }}"
-
       - name: Update Contents.m file
         run: |
           # Read the template file
@@ -112,6 +100,20 @@ jobs:
           else
             echo "Nothing to commit"
           fi
+
+      - name: Tag repository with version tag
+        if: always()
+        run: |
+          git fetch
+
+          git config user.name "${{ github.workflow }} by ${{ github.actor }}"
+          git config user.email "<>"
+
+          # Recreate the tag with a message
+          git tag -a "${{ inputs.version }}" -m "Release ${{ inputs.version }}" 
+
+          # Push the new tag to the remote repository
+          git push origin "${{ inputs.version }}"
 
       # Create the release
       - name: Create GitHub release
