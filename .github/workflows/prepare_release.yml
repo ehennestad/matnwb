@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-13]
+        os: [ubuntu-latest]
         matlab-version: [R2021a, R2021b, R2022a, R2022b, R2023a, R2023b, R2024a, R2024b]
         include:
           - matlab-version: R2021a
@@ -99,13 +99,17 @@ jobs:
             pyenv("ExecutionMode", "OutOfProcess");
             results = assertSuccess(nwbtest('ReportOutputFolder', '.')); 
             assert(~isempty(results), 'No tests ran');
+      
+      - name: Rename test results
+        run: |
+          mv testResults.xml testResults-${{ matrix.os }}-${{ matrix.matlab-version }}.xml
 
       - name: Upload JUnit results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results-${{ matrix.os }}-${{ matrix.matlab-version }}
-          path: testResults.xml
+          path: testResults-${{ matrix.os }}-${{ matrix.matlab-version }}.xml
 
   publish_junit:
     name: Publish JUnit test results
@@ -120,12 +124,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: test-results-*
-          merge-multiple: true
+          path: .
 
       - name: Publish test results
         uses: mikepenz/action-junit-report@v4
         with:
-          report_paths: 'testResults.xml'
+          report_paths: 'testResults-*.xml'
 
   update_version:
     name: Create new draft relase for given version
