@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest]
+        os: [macos-13]
         matlab-version: [R2021a, R2022a, R2022b, R2023a]
         include:
           - matlab-version: R2021a
@@ -53,23 +53,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # On macOS, verify that Python is the correct (x86_64) architecture.
-      - name: Verify Python architecture (macOS only)
-        if: matrix.os == 'macos-latest'
+      - name: Configure python env
         run: |
-          echo "Python architecture info:"
-          file "$(which python3)"
-
-      # Install Python dependencies.
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          # On macOS, force installation using x86_64 if MATLAB is running as x86_64.
-          if [[ "$(uname)" == "Darwin" ]]; then
-              arch -x86_64 python -m pip install numpy
-          else
-              python -m pip install numpy
-          fi
+          python -m pip install -U pip
           pip install -r +tests/requirements.txt
           python -m pip list
           echo "HDF5_PLUGIN_PATH=$(python -c "import hdf5plugin; print(hdf5plugin.PLUGINS_PATH)")" >> "$GITHUB_ENV"
