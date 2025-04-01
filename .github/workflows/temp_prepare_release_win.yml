@@ -82,6 +82,7 @@ jobs:
         uses: matlab-actions/run-command@v2
         with:
           command: |
+            setenv("HDF5_PLUGIN_PATH", "${{ env.HDF5_PLUGIN_PATH }}");
             setenv("SKIP_PYNWB_COMPATIBILITY_TEST_FOR_TUTORIALS", ...
                 num2str(${{ matrix.skip-pynwb-compatibilty-test-for-tutorial }}))
             pyenv("ExecutionMode", "OutOfProcess");
