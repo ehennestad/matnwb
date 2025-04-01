@@ -40,6 +40,9 @@ end
 
 function restoreNwbFileClass(classDefStr)
     fid = fopen( fullfile(misc.getMatnwbDir(), 'NwbFile.m'), 'wt' );
+    if ispc
+        classDefStr = strrep(classDefStr, newline, '');
+    end
     fwrite(fid, classDefStr);
     fclose(fid);
 end
