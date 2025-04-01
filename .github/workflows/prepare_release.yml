@@ -120,14 +120,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: test-results-*
-          path: .
           merge-multiple: true
 
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        uses: mikepenz/action-junit-report@v4
         with:
-          junit_files: "*/testResults.xml"
+          report_paths: 'testResults*.xml'
 
   update_version:
     name: Create new draft relase for given version
