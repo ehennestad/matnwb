@@ -32,12 +32,6 @@ jobs:
         os: [windows-latest]
         matlab-version: [R2022a, R2022b, R2023a, R2023b, R2024a, R2024b]
         include:
-          - matlab-version: R2021a
-            python-version: '3.9'
-            skip-pynwb-compatibilty-test-for-tutorial: '1'
-          - matlab-version: R2021b
-            python-version: '3.9'
-            skip-pynwb-compatibilty-test-for-tutorial: '1'
           - matlab-version: R2022a
             python-version: '3.9'
             skip-pynwb-compatibilty-test-for-tutorial: '0'
