@@ -121,11 +121,13 @@ jobs:
         with:
           pattern: test-results-*
           path: .
+          merge-multiple: true
 
       - name: Publish test results
-        uses: mikepenz/action-junit-report@v4
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          report_paths: '**/testResults.xml'
+          junit_files: "*/testResults.xml"
 
   update_version:
     name: Create new draft relase for given version
