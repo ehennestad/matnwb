@@ -133,8 +133,28 @@ jobs:
           # Push the new tag to the remote repository
           git push origin "${{ inputs.version }}"
 
-      # - name: Update Contents.m file
-      #  # TODO
+      - name: Update Contents.m file
+        run: |
+          # Read the template file
+          template=$(cat .github/workflows/templates/contents_header_template.txt)
+          
+          # Get current date in DD-MMM-YYYY format
+          date_string=$(date +"%d-%b-%Y")
+          
+          # Get current year
+          year_number=$(date +"%Y")
+          
+          # Replace placeholders in template
+          header="${template/\{\{version_number\}\}/${{ github.event.inputs.version }}}"
+          header="${header/\{\{date_string\}\}/$date_string}"
+          header="${header/\{\{year_number\}\}/$year_number}"
+          
+          # Extract the content after the header from the current Contents.m file
+          content=$(awk '/^% -{10,}/{flag=1;next} flag{print}' Contents.m)
+          
+          # Combine new header with existing content
+          echo "$header" > Contents.m
+          echo "$content" >> Contents.m
 
       - name: Commit updated Contents.m file
         continue-on-error: true
@@ -173,4 +193,4 @@ jobs:
         with:
           draft: true        
           generateReleaseNotes: true
-          body: "![MATLAB Versions Tested](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FopenMetadataInitiative%2FopenMINDS_MATLAB%2Fgh-badges%2F.github%2Fbadges%2F${{  github.ref_name }}%2Ftested_with.json)"
+          body: "![MATLAB Versions Tested](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fehennestad%2Fmatnwb%2Fgh-badges%2F.github%2Fbadges%2F$v{{ inputs.version }}%2Ftested_with.json)"
