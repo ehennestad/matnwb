@@ -119,6 +119,7 @@ jobs:
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          draft: true        
+          draft: true
+          tag: ${{ inputs.version }}
           generateReleaseNotes: true
           body: "![MATLAB Versions Tested](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fehennestad%2Fmatnwb%2Fgh-badges%2F.github%2Fbadges%2F$v{{ inputs.version }}%2Ftested_with.svg)"
