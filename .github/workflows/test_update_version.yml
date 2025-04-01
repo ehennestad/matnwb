@@ -83,6 +83,27 @@ jobs:
               ))
           "
 
+      - name: Tag repository with version tag
+        if: always()
+        run: |
+          git fetch
+
+          git config user.name "${{ github.workflow }} by ${{ github.actor }}"
+          git config user.email "<>"
+
+          # Recreate the tag with a message
+          git tag -a "${{ inputs.version }}" -m "Release ${{ inputs.version }}" 
+
+          # Push the new tag to the remote repository
+          git push origin "${{ inputs.version }}"
+      
+      # Commit the SVG for the MATLAB releases test badge to gh-badges branch
+      - name: Checkout gh-badges branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-badges
+          path: gh-badges
+
       - name: Push to gh-badges
         run: |
           mkdir -p gh-badges/.github/badges/v${{ inputs.version }}
@@ -100,20 +121,6 @@ jobs:
           else
             echo "Nothing to commit"
           fi
-
-      - name: Tag repository with version tag
-        if: always()
-        run: |
-          git fetch
-
-          git config user.name "${{ github.workflow }} by ${{ github.actor }}"
-          git config user.email "<>"
-
-          # Recreate the tag with a message
-          git tag -a "${{ inputs.version }}" -m "Release ${{ inputs.version }}" 
-
-          # Push the new tag to the remote repository
-          git push origin "${{ inputs.version }}"
 
       # Create the release
       - name: Create GitHub release
