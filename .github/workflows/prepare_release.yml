@@ -92,7 +92,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.matlab-version }}
+          name: test-results-${{ matrix.os }}-${{ matrix.matlab-version }}
           path: testResults.xml
 
   publish_junit:
